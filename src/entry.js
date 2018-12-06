@@ -12,7 +12,7 @@ const store = createStore(
 );
 
 class Entry extends Component {
-  render() {
+  render () {
     return (
       <Provider store={store}>
         <MainView />

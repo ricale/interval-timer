@@ -16,10 +16,28 @@ module.exports = {
     "react"
   ],
   "rules": {
-    "indent": [
+    "key-spacing": [
       "error",
-      2
+      {
+        "mode": "minimum"
+      }
     ],
+    "space-before-function-paren": [
+      "error",
+      "always"
+    ],
+    "brace-style": [
+      "error",
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
+
     "linebreak-style": [
       "error",
       "unix"
@@ -35,11 +53,6 @@ module.exports = {
     "no-unused-vars": [
       "error",
       {"args": "none"}
-    ],
-    "indent": [ // conflict with "indent"
-      "off",
-      2,
-      {"SwitchCase": 1}
     ],
     "no-invalid-this": [
       "off"

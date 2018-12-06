@@ -7,6 +7,7 @@ const TimerFormView = ({
   hours,
   minutes,
   seconds,
+  isValid,
   onChangeName,
   onChangeHours,
   onChangeMinutes,
@@ -24,7 +25,11 @@ const TimerFormView = ({
       <input value={minutes} onChange={e => onChangeMinutes(e.target.value)} /><label>분</label>
       <input value={seconds} onChange={e => onChangeSeconds(e.target.value)} /><label>초</label>
     </div>
-    <button onClick={() => onSubmit(name, hours, minutes, seconds)}>저장</button>
+    <button onClick={() => {
+      if(!isValid || isValid({name, hours, minutes, seconds})) {
+        onSubmit({name, hours, minutes, seconds})
+      }
+    }}>저장</button>
   </div>
 );
 

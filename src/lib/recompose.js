@@ -8,7 +8,7 @@ export const compose = (...funcs) => BaseComponent =>
 
 export const withState = (stateName, stateHandlerName, defaultValue) => BaseComponent =>
   class WithState extends Component {
-    constructor(props) {
+    constructor (props) {
       super(props);
       this.state = {value: typeof defaultValue === 'function' ? defaultValue(props) : defaultValue};
     }
@@ -17,13 +17,13 @@ export const withState = (stateName, stateHandlerName, defaultValue) => BaseComp
       this.setState({value});
     }
 
-    render() {
+    render () {
       return (
         <BaseComponent
             {...this.props}
             {...{
               [stateName]: this.state.value,
-              [stateHandlerName]: this.updateState
+              [stateHandlerName]: this.updateState,
             }}
             />
       );
@@ -39,9 +39,9 @@ export const lifecycle = spec => BaseComponent => {
   const factory = createFactory(BaseComponent);
 
   class Lifecycle extends Component {
-    render() {
+    render () {
       return factory({
-        ...this.props
+        ...this.props,
       });
     }
   }
@@ -62,7 +62,7 @@ export const withHandlers = handlers => BaseComponent => {
       return handler(...args);
     });
 
-    render() {
+    render () {
       return factory({
         ...this.props,
         ...this.handlers,
