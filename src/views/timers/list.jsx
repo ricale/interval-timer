@@ -5,8 +5,8 @@ const TimerList = ({data = [], onDelete}) => (
     {data.map((d,i) =>
       <div key={i}>
         <span>{d.name}</span>
-        <span>{d.hours}</span>
-        <span>{d.minutes}</span>
+        <span>{d.hours}</span>:
+        <span>{d.minutes}</span>:
         <span>{d.seconds}</span>
         <button onClick={() => onDelete(d)}>삭제</button>
       </div>

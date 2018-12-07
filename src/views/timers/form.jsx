@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {compose, withState} from '../../lib/recompose';
+import {compose, withState} from 'lib/recompose';
 
 const TimerFormView = ({
   name,
