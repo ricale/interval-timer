@@ -48,7 +48,7 @@ export default function timers (state = initialState, action) {
     case 'TIMERS/RESUME_TIMER':
       return !isAvailable(state) || isPlaying(state) ? state : {
         ...state,
-        playState: PLAY_STATE.RESUME,
+        playState: PLAY_STATE.PLAYING,
       };
     case 'TIMERS/GO_TO_NEXT_TIMER':
       return !isAvailable(state) ? state : {

@@ -31,7 +31,9 @@ class Main extends Component {
             onDelete={({id}) => this.props.deleteTimer(id)}
             />
 
-        <button onClick={() => this.props.deleteAllTimer()}>모두 삭제</button>
+        <button onClick={() => this.props.deleteAllTimer()}>
+          모두 삭제
+        </button>
       </div>
     );
   }
