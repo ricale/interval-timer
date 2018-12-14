@@ -7,33 +7,38 @@ import Timer from './timers/timer';
 import TimerForm from './timers/form';
 import TimerList from './timers/list';
 
+import './main.less';
+
 class Main extends Component {
   render() {
     const {list, current, playState} = this.props;
     return (
-      <div>
-        <Timer
-            onStart={this.props.startTimer}
-            onStop={this.props.stopTimer}
-            onPause={this.props.pauseTimer}
-            onResume={this.props.resumeTimer}
-            onDone={this.props.goToNextTimer}
-            data={list[current % list.length]}
-            playState={playState}
-            />
+      <div className='it-main'>
+        <div>
+          <Timer
+              onStart={this.props.startTimer}
+              onStop={this.props.stopTimer}
+              onPause={this.props.pauseTimer}
+              onResume={this.props.resumeTimer}
+              onDone={this.props.goToNextTimer}
+              data={list[current % list.length]}
+              playState={playState}
+              />
+        </div>
+        <div>
+          <TimerForm
+              onSubmit={(d) => this.props.createTimer(d)}
+              isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
+              />
+          <TimerList
+              data={list}
+              onDelete={({id}) => this.props.deleteTimer(id)}
+              />
 
-        <TimerForm
-            onSubmit={(d) => this.props.createTimer(d)}
-            isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
-            />
-        <TimerList
-            data={list}
-            onDelete={({id}) => this.props.deleteTimer(id)}
-            />
-
-        <button onClick={() => this.props.deleteAllTimer()}>
-          모두 삭제
-        </button>
+          <button onClick={() => this.props.deleteAllTimer()}>
+            모두 삭제
+          </button>
+        </div>
       </div>
     );
   }
