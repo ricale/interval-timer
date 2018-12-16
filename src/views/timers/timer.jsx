@@ -4,18 +4,28 @@ import moment from 'moment';
 import {compose, withState, mapProps, lifecycle} from 'lib/recompose';
 import {PLAY_STATE} from 'constants';
 
-const getRemainingTime = (timestamp) => {
-  const seconds = timestamp / 1000;
-  const milliseconds = timestamp % 1000 || 0;
-  const ss = parseInt(seconds % 60, 10) || 0;
-  const mm = parseInt(seconds % 3600 / 60, 10) || 0;
-  const hh = parseInt(seconds / 3600, 10) || 0;
-  return `${hh} ${mm} ${ss} ${milliseconds}`;
-}
+const TimerDisplayView = ({hours, minutes, seconds, milliseconds}) => (
+  <div className='it-timer-display'>
+    <span className='it-timer-display__hours'>{hours}</span>
+    <span className='it-timer-display__divider'>:</span>
+    <span className='it-timer-display__minutes'>{minutes < 10 ? `0${minutes}` : minutes}</span>
+    <span className='it-timer-display__divider'>:</span>
+    <span className='it-timer-display__seconds'>{seconds < 10 ? `0${seconds}` : seconds}</span>
+    <span className='it-timer-display__divider'>:</span>
+    <span className='it-timer-display__milliseconds'>{milliseconds}</span>
+  </div>
+);
+
+const TimerDisplay = mapProps(({timestamp}) => ({
+  hours:        parseInt(timestamp / 1000 / 3600, 10)      || 0,
+  minutes:      parseInt(timestamp / 1000 % 3600 / 60, 10) || 0,
+  seconds:      parseInt(timestamp / 1000 % 60, 10)        || 0,
+  milliseconds: timestamp % 1000 || 0
+}))(TimerDisplayView);
 
 const TimerView = ({
   data,
-  milliseconds,
+  timestamp,
   playState,
   startTime,
   pauseTime,
@@ -29,12 +39,11 @@ const TimerView = ({
     <div>data: {JSON.stringify(data)}</div>
     <div>startTime: {startTime && startTime.format()}</div>
     <div>pauseTime: {pauseTime && pauseTime.format()}</div>
-    <div>passed: {getRemainingTime(milliseconds - moment().diff(startTime))}</div>
+    <TimerDisplay timestamp={data.timestamp - moment().diff(startTime)} />
     <div>playState: {playState}</div>
     <button onClick={() => onStart()}>Start</button>
-    <button onClick={() => onStop()}>Stop</button>
     <button onClick={() => onPause()}>Pause</button>
-    <button onClick={() => onResume()}>Resume</button>
+    <button onClick={() => onStop()}>Stop</button>
     <button onClick={() => onDone()}>Done</button>
   </div>
 );
@@ -42,14 +51,10 @@ const TimerView = ({
 const Timer = compose(
   withState('startTime', 'onChangeStartTime', null),
   withState('pauseTime', 'onChangePauseTime', null),
-  mapProps(({data = {}, ...args}) => {
-    const milliseconds = (data.hours*60*60 + data.minutes*60 + data.seconds) * 1000;
-    return {
-      milliseconds,
-      data,
-      ...args,
-    }
-  }),
+  mapProps(({data, ...args}) => ({
+    data: data || {},
+    ...args
+  })),
   lifecycle({
     componentDidMount() {
       const {playState, passed} = this.props;

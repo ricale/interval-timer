@@ -10,6 +10,11 @@ import TimerList from './timers/list';
 import './main.less';
 
 class Main extends Component {
+  handleSubmit = (d) => {
+    const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
+    this.props.createTimer({...d, timestamp});
+  }
+
   render() {
     const {list, current, playState} = this.props;
     return (
@@ -27,7 +32,7 @@ class Main extends Component {
         </div>
         <div>
           <TimerForm
-              onSubmit={(d) => this.props.createTimer(d)}
+              onSubmit={this.handleSubmit}
               isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
               />
           <TimerList
