@@ -2,6 +2,8 @@ import React from 'react';
 
 import {compose, withState} from 'lib/recompose';
 
+import './form.less';
+
 const TimerFormView = ({
   name,
   hours,
@@ -14,16 +16,38 @@ const TimerFormView = ({
   onChangeSeconds,
   onSubmit,
 }) => (
-  <div>
+  <div className='it-timer-form'>
     <div>
       <label>이름</label>
-      <input value={name} onChange={e => onChangeName(e.target.value)}/>
+      <input className='it-timer-form__str' value={name} onChange={e => onChangeName(e.target.value)}/>
     </div>
     <div>
       <label>시간</label>
-      <input value={hours} onChange={e => onChangeHours(e.target.value)} /><label>시간</label>
-      <input value={minutes} onChange={e => onChangeMinutes(e.target.value)} /><label>분</label>
-      <input value={seconds} onChange={e => onChangeSeconds(e.target.value)} /><label>초</label>
+      <input
+          className='it-timer-form__number'
+          type='number'
+          min={0}
+          value={hours}
+          onChange={e => onChangeHours(e.target.value)}
+          />
+      <span className='it-timer-form__divider'>:</span>
+      <input
+          className='it-timer-form__number'
+          type='number'
+          min={0}
+          max={59}
+          value={minutes}
+          onChange={e => onChangeMinutes(e.target.value)}
+          />
+      <span className='it-timer-form__divider'>:</span>
+      <input
+          className='it-timer-form__number'
+          type='number'
+          min={0}
+          max={59}
+          value={seconds}
+          onChange={e => onChangeSeconds(e.target.value)}
+          />
     </div>
     <button onClick={() => {
       if(!isValid || isValid({name, hours, minutes, seconds})) {
