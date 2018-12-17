@@ -7,7 +7,7 @@ const TimerList = ({data = [], onDelete}) => (
     {data.map((d,i) =>
       <div key={i} className='it-timer-list__item'>
         <div className='it-timer-item__header'>
-          <span className='it-timer-item__name'>{d.name || `timer ${d.id}`}</span>
+          <span className='it-timer-item__name'>{d.name}</span>
           <button onClick={() => onDelete(d)}>삭제</button>
         </div>
         <div className='it-timer-item__digits'>

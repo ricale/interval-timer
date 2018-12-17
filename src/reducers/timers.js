@@ -1,5 +1,13 @@
 import {PLAY_STATE} from 'constants';
 
+const createTimer = function (obj) {
+  if(!obj.name) {
+    obj.name = `timer #${obj.id}`;
+    obj.hasDefaultName = true;
+  }
+  return obj;
+};
+
 const initialState = {
   list: [],
   lastId: 0,
@@ -16,7 +24,7 @@ export default function timers (state = initialState, action) {
     case 'TIMERS/CREATE_TIMER':
       return {
         ...state,
-        list: [...state.list, {...action.payload, id: state.lastId}],
+        list: [...state.list, createTimer({...action.payload, id: state.lastId})],
         lastId: state.lastId + 1,
       };
 

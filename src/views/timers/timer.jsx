@@ -3,32 +3,64 @@ import moment from 'moment';
 
 import {compose, withState, mapProps, lifecycle} from 'lib/recompose';
 import {PLAY_STATE} from 'constants';
+import {fillWithZero} from 'lib';
 
-const TimerDisplayView = ({hours, minutes, seconds, milliseconds}) => (
+import './timer.less';
+
+const TimerDisplayView = ({
+  name,
+  hours,
+  minutes,
+  seconds,
+  milliseconds,
+  showMilliseconds = true,
+  isNegative,
+}) => (
   <div className='it-timer-display'>
-    <span className='it-timer-display__hours'>{hours}</span>
+    <div>{name}</div>
+    <div className='it-timer-display__digits'>
+    {isNegative &&
+      <span className='it-timer-display__sign'>-</span>
+    }
+    <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
     <span className='it-timer-display__divider'>:</span>
-    <span className='it-timer-display__minutes'>{minutes < 10 ? `0${minutes}` : minutes}</span>
+    <span className='it-timer-display__minutes'>{fillWithZero(minutes)}</span>
     <span className='it-timer-display__divider'>:</span>
-    <span className='it-timer-display__seconds'>{seconds < 10 ? `0${seconds}` : seconds}</span>
-    <span className='it-timer-display__divider'>:</span>
-    <span className='it-timer-display__milliseconds'>{milliseconds}</span>
+    <span className='it-timer-display__seconds'>{fillWithZero(seconds)}</span>
+    {showMilliseconds &&
+      <span className='it-timer-display__divider'>:</span>
+    }
+    {showMilliseconds &&
+      <span className='it-timer-display__milliseconds'>
+        {parseInt(milliseconds / 100)}
+      </span>
+    }
+    </div>
   </div>
 );
 
-const TimerDisplay = mapProps(({timestamp}) => ({
-  hours:        parseInt(timestamp / 1000 / 3600, 10)      || 0,
-  minutes:      parseInt(timestamp / 1000 % 3600 / 60, 10) || 0,
-  seconds:      parseInt(timestamp / 1000 % 60, 10)        || 0,
-  milliseconds: timestamp % 1000 || 0
-}))(TimerDisplayView);
+const TimerDisplay = mapProps(({name, timestamp, showMilliseconds}) => {
+  const isNegative = timestamp < -1;
+  const totalMilliseconds = isNegative ? timestamp * -1 : timestamp;
+  const totalSeconds = totalMilliseconds / 1000;
+
+  return {
+    hours:        parseInt(totalSeconds / 3600, 10)      || 0,
+    minutes:      parseInt(totalSeconds % 3600 / 60, 10) || 0,
+    seconds:      parseInt(totalSeconds % 60, 10)        || 0,
+    milliseconds: totalMilliseconds % 1000 || 0,
+    name:         name,
+    isNegative,
+  };
+})(TimerDisplayView);
 
 const TimerView = ({
   data,
   timestamp,
   playState,
+  isRunning,
+  isPlaying,
   startTime,
-  pauseTime,
   onStart,
   onStop,
   onPause,
@@ -36,24 +68,29 @@ const TimerView = ({
   onDone
 }) => (
   <div>
-    <div>data: {JSON.stringify(data)}</div>
-    <div>startTime: {startTime && startTime.format()}</div>
-    <div>pauseTime: {pauseTime && pauseTime.format()}</div>
-    <TimerDisplay timestamp={data.timestamp - moment().diff(startTime)} />
+    <TimerDisplay
+        name={data.name}
+        timestamp={isRunning ? (data.timestamp - moment().diff(startTime)) : 0}
+        />
     <div>playState: {playState}</div>
-    <button onClick={() => onStart()}>Start</button>
-    <button onClick={() => onPause()}>Pause</button>
-    <button onClick={() => onStop()}>Stop</button>
-    <button onClick={() => onDone()}>Done</button>
+    <div>
+      <button onClick={() => onStart()} disabled={isPlaying}>Start</button>      
+      <button onClick={() => onPause()} disabled={!isPlaying}>Pause</button>
+      <button onClick={() => onStop()} disabled={!isRunning}>Stop</button>
+      <button onClick={() => onDone()}>Done</button>
+    </div>
   </div>
 );
 
 const Timer = compose(
   withState('startTime', 'onChangeStartTime', null),
   withState('pauseTime', 'onChangePauseTime', null),
-  mapProps(({data, ...args}) => ({
+  mapProps(({data, playState, ...args}) => ({
     data: data || {},
-    ...args
+    isRunning: playState !== PLAY_STATE.IDLE,
+    isPlaying: playState !== PLAY_STATE.IDLE && playState !== PLAY_STATE.PAUSE,
+    playState,
+    ...args,
   })),
   lifecycle({
     componentDidMount() {
