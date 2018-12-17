@@ -29,10 +29,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      actions:   path.resolve(__dirname, './src/actions'),
-      constants: path.resolve(__dirname, './src/constants'),
-      lib:       path.resolve(__dirname, './src/lib'),
-      reducers:  path.resolve(__dirname, './src/reducers'),
+      actions:    path.resolve(__dirname, './src/actions'),
+      components: path.resolve(__dirname, './src/components'),
+      constants:  path.resolve(__dirname, './src/constants'),
+      lib:        path.resolve(__dirname, './src/lib'),
+      reducers:   path.resolve(__dirname, './src/reducers'),
     },
   },
   mode: 'development',

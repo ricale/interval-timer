@@ -1,0 +1,38 @@
+.it-button {
+  margin: 2px;
+  padding: 10px 15px;
+  // border-width: 1px;
+
+  border-style: solid;
+  border-color: #6c757d;
+  background-color: transparent;
+  background-image: none;
+  color: #6c757d;
+
+  font-size: 1.1em;
+  // font-weight: bold;
+}
+
+.it-button:disabled {
+  opacity: 0.5;
+}
+
+.it-button:focus:not(:disabled) {
+  color: #6c757d;
+  background-color: transparent;
+  background-image: none;
+  border-color: #6c757d;
+  box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
+}
+
+.it-button:active:not(:disabled) {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.it-button:hover:not(:disabled) {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}

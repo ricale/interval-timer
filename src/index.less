@@ -18,3 +18,40 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/////////////////////////
+// (begin) button reset
+//  from: https://gist.github.com/anthonyshort/552543
+
+button,
+input[type=button] {
+  margin:0;
+  border:0;
+  padding:0;
+  display:inline-block;
+  vertical-align:middle;
+  white-space:normal;
+  background:none;
+  line-height:1;
+
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+
+  overflow:visible;
+  width:auto;
+}
+
+button:focus {
+  outline:0;
+}
+
+::-webkit-file-upload-button
+{ 
+  padding:0;
+  border:0;
+  background:none;
+}
+
+// (end) button reset
+///////////////////////

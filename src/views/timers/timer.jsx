@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 
 import {compose, withState, mapProps, lifecycle} from 'lib/recompose';
+import {Button} from 'components';
 import {PLAY_STATE} from 'constants';
 import {fillWithZero} from 'lib';
 
@@ -13,7 +14,8 @@ const TimerDisplayView = ({
   minutes,
   seconds,
   milliseconds,
-  showMilliseconds = true,
+  showHours = true,
+  showMilliseconds = false,
   isNegative,
 }) => (
   <div className='it-timer-display'>
@@ -22,8 +24,12 @@ const TimerDisplayView = ({
     {isNegative &&
       <span className='it-timer-display__sign'>-</span>
     }
-    <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
-    <span className='it-timer-display__divider'>:</span>
+    {showHours &&
+      <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
+    }
+    {showHours &&
+      <span className='it-timer-display__divider'>:</span>
+    }
     <span className='it-timer-display__minutes'>{fillWithZero(minutes)}</span>
     <span className='it-timer-display__divider'>:</span>
     <span className='it-timer-display__seconds'>{fillWithZero(seconds)}</span>
@@ -57,7 +63,6 @@ const TimerDisplay = mapProps(({name, timestamp, showMilliseconds}) => {
 const TimerView = ({
   data,
   timestamp,
-  playState,
   isRunning,
   isPlaying,
   startTime,
@@ -72,12 +77,11 @@ const TimerView = ({
         name={data.name}
         timestamp={isRunning ? (data.timestamp - moment().diff(startTime)) : 0}
         />
-    <div>playState: {playState}</div>
-    <div>
-      <button onClick={() => onStart()} disabled={isPlaying}>Start</button>      
-      <button onClick={() => onPause()} disabled={!isPlaying}>Pause</button>
-      <button onClick={() => onStop()} disabled={!isRunning}>Stop</button>
-      <button onClick={() => onDone()}>Done</button>
+    <div className='it-timer-controller'>
+      <Button onClick={() => onStart()} disabled={isPlaying}>Start</Button>      
+      <Button onClick={() => onPause()} disabled={!isPlaying}>Pause</Button>
+      <Button onClick={() => onStop()} disabled={!isRunning}>Stop</Button>
+      <Button onClick={() => onDone()}>Done</Button>
     </div>
   </div>
 );
