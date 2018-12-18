@@ -13,7 +13,15 @@ const createTimer = (obj) => {
   return obj;
 };
 
-export default function timers (state = initialState, action) {
+const isChanged = (type) => (
+  [
+    'TIMERS/CREATE_TIMER',
+    'TIMERS/DELETE_ALL_TIMER',
+    'TIMERS/DELETE_TIMER',
+  ].indexOf(type) !== -1
+);
+
+const getNewState = (state, action) => {
   switch(action.type) {
     case 'TIMERS/CREATE_TIMER':
       return {
@@ -32,4 +40,14 @@ export default function timers (state = initialState, action) {
       };
   }
   return state;
+}
+
+export default function timers (state = initialState, action) {
+  if(!isChanged(action.type)) {
+    return state;
+  }
+
+  const newState = getNewState(state, action);
+  localStorage.setItem('timers', JSON.stringify(newState));
+  return newState;
 }
