@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import actions from 'actions/timers';
+import timerActions from 'actions/timers';
+import playerActions from 'actions/player';
 
 import Timer from './timers/timer';
 import TimerForm from './timers/form';
@@ -51,20 +52,20 @@ class Main extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   list: state.timers.list,
-  current: state.timers.current,
-  playState: state.timers.playState,
+  current: state.player.current,
+  playState: state.player.playState,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  createTimer: (...args) => dispatch(actions.timers.createTimer(...args)),
-  deleteTimer: (...args) => dispatch(actions.timers.deleteTimer(...args)),
-  deleteAllTimer: (...args) => dispatch(actions.timers.deleteAllTimer(...args)),
+  createTimer: (...args) => dispatch(timerActions.createTimer(...args)),
+  deleteTimer: (...args) => dispatch(timerActions.deleteTimer(...args)),
+  deleteAllTimer: (...args) => dispatch(timerActions.deleteAllTimer(...args)),
 
-  startTimer: (...args) => dispatch(actions.timers.startTimer(...args)),
-  stopTimer: (...args) => dispatch(actions.timers.stopTimer(...args)),
-  pauseTimer: (...args) => dispatch(actions.timers.pauseTimer(...args)),
-  resumeTimer: (...args) => dispatch(actions.timers.resumeTimer(...args)),
-  goToNextTimer: (...args) => dispatch(actions.timers.goToNextTimer(...args)),
+  startTimer: (...args) => dispatch(playerActions.start(...args)),
+  stopTimer: (...args) => dispatch(playerActions.stop(...args)),
+  pauseTimer: (...args) => dispatch(playerActions.pause(...args)),
+  resumeTimer: (...args) => dispatch(playerActions.resume(...args)),
+  goToNextTimer: (...args) => dispatch(playerActions.goToNext(...args)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
