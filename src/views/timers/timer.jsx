@@ -19,28 +19,26 @@ const TimerDisplayView = ({
   isNegative,
 }) => (
   <div className='it-timer-display'>
-    <div>{name}</div>
-    <div className='it-timer-display__digits'>
-    {isNegative &&
+    <div className='it-timer-display__name'>{name}</div>
+    <div className={`it-timer-display__digits ${isNegative ? 'it-negative' : ''}`}>
       <span className='it-timer-display__sign'>-</span>
-    }
-    {showHours &&
-      <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
-    }
-    {showHours &&
+      {showHours &&
+        <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
+      }
+      {showHours &&
+        <span className='it-timer-display__divider'>:</span>
+      }
+      <span className='it-timer-display__minutes'>{fillWithZero(minutes)}</span>
       <span className='it-timer-display__divider'>:</span>
-    }
-    <span className='it-timer-display__minutes'>{fillWithZero(minutes)}</span>
-    <span className='it-timer-display__divider'>:</span>
-    <span className='it-timer-display__seconds'>{fillWithZero(seconds)}</span>
-    {showMilliseconds &&
-      <span className='it-timer-display__divider'>:</span>
-    }
-    {showMilliseconds &&
-      <span className='it-timer-display__milliseconds'>
-        {parseInt(milliseconds / 100)}
-      </span>
-    }
+      <span className='it-timer-display__seconds'>{fillWithZero(seconds)}</span>
+      {showMilliseconds &&
+        <span className='it-timer-display__divider'>:</span>
+      }
+      {showMilliseconds &&
+        <span className='it-timer-display__milliseconds'>
+          {parseInt(milliseconds / 100)}
+        </span>
+      }
     </div>
   </div>
 );

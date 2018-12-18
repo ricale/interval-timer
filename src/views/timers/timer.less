@@ -1,14 +1,27 @@
 .it-timer-display {
   display: inline-block;
-  padding: 10px 30px;
+  padding: 20px 30px;
   margin: 10px;
 
   font-family: monospace;
   background-color: #F0F8FF;
 
+  .it-timer-display__name {
+    font-size: 1.2em;
+  }
+
   .it-timer-display__digits {
     font-size: 5em;
     line-height: 100%;
+    .it-timer-display__sign {
+      opacity: 0;
+    }
+  }
+
+  .it-timer-display__digits.it-negative {
+    .it-timer-display__sign {
+      opacity: 1;
+    }
   }
 }
 

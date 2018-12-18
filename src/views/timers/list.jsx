@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {fillWithZero} from 'lib';
+
 import './list.less';
 
 const TimerList = ({data = [], onDelete}) => (
@@ -12,15 +14,15 @@ const TimerList = ({data = [], onDelete}) => (
         </div>
         <div className='it-timer-item__digits'>
           <span className='it-timer-item__hours'>
-            {d.hours < 10 ? `0${d.hours}` : d.hours}
+            {fillWithZero(d.hours)}
           </span>
           <span className='it-timer-item__divider'>:</span>
           <span className='it-timer-item__minutes'>
-            {d.minutes < 10 ? `0${d.minutes}` : d.minutes}
+            {fillWithZero(d.minutes)}
           </span>
           <span className='it-timer-item__divider'>:</span>
           <span className='it-timer-item__seconds'>
-            {d.seconds < 10 ? `0${d.seconds}` : d.seconds}
+            {fillWithZero(d.seconds)}
           </span>
         </div>
       </div>
