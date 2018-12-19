@@ -16,19 +16,25 @@ class Main extends Component {
     this.props.createTimer({...d, timestamp});
   }
 
-  render() {
-    const {list, current, playState} = this.props;
+  render () {
+    const {list, player: {current, ...player}} = this.props;
     return (
       <div className='it-main'>
         <div>
           <Timer
-              onStart={this.props.startTimer}
-              onStop={this.props.stopTimer}
-              onPause={this.props.pauseTimer}
-              onResume={this.props.resumeTimer}
-              onDone={this.props.goToNextTimer}
+              onStart={this.props.start}
+              onStop={this.props.stop}
+              onPause={this.props.pause}
+              onResume={this.props.resume}
+              onDone={this.props.goToNext}
+              turnOffAlarm={this.props.turnOffAlarm}
+              turnOnAlarm={this.props.turnOnAlarm}
+              ringAlarm={this.props.ringAlarm}
+              stopAlarm={this.props.stopAlarm}
+
               data={list[current % list.length]}
-              playState={playState}
+              index={current}
+              {...player}
               />
         </div>
         <div>
@@ -52,8 +58,7 @@ class Main extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   list: state.timers.list,
-  current: state.player.current,
-  playState: state.player.playState,
+  player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -61,11 +66,15 @@ const mapDispatchToProps = (dispatch) => ({
   deleteTimer: (...args) => dispatch(timerActions.deleteTimer(...args)),
   deleteAllTimer: (...args) => dispatch(timerActions.deleteAllTimer(...args)),
 
-  startTimer: (...args) => dispatch(playerActions.start(...args)),
-  stopTimer: (...args) => dispatch(playerActions.stop(...args)),
-  pauseTimer: (...args) => dispatch(playerActions.pause(...args)),
-  resumeTimer: (...args) => dispatch(playerActions.resume(...args)),
-  goToNextTimer: (...args) => dispatch(playerActions.goToNext(...args)),
+  start: (...args) => dispatch(playerActions.start(...args)),
+  stop: (...args) => dispatch(playerActions.stop(...args)),
+  pause: (...args) => dispatch(playerActions.pause(...args)),
+  resume: (...args) => dispatch(playerActions.resume(...args)),
+  goToNext: (...args) => dispatch(playerActions.goToNext(...args)),
+  turnOffAlarm: (...args) => dispatch(playerActions.turnOffAlarm(...args)),
+  turnOnAlarm: (...args) => dispatch(playerActions.turnOnAlarm(...args)),
+  ringAlarm: (...args) => dispatch(playerActions.ringAlarm(...args)),
+  stopAlarm: (...args) => dispatch(playerActions.stopAlarm(...args)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

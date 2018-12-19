@@ -1,15 +1,9 @@
-import {PLAY_STATE} from 'constants';
+import {PLAY_STATE, ALARM_STATE} from 'constants';
 
 const initialState = {
   playState: PLAY_STATE.IDLE,
+  alarmState: ALARM_STATE.ON,
   current: 0,
-};
-
-const playStateByActionType = {
-  'PLAYER/START': PLAY_STATE.PLAYING,
-  'PLAYER/STOP': PLAY_STATE.IDLE,
-  'PLAYER/PAUSE': PLAY_STATE.PAUSE,
-  'PLAYER/RESUME': PLAY_STATE.PLAYING,
 };
 
 const isPlaying = ({playState}) => playState === PLAY_STATE.PLAYING;
@@ -40,6 +34,15 @@ export default function player (state = initialState, action) {
         ...state,
         playState: PLAY_STATE.PLAYING,
       };
+
+    case 'PLAYER/TURN_ON_ALARM':
+      return {...state, alarmState: ALARM_STATE.OFF};
+    case 'PLAYER/TURN_OFF_ALARM':
+      return {...state, alarmState: ALARM_STATE.ON};
+    case 'PLAYER/RING_ALARM':
+      return {...state, alarmState: ALARM_STATE.RING};
+    case 'PLAYER/STOP_ALARM':
+      return {...state, alarmState: ALARM_STATE.ON};
 
     case 'PLAYER/GO_TO_NEXT':
       return {
