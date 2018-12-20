@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import {compose, withState, mapProps, lifecycle} from 'lib/recompose';
+import {compose, withState, withProps, lifecycle} from 'lib/recompose';
 import {fillWithZero} from 'lib';
 import Sounds from 'lib/Sounds';
 import {Button} from 'components';
@@ -16,7 +16,7 @@ const TimerDisplayView = ({
   seconds,
   milliseconds,
   showHours = true,
-  showMilliseconds = false,
+  showMilliseconds,
   isNegative,
 }) => (
   <div className='it-timer-display'>
@@ -45,17 +45,22 @@ const TimerDisplayView = ({
 );
 
 const TimerDisplay = compose(
-  mapProps(({name, timestamp, showMilliseconds}) => {
-    const isNegative = timestamp < 0;
-    const totalMilliseconds = isNegative ? timestamp * -1 : timestamp;
-    const totalSeconds = parseInt(totalMilliseconds / 1000, 10);
+  withProps(({timestamp, showMilliseconds}) => {
+    const totalSeconds = (
+      showMilliseconds ?
+        parseInt(timestamp / 1000, 10) :
+        Math.ceil(timestamp / 1000)
+    );
+
+    const isNegative = showMilliseconds ? timestamp < 0 : totalSeconds < 0;
+
+    const absSeconds = Math.abs(totalSeconds);
 
     return {
-      hours:        parseInt(totalSeconds / 3600, 10)      || 0,
-      minutes:      parseInt(totalSeconds % 3600 / 60, 10) || 0,
-      seconds:      parseInt(totalSeconds % 60, 10)        || 0,
-      milliseconds: totalMilliseconds % 1000 || 0,
-      name:         name,
+      hours:        parseInt(absSeconds / 3600, 10)      || 0,
+      minutes:      parseInt(absSeconds % 3600 / 60, 10) || 0,
+      seconds:      parseInt(absSeconds % 60, 10)        || 0,
+      milliseconds: Math.abs(timestamp) % 1000 || 0,
       isNegative,
     };
   }),
@@ -99,56 +104,60 @@ const Timer = compose(
   withState('startTime', 'onChangeStartTime', null),
   withState('pauseTime', 'onChangePauseTime', null),
   withState('currentTimestamp', 'onChangeCurrnetTimestamp', (props) => props.data.timestamp),
-  mapProps(({data, playState, alarmState, ...args}) => ({
+  withProps(({data, playState, alarmState, ...args}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,
     isPlaying: playState !== PLAY_STATE.IDLE && playState !== PLAY_STATE.PAUSE,
     isRinging: alarmState === ALARM_STATE.RING,
-    playState,
-    alarmState,
-    ...args,
   })),
   lifecycle({
     shouldComponentUpdate (nextProps, nextState) {
       const {
+        onChangeStartTime,
+        onChangePauseTime,
+        onChangeCurrnetTimestamp,
+        ringAlarm,
+        stopAlarm,
+
         playState,
         alarmState,
         startTime,
         pauseTime,
         currentTimestamp,
         index,
+        data,
       } = this.props;
 
       if(nextProps.playState !== playState) {
         switch(nextProps.playState) {
           case PLAY_STATE.PLAYING:
             if(pauseTime) {
-              this.props.onChangeStartTime(
-                startTime.add(moment().diff(pauseTime))
-              );
-              this.props.onChangePauseTime(null);
+              onChangeStartTime(startTime.add(moment().diff(pauseTime)));
+              onChangePauseTime(null);
 
             } else {
-              this.props.onChangeStartTime(moment());
+              onChangeStartTime(moment());
             }
+
             this._timer =
               setInterval(() => {
-                this.props.onChangeCurrnetTimestamp(
+                onChangeCurrnetTimestamp(
                   this.props.data.timestamp - moment().diff(this.props.startTime)
                 );
               }, 100);
             break;
 
           case PLAY_STATE.PAUSE:
-            this.props.stopAlarm();
-            this.props.onChangePauseTime(moment());
+            stopAlarm();
+            onChangePauseTime(moment());
             clearInterval(this._timer);
             break;
 
           case PLAY_STATE.IDLE:
-            this.props.stopAlarm();
-            this.props.onChangeStartTime(null);
-            this.props.onChangePauseTime(null);
+            stopAlarm();
+            onChangeStartTime(null);
+            onChangePauseTime(null);
+            onChangeCurrnetTimestamp(data.timestamp);
             clearInterval(this._timer);
             break;
         }
@@ -168,14 +177,15 @@ const Timer = compose(
 
       if(nextProps.currentTimestamp !== currentTimestamp) {
         if(nextProps.currentTimestamp < 0 && currentTimestamp >= 0) {
-          this.props.ringAlarm();
+          ringAlarm();
         }
       }
 
       if(nextProps.index !== index) {
-        this.props.stopAlarm();
-        this.props.onChangeStartTime(moment());
-        this.props.onChangePauseTime();
+        stopAlarm();
+        onChangeStartTime(moment());
+        onChangePauseTime();
+        onChangeCurrnetTimestamp(nextProps.data.timestamp);
       }
       return true;
     },
