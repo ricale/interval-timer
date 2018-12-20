@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import {FullScreenContainer} from 'components';
 import timerActions from 'actions/timers';
 import playerActions from 'actions/player';
 
@@ -20,7 +21,7 @@ class Main extends Component {
     const {list, player: {current, ...player}} = this.props;
     return (
       <div className='it-main'>
-        <div>
+        <FullScreenContainer>
           <Timer
               onStart={this.props.start}
               onStop={this.props.stop}
@@ -36,7 +37,7 @@ class Main extends Component {
               index={current}
               {...player}
               />
-        </div>
+        </FullScreenContainer>
         <div>
           <TimerForm
               onSubmit={this.handleSubmit}
