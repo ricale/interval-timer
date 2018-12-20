@@ -30,6 +30,11 @@ export const withState = (stateName, stateHandlerName, defaultValue) => BaseComp
     }
   };
 
+export const withProps = mapper =>
+  BaseComponent =>
+    props =>
+      <BaseComponent {...props} {...mapper(props)} />;
+
 export const mapProps = mapper =>
   BaseComponent =>
     props =>
