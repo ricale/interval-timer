@@ -12,6 +12,20 @@ class FullScreenContainer extends Component {
     full: false,
   };
 
+  componentDidMount () {
+    fscreen.addEventListener('fullscreenchange', this.handleFullscreen);
+  }
+
+  componentWillUnmount () {
+    fscreen.removeEventListener('fullscreenchange', this.handleFullscreen);
+  }
+
+  handleFullscreen = () => {
+    this.setState({full: !!fscreen.fullscreenElement}, () => {
+      this.props.onChange && this.props.onChange(this.state.full);
+    });
+  }
+
   handleClick = () => {
     this.setState({full: !this.state.full}, () => {
       this.state.full ?
@@ -34,7 +48,7 @@ class FullScreenContainer extends Component {
     return (
       <div {...args} className={this.getClassName()} ref={r => this._container = r}>
         {children}
-        <Button onClick={this.handleClick}>전체화면</Button>
+        <Button className='it-fullscreen__button' onClick={this.handleClick}>전체화면</Button>
       </div>
     );
   }

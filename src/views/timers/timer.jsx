@@ -24,7 +24,7 @@ const TimerView = ({
   onDone,
   stopAlarm,
 }) => (
-  <div>
+  <div className='it-timer'>
     <TimerDisplay
         name={data.name}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
@@ -46,7 +46,7 @@ const TimerView = ({
 const Timer = compose(
   withState('startTime', 'onChangeStartTime', null),
   withState('pauseTime', 'onChangePauseTime', null),
-  withState('currentTimestamp', 'onChangeCurrnetTimestamp', (props) => props.data.timestamp),
+  withState('currentTimestamp', 'onChangeCurrnetTimestamp', (props) => (props.data || {}).timestamp),
   withProps(({data, playState, alarmState, ...args}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,

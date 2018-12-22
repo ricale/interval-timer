@@ -29,3 +29,36 @@
   display: flex;
   justify-content: center;
 }
+
+.it-fullscreen-container.it-full {
+  .it-timer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .it-timer-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    .it-timer-display__name {
+      font-size: 2.4em;
+    }
+    .it-timer-display__digits {
+      font-size: 10em;
+    }
+  }
+
+  .it-timer-controller {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
