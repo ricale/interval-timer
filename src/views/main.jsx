@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {FullScreenContainer} from 'components';
+import {Button} from 'components';
 import timerActions from 'actions/timers';
 import playerActions from 'actions/player';
 
@@ -12,6 +12,10 @@ import TimerList from './timers/list';
 import './main.less';
 
 class Main extends Component {
+  state = {
+    showSider: false,
+  };
+
   handleSubmit = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
     this.props.createTimer({...d, timestamp});
@@ -21,7 +25,6 @@ class Main extends Component {
     const {list, player: {current, ...player}} = this.props;
     return (
       <div className='it-main'>
-        <FullScreenContainer>
           <Timer
               onStart={this.props.start}
               onStop={this.props.stop}
@@ -37,21 +40,23 @@ class Main extends Component {
               index={current}
               {...player}
               />
-        </FullScreenContainer>
-        <div>
-          <TimerForm
-              onSubmit={this.handleSubmit}
-              isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
-              />
-          <TimerList
-              data={list}
-              onDelete={({id}) => this.props.deleteTimer(id)}
-              />
 
-          <button onClick={() => this.props.deleteAllTimer()}>
-            모두 삭제
-          </button>
-        </div>
+          <div className='it-main__controller'>
+            <Button onClick={() => this.setState({showSider: true})}>목록</Button>
+          </div>
+
+          <div className={`it-main__sider ${this.state.showSider ? '' : 'it-hide'}`}>
+            <TimerForm
+                onSubmit={this.handleSubmit}
+                isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
+                />
+            <TimerList
+                data={list}
+                onDelete={({id}) => this.props.deleteTimer(id)}
+                onDeleteAll={() => this.props.deleteAllTimer()}
+                />
+            <Button onClick={() => this.setState({showSider: false})}>닫기</Button>
+          </div>
       </div>
     );
   }

@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import {compose, withState, withProps, lifecycle} from 'lib/recompose';
 import Sounds from 'lib/Sounds';
-import {Button} from 'components';
+import {Button, FullScreenContainer} from 'components';
 import {PLAY_STATE, ALARM_STATE} from 'constants';
 
 import TimerDisplay from './_timerDisplay';
@@ -24,7 +24,7 @@ const TimerView = ({
   onDone,
   stopAlarm,
 }) => (
-  <div className='it-timer'>
+  <FullScreenContainer className='it-timer'>
     <TimerDisplay
         name={data.name}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
@@ -40,7 +40,7 @@ const TimerView = ({
         <Button onClick={() => stopAlarm()} disabled={!isRinging}>stop alarm</Button>
       </div>
     </div>
-  </div>
+  </FullScreenContainer>
 );
 
 const Timer = compose(
