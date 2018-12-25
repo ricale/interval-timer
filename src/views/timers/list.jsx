@@ -4,7 +4,7 @@ import {fillWithZero} from 'lib';
 
 import './list.less';
 
-const TimerList = ({data = [], onDelete}) => (
+const TimerList = ({data = [], onDelete, onDeleteAll}) => (
   <div className='it-timer-list'>
     {data.map((d,i) =>
       <div key={i} className='it-timer-list__item'>
@@ -27,6 +27,10 @@ const TimerList = ({data = [], onDelete}) => (
         </div>
       </div>
     )}
+
+    <button onClick={onDeleteAll}>
+      모두 삭제
+    </button>
   </div>
 );
 
