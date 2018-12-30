@@ -1,33 +1,47 @@
-.it-timer-display {
-  display: inline-block;
-  padding: 20px 30px;
-  margin: 10px;
+.it-timer {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 
-  font-family: monospace;
-  background-color: #F0F8FF;
+  .it-timer-display {
+    display: inline-block;
+    padding: 20px 30px;
+    margin: 0;
 
-  .it-timer-display__name {
-    font-size: 1.2em;
-  }
+    font-family: monospace;
+    background-color: #F0F8FF;
 
-  .it-timer-display__digits {
-    font-size: 5em;
-    line-height: 100%;
-    .it-timer-display__sign {
-      opacity: 0;
+    .it-timer-display__name {
+      font-size: 1.2em;
+    }
+
+    .it-timer-display__digits {
+      font-size: 3.5em;
+      line-height: 100%;
+      .it-timer-display__sign {
+        opacity: 0;
+      }
+    }
+
+    .it-timer-display__digits.it-negative {
+      .it-timer-display__sign {
+        opacity: 1;
+      }
     }
   }
 
-  .it-timer-display__digits.it-negative {
-    .it-timer-display__sign {
-      opacity: 1;
+  .it-timer-controller__row {
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .it-timer-controller {
+    .it-button {
+      font-size: 1em;
     }
   }
-}
-
-.it-timer-controller__row {
-  display: flex;
-  justify-content: center;
 }
 
 .it-timer.it-full {
@@ -54,33 +68,5 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .it-timer,
-  .it-timer.it-full {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-
-    .it-timer-display {
-      margin: 0;
-
-      .it-timer-display__name {
-        font-size: 1.2em;
-      }
-
-      .it-timer-display__digits {
-        font-size: 3.5em;
-      }
-    }
-
-    .it-timer-controller {
-      .it-button {
-        font-size: 1em;
-      }
-    }
   }
 }
