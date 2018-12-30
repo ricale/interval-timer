@@ -19,23 +19,17 @@
     .it-timer-display__digits {
       font-size: 3.5em;
       line-height: 100%;
-      .it-timer-display__sign {
-        opacity: 0;
-      }
     }
+  }
 
-    .it-timer-display__digits.it-negative {
-      .it-timer-display__sign {
-        opacity: 1;
-      }
-    }
+  .it-timer-display.it-negative {
+    background-color: #FFAAAA;
   }
 
   .it-timer-controller__row {
     display: flex;
     justify-content: center;
   }
-
 
   .it-timer-controller {
     .it-button {
@@ -68,5 +62,15 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .it-timer.it-full {
+    .it-timer-display {
+      .it-timer-display__digits {
+        font-size: 3.5em;
+      }
+    }
   }
 }

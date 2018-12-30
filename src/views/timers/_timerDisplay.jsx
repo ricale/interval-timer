@@ -13,10 +13,9 @@ const TimerDisplayView = ({
   showMilliseconds,
   isNegative,
 }) => (
-  <div className='it-timer-display'>
+  <div className={`it-timer-display ${isNegative ? 'it-negative' : ''}`}>
     <div className='it-timer-display__name'>{name}</div>
-    <div className={`it-timer-display__digits ${isNegative ? 'it-negative' : ''}`}>
-      <span className='it-timer-display__sign'>-</span>
+    <div className='it-timer-display__digits'>
       {showHours &&
         <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
       }
@@ -46,7 +45,7 @@ const TimerDisplay = compose(
         Math.ceil(timestamp / 1000)
     );
 
-    const isNegative = showMilliseconds ? timestamp < 0 : totalSeconds < 0;
+    const isNegative = showMilliseconds ? timestamp < 0 : totalSeconds <= 0;
 
     const absSeconds = Math.abs(totalSeconds);
 
