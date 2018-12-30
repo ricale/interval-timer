@@ -27,6 +27,7 @@ const TimerView = ({
   <FullScreenContainer className='it-timer'>
     <TimerDisplay
         name={data.name}
+        isPlaying={isPlaying}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
         />
     <div className='it-timer-controller'>
