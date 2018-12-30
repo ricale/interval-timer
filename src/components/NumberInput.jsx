@@ -1,70 +1,54 @@
-import React, {Component} from 'react';
-
 import {getDigitFromNumber, fillWithZero} from 'lib';
+import {compose, withProps, withHandlers} from 'lib/recompose';
 
-class NumberInput extends Component {
-  static defaultProps = {
-    onChange: () => {},
+const NumberInput = compose(
+  withProps(({max, min}) => ({
     type: 'number',
-  };
+    digit: getDigitFromNumber(max || 0),
+    tens: Math.pow(10, getDigitFromNumber(max || 0)),
+  })),
+  withHandlers({
+    onChange: props => e => {
+      const {min, max, tens, digit, onChange} = props;
 
-  getValueFromInput (inputValue) {
-    const {max, min} = this.props;
-    const digit = getDigitFromNumber(max);
-    const tens = Math.pow(10, digit);
+      const v = parseInt(e.target.value, 10);
 
-    const v = parseInt(inputValue, 10);
+      const value = (
+        isNaN(v) ? e.target.value :
+        v > max  ? fillWithZero(v % tens, digit) :
+        v < min  ? fillWithZero(min, digit) :
+                   fillWithZero(v, digit)
+      );
 
-    if(isNaN(v)) {
-      return inputValue;
-    }
+      onChange && onChange({
+        ...e,
+        target: {
+          ...e.target,
+          value,
+        },
+      });
+    },
+    onBlur: props => e => {
+      const {min, max, digit, onChange} = props;
 
-    if(v > max) {
-      return fillWithZero(v % tens, digit);
-    }
+      const parsedValue = parseInt(e.target.value, 10);
+      const validValue = (
+        parsedValue > max ? max :
+        parsedValue < min ? min :
+                            parsedValue
+      );
+      const value = fillWithZero(validValue, digit);
 
-    if(v < min) {
-      return fillWithZero(min, digit);
-    }
+      onChange && onChange({
+        ...e,
+        target: {
+          ...e.target,
+          value,
+        },
+      });
+    },
+  }),
 
-    return fillWithZero(v, digit);
-  }
-
-  handleChange = (e) => {
-    this.props.onChange({
-      ...e,
-      target: {
-        ...e.target,
-        value: this.getValueFromInput(e.target.value),
-      },
-    });
-  }
-
-  handleBlur = (e) => {
-    const {max, min} = this.props;
-    const {value} = e.target;
-
-    const v = (
-      value > max ? max :
-      value < min ? min :
-                    value
-    );
-
-    this.props.onChange({
-      ...e,
-      target: {
-        ...e.target,
-        value: v,
-      },
-    });
-  }
-
-  render () {
-    const {onChange, ...props} = this.props;
-    return (
-      <input {...props} onChange={this.handleChange} onBlur={this.handleBlur} />
-    );
-  }
-}
+)('input');
 
 export default NumberInput;
