@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {Button} from 'components';
+import {Button, Icon} from 'components';
 import timerActions from 'actions/timers';
 import playerActions from 'actions/player';
 
@@ -42,7 +42,9 @@ class Main extends Component {
               />
 
           <div className='it-main__controller'>
-            <Button onClick={() => this.setState({showSider: true})}>목록</Button>
+            <Button onClick={() => this.setState({showSider: true})}>
+              <Icon name='bars' />
+            </Button>
           </div>
 
           <div className={`it-main__sider ${this.state.showSider ? '' : 'it-hide'}`}>
@@ -55,7 +57,9 @@ class Main extends Component {
                 onDelete={({id}) => this.props.deleteTimer(id)}
                 onDeleteAll={() => this.props.deleteAllTimer()}
                 />
-            <Button onClick={() => this.setState({showSider: false})}>닫기</Button>
+            <Button onClick={() => this.setState({showSider: false})}>
+              <Icon name='window-close'/>
+            </Button>
           </div>
       </div>
     );

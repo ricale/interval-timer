@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {compose, withState} from 'lib/recompose';
-import {NumberInput} from 'components';
+import {Button, Icon, NumberInput} from 'components';
 
 import './form.less';
 
@@ -51,11 +51,14 @@ const TimerFormView = ({
           onChange={e => onChangeSeconds(e.target.value)}
           />
     </div>
-    <button onClick={() => {
-      if(!isValid || isValid({name, hours, minutes, seconds})) {
-        onSubmit({name, hours, minutes, seconds});
-      }
-    }}>저장</button>
+    <Button
+        onClick={() => {
+          if(!isValid || isValid({name, hours, minutes, seconds})) {
+            onSubmit({name, hours, minutes, seconds});
+          }
+        }}>
+      <Icon name='save'/>
+    </Button>
   </div>
 );
 

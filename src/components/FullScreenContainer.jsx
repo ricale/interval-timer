@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import fscreen from 'fscreen';
 
 import Button from './Button';
+import Icon from './Icon';
 
 import './FullScreenContainer.less';
 
@@ -48,7 +49,9 @@ class FullScreenContainer extends Component {
     return (
       <div {...args} className={this.getClassName()} ref={r => this._container = r}>
         {children}
-        <Button className='it-fullscreen__button' onClick={this.handleClick}>전체화면</Button>
+        <Button className='it-fullscreen__button' onClick={this.handleClick}>
+          <Icon name={this.state.full ? 'compress' : 'expand'} />
+        </Button>
       </div>
     );
   }
