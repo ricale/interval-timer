@@ -61,11 +61,15 @@ export const lifecycle = spec => BaseComponent => {
 export const withHandlers = handlers => BaseComponent => {
   const factory = createFactory(BaseComponent);
   class WithHandlers extends Component {
-    handlers = Object.keys(handlers).map(key => (...args) => {
-      const createHandler = handlers[key];
-      const handler = createHandler(this.props);
-      return handler(...args);
-    });
+    handlers = Object.keys(handlers).reduce((hash, key) => {
+      hash[key] = (...args) => {
+        const createHandler = handlers[key];
+        const handler = createHandler(this.props);
+        return handler(...args);
+      };
+      return hash;
+    },
+    {});
 
     render () {
       return factory({
