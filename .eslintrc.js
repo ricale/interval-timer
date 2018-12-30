@@ -53,7 +53,10 @@ module.exports = {
     ],
     "no-unused-vars": [
       "error",
-      {"args": "none"}
+      {
+        "args": "none",
+        "ignoreRestSiblings": true,
+      }
     ],
     "no-invalid-this": [
       "off"
