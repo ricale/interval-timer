@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import {compose, withState, withProps, lifecycle} from 'lib/recompose';
 import Sounds from 'lib/Sounds';
-import {Button, FullScreenContainer} from 'components';
+import {Button, FullScreenContainer, Icon} from 'components';
 import {PLAY_STATE, ALARM_STATE} from 'constants';
 
 import TimerDisplay from './_timerDisplay';
@@ -32,13 +32,23 @@ const TimerView = ({
         />
     <div className='it-timer-controller'>
       <div className='it-timer-controller__row'>
-        <Button onClick={() => onStart()} disabled={isPlaying}>Start</Button>
-        <Button onClick={() => onPause()} disabled={!isPlaying}>Pause</Button>
-        <Button onClick={() => onStop()} disabled={!isRunning}>Stop</Button>
-        <Button onClick={() => onDone()}>Done</Button>
+        <Button onClick={() => onStart()} disabled={isPlaying}>
+          <Icon name='play' />
+        </Button>
+        <Button onClick={() => onPause()} disabled={!isPlaying}>
+          <Icon name='pause' />
+        </Button>
+        <Button onClick={() => onStop()} disabled={!isRunning}>
+          <Icon name='stop' />
+        </Button>
+        <Button onClick={() => onDone()}>
+          <Icon name='forward' />
+        </Button>
       </div>
       <div className='it-timer-controller__row'>
-        <Button onClick={() => stopAlarm()} disabled={!isRinging}>stop alarm</Button>
+        <Button onClick={() => stopAlarm()} disabled={!isRinging}>
+          <Icon name='bell-slash' />
+        </Button>
       </div>
     </div>
   </FullScreenContainer>
