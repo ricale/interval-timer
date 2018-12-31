@@ -11,10 +11,13 @@ const TimerList = ({data = [], onDelete, onDeleteAll}) => (
       <div key={i} className='it-timer-list__item'>
         <div className='it-timer-item__header'>
           <span className='it-timer-item__name'>{d.name}</span>
-          <Button onClick={() => onDelete(d)}>
-            <Icon name='trash-alt' />
-          </Button>
+          <div className='it-timer-item__menu'>
+            <Button onClick={() => onDelete(d)} small={true}>
+              <Icon name='times' />
+            </Button>
+          </div>
         </div>
+
         <div className='it-timer-item__digits'>
           <span className='it-timer-item__hours'>
             {fillWithZero(d.hours)}
@@ -31,9 +34,11 @@ const TimerList = ({data = [], onDelete, onDeleteAll}) => (
       </div>
     )}
 
-    <Button onClick={onDeleteAll}>
-      <Icon name='trash-alt'/>
-    </Button>
+    {data.length > 0 &&
+      <Button onClick={onDeleteAll} warning={true} bordered={true}>
+        <Icon name='trash-alt'/>
+      </Button>
+    }
   </div>
 );
 
