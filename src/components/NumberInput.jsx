@@ -9,15 +9,15 @@ const NumberInput = compose(
   })),
   withHandlers({
     onChange: props => e => {
-      const {min, max, tens, digit, onChange} = props;
+      const {min, max, tens, onChange} = props;
 
       const v = parseInt(e.target.value, 10);
 
       const value = (
         isNaN(v) ? e.target.value :
-        v > max  ? fillWithZero(v % tens, digit) :
-        v < min  ? fillWithZero(min, digit) :
-                   fillWithZero(v, digit)
+        v > max  ? v % tens :
+        v < min  ? min :
+                   v
       );
 
       onChange && onChange({
