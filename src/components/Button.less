@@ -1,16 +1,30 @@
+@default: #6C757D;
+@warning: #FFC208;
+
 .it-button {
   margin: 2px;
   padding: 10px 15px;
   // border-width: 1px;
 
   border-style: solid;
-  border-color: #6c757d;
+  border-color: ;
   background-color: transparent;
   background-image: none;
-  color: #6c757d;
+  color: @default;
 
   font-size: 1.1em;
   // font-weight: bold;
+
+  cursor: pointer;
+}
+
+.it-button.it-small {
+  padding: 4px 6px;
+  font-size: 0.8em;
+}
+
+.it-button.it-compact {
+  padding: 1px;
 }
 
 .it-button:disabled {
@@ -18,21 +32,40 @@
 }
 
 .it-button:focus:not(:disabled) {
-  color: #6c757d;
+  color: @default;
   background-color: transparent;
   background-image: none;
-  border-color: #6c757d;
+  border-color: @default;
   box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
 }
 
 // .it-button:active:not(:disabled) {
 //   color: #fff;
-//   background-color: #6c757d;
-//   border-color: #6c757d;
+//   background-color: @default;
+//   border-color: @default;
 // }
 
 .it-button:hover:not(:disabled) {
   color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: @default;
+  border-color: @default;
+}
+
+  ///////////////
+ /// warning ///
+///////////////
+
+.it-button.it-warning {
+  color: @warning;
+}
+
+.it-button.it-warning:focus:not(:disabled) {
+  color: @warning;
+  border-color: @warning;
+}
+
+.it-button.it-warning:hover:not(:disabled) {
+  color: #FFF;
+  background-color: @warning;
+  border-color: @warning;
 }

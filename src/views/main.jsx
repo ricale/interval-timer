@@ -9,13 +9,11 @@ import Timer from './timers/timer';
 import TimerForm from './timers/form';
 import TimerList from './timers/list';
 
+import Sider from './_sider';
+
 import './main.less';
 
 class Main extends Component {
-  state = {
-    showSider: false,
-  };
-
   handleSubmit = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
     this.props.createTimer({...d, timestamp});
@@ -25,42 +23,39 @@ class Main extends Component {
     const {list, player: {current, ...player}} = this.props;
     return (
       <div className='it-main'>
-          <Timer
-              onStart={this.props.start}
-              onStop={this.props.stop}
-              onPause={this.props.pause}
-              onResume={this.props.resume}
-              onDone={this.props.goToNext}
-              turnOffAlarm={this.props.turnOffAlarm}
-              turnOnAlarm={this.props.turnOnAlarm}
-              ringAlarm={this.props.ringAlarm}
-              stopAlarm={this.props.stopAlarm}
+        <Timer
+            onStart={this.props.start}
+            onStop={this.props.stop}
+            onPause={this.props.pause}
+            onResume={this.props.resume}
+            onDone={this.props.goToNext}
+            turnOffAlarm={this.props.turnOffAlarm}
+            turnOnAlarm={this.props.turnOnAlarm}
+            ringAlarm={this.props.ringAlarm}
+            stopAlarm={this.props.stopAlarm}
 
-              data={list[current % list.length]}
-              index={current}
-              {...player}
+            data={list[current % list.length]}
+            index={current}
+            {...player}
+            />
+
+        <div className='it-main__controller'>
+          <Button onClick={() => this._sider.open()}>
+            <Icon name='bars' />
+          </Button>
+        </div>
+
+        <Sider ref={r => this._sider = r}>
+          <TimerForm
+              onSubmit={this.handleSubmit}
+              isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
               />
-
-          <div className='it-main__controller'>
-            <Button onClick={() => this.setState({showSider: true})}>
-              <Icon name='bars' />
-            </Button>
-          </div>
-
-          <div className={`it-main__sider ${this.state.showSider ? '' : 'it-hide'}`}>
-            <TimerForm
-                onSubmit={this.handleSubmit}
-                isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
-                />
-            <TimerList
-                data={list}
-                onDelete={({id}) => this.props.deleteTimer(id)}
-                onDeleteAll={() => this.props.deleteAllTimer()}
-                />
-            <Button onClick={() => this.setState({showSider: false})}>
-              <Icon name='window-close'/>
-            </Button>
-          </div>
+          <TimerList
+              data={list}
+              onDelete={({id}) => this.props.deleteTimer(id)}
+              onDeleteAll={() => this.props.deleteAllTimer()}
+              />
+        </Sider>
       </div>
     );
   }

@@ -1,17 +1,25 @@
 .it-timer-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   .it-timer-list__item {
+    position: relative;
     padding: 15px 20px;
     margin-bottom: 5px;
 
-    background: #EFEFEF;
+    background-color: #EFEFEF;
   }
 
-  .it-timer-item__header {
-
-  }
 
   .it-timer-item__name {
     margin-right: 5px;
+  }
+
+  .it-timer-item__menu {
+    position: absolute;
+    top: 11px;
+    right: 18px;
   }
 
   .it-timer-item__digits {
