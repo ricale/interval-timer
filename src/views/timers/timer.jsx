@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import NoSleep from 'nosleep.js';
 
 import {compose, withState, withProps, lifecycle} from 'lib/recompose';
 import Sounds from 'lib/Sounds';
@@ -9,6 +10,8 @@ import {PLAY_STATE, ALARM_STATE} from 'constants';
 import TimerDisplay from './_timerDisplay';
 
 import './timer.less';
+
+const noSleep = new NoSleep();
 
 const TimerView = ({
   data,
@@ -99,12 +102,16 @@ const Timer = compose(
                   this.props.data.timestamp - moment().diff(this.props.startTime)
                 );
               }, 100);
+
+            noSleep.enable();
             break;
 
           case PLAY_STATE.PAUSE:
             stopAlarm();
             onChangePauseTime(moment());
             clearInterval(this._timer);
+
+            noSleep.disable();
             break;
 
           case PLAY_STATE.IDLE:
@@ -113,6 +120,8 @@ const Timer = compose(
             onChangePauseTime(null);
             onChangeCurrnetTimestamp(data.timestamp);
             clearInterval(this._timer);
+
+            noSleep.disable();
             break;
         }
       }
