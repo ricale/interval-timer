@@ -1,5 +1,5 @@
 import {getDigitFromNumber, fillWithZero} from 'lib';
-import {compose, withProps, withHandlers} from 'lib/recompose';
+import {compose, withProps, withHandlers, lifecycle} from 'lib/recompose';
 
 const NumberInput = compose(
   withProps(({max, min}) => ({
@@ -48,6 +48,11 @@ const NumberInput = compose(
       });
     },
   }),
+  lifecycle({
+    componentDidMount () {
+      this.props.onBlur({target: {value: this.props.value}});
+    },
+  })
 
 )('input');
 

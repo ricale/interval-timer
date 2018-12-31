@@ -7,20 +7,20 @@ const Button = ({
   className = '',
   small,
   compact,
+  bordered,
+  primary,
   warning,
   ...args}) => {
 
   const _className = ['it-button'];
 
-  if(small) {
-    _className.push('it-small');
-  }
+  small    && _className.push('it-small');
+  compact  && _className.push('it-compact');
+  bordered && _className.push('it-bordered');
 
-  if(compact) {
-    _className.push('it-compact');
-  }
-
-  if(warning) {
+  if(primary) {
+    _className.push('it-primary');
+  } else if(warning) {
     _className.push('it-warning');
   }
 

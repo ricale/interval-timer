@@ -34,9 +34,11 @@ const TimerList = ({data = [], onDelete, onDeleteAll}) => (
       </div>
     )}
 
-    <Button onClick={onDeleteAll} warning={true}>
-      <Icon name='trash-alt'/>
-    </Button>
+    {data.length > 0 &&
+      <Button onClick={onDeleteAll} warning={true} bordered={true}>
+        <Icon name='trash-alt'/>
+      </Button>
+    }
   </div>
 );
 

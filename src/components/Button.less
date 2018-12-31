@@ -1,19 +1,20 @@
+// color reference: [bootstrap](https://getbootstrap.com/docs/4.1/components/buttons/)
+
 @default: #6C757D;
+@primary: #017CFF;
 @warning: #FFC208;
 
 .it-button {
   margin: 2px;
-  padding: 10px 15px;
-  // border-width: 1px;
+  padding: 6px 12px;
 
   border-style: solid;
-  border-color: ;
+  border-radius: 3px;
   background-color: transparent;
   background-image: none;
   color: @default;
 
   font-size: 1.1em;
-  // font-weight: bold;
 
   cursor: pointer;
 }
@@ -25,6 +26,10 @@
 
 .it-button.it-compact {
   padding: 1px;
+}
+
+.it-button.it-bordered {
+  border: 1px solid @default;
 }
 
 .it-button:disabled {
@@ -39,33 +44,34 @@
   box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
 }
 
-// .it-button:active:not(:disabled) {
-//   color: #fff;
-//   background-color: @default;
-//   border-color: @default;
-// }
-
 .it-button:hover:not(:disabled) {
   color: #fff;
   background-color: @default;
   border-color: @default;
 }
 
-  ///////////////
- /// warning ///
-///////////////
+@colors: {
+  primary: @primary;
+  warning: @warning;
+};
 
-.it-button.it-warning {
-  color: @warning;
-}
+each(@colors, {
+  .it-button.it-@{key} {
+    color: @value;
+  }
 
-.it-button.it-warning:focus:not(:disabled) {
-  color: @warning;
-  border-color: @warning;
-}
+  .it-button.it-bordered.it-@{key} {
+    border: 1px solid @value;
+  }
 
-.it-button.it-warning:hover:not(:disabled) {
-  color: #FFF;
-  background-color: @warning;
-  border-color: @warning;
-}
+  .it-button.it-@{key}:focus:not(:disabled) {
+    color: @value;
+    border-color: @value;
+  }
+
+  .it-button.it-@{key}:hover:not(:disabled) {
+    color: #FFF;
+    background-color: @value;
+    border-color: @value;
+  }
+});

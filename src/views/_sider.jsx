@@ -6,7 +6,7 @@ import './_sider.less';
 
 class Sider extends Component {
   state = {
-    showSider: true,
+    showSider: false,
   };
 
   open () {

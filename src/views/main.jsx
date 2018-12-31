@@ -20,7 +20,7 @@ class Main extends Component {
   }
 
   render () {
-    const {list, player: {current, ...player}} = this.props;
+    const {list, lastId, player: {current, ...player}} = this.props;
     return (
       <div className='it-main'>
         <Timer
@@ -48,6 +48,7 @@ class Main extends Component {
         <Sider ref={r => this._sider = r}>
           <TimerForm
               onSubmit={this.handleSubmit}
+              defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
               isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
               />
           <TimerList
@@ -63,6 +64,7 @@ class Main extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   list: state.timers.list,
+  lastId: state.timers.lastId,
   player: state.player,
 });
 

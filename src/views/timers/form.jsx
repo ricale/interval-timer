@@ -11,6 +11,7 @@ const TimerFormView = ({
   minutes,
   seconds,
   isValid,
+  defaultName,
   onChangeName,
   onChangeHours,
   onChangeMinutes,
@@ -18,12 +19,15 @@ const TimerFormView = ({
   onSubmit,
 }) => (
   <div className='it-timer-form'>
-    <div>
-      <label>이름</label>
-      <input className='it-timer-form__str' value={name} onChange={e => onChangeName(e.target.value)}/>
+    <div className='it-timer-form__row'>
+      <input
+          className='it-timer-form__str'
+          value={name}
+          onChange={e => onChangeName(e.target.value)}
+          placeholder={defaultName}
+          />
     </div>
-    <div>
-      <label>시간</label>
+    <div className='it-timer-form__row'>
       <NumberInput
           className='it-timer-form__number'
           type='number'
@@ -51,14 +55,19 @@ const TimerFormView = ({
           onChange={e => onChangeSeconds(e.target.value)}
           />
     </div>
-    <Button
-        onClick={() => {
-          if(!isValid || isValid({name, hours, minutes, seconds})) {
-            onSubmit({name, hours, minutes, seconds});
-          }
-        }}>
-      <Icon name='save'/>
-    </Button>
+    <div className='it-timer-form__row'>
+      <Button
+          onClick={() => {
+            if(!isValid || isValid({name, hours, minutes, seconds})) {
+              onSubmit({name, hours, minutes, seconds});
+              onChangeName('');
+            }
+          }}
+          primary={true}
+          bordered={true}>
+        <Icon name='plus'/>
+      </Button>
+    </div>
   </div>
 );
 

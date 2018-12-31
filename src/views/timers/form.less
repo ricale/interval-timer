@@ -1,9 +1,32 @@
 .it-timer-form {
+  display: inline-block;
+  border: 1px solid #DDD;
+  width: 188px;
+  padding: 20px 20px 15px;
+  margin-bottom: 10px;
+
   input {
-    border: 1px solid #DDD;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
   }
+
+  .it-timer-form__row {
+    display: flex;
+    margin-bottom: 5px;
+  }
+
+  .it-timer-form__str {
+    flex: 1;
+    width: 1px;
+    font-size: 1em;
+  }
+
   .it-timer-form__number {
-    width: 50px;
+    flex: 1;
+    width: 1px;
+    padding-left: 0;
+    padding-right: 0;
 
     font-size: 3em;
     font-family: monospace;
@@ -12,5 +35,6 @@
   .it-timer-form__divider {
     font-size: 3em;
     font-family: monospace;
+    color: #DDD;
   }
 }
