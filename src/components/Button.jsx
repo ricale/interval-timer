@@ -10,7 +10,9 @@ const Button = ({
   bordered,
   primary,
   warning,
-  ...args}) => {
+  success,
+  ...args
+}) => {
 
   const _className = ['it-button'];
 
@@ -22,6 +24,8 @@ const Button = ({
     _className.push('it-primary');
   } else if(warning) {
     _className.push('it-warning');
+  } else if(success) {
+    _className.push('it-success');
   }
 
   if(className) {

@@ -1,11 +1,12 @@
 import React from 'react';
 
-import {compose, withState} from 'lib/recompose';
+import {compose, withStateHandlers, withHandlers, lifecycle} from 'lib/recompose';
 import {Button, Icon, NumberInput} from 'components';
 
 import './form.less';
 
 const TimerFormView = ({
+  id,
   name,
   hours,
   minutes,
@@ -17,8 +18,9 @@ const TimerFormView = ({
   onChangeMinutes,
   onChangeSeconds,
   onSubmit,
+  onCancel,
 }) => (
-  <div className='it-timer-form'>
+  <div className={`it-timer-form${id ? ' it-editing' : ''}`}>
     <div className='it-timer-form__row'>
       <input
           className='it-timer-form__str'
@@ -57,25 +59,69 @@ const TimerFormView = ({
     </div>
     <div className='it-timer-form__row'>
       <Button
-          onClick={() => {
-            if(!isValid || isValid({name, hours, minutes, seconds})) {
-              onSubmit({name, hours, minutes, seconds});
-              onChangeName('');
-            }
-          }}
-          primary={true}
+          onClick={onSubmit}
+          primary={!id}
+          success={!!id}
           bordered={true}>
-        <Icon name='plus'/>
+        <Icon name={id ? 'save' : 'plus'}/> {id ? '수정' : '생성'}
       </Button>
+      {id &&
+        <Button
+            onClick={onCancel}
+            bordered={true}>
+          <Icon name='cancel' /> 취소
+        </Button>
+      }
     </div>
   </div>
 );
 
+const initialState = {id: null, name: '', hours: 0, minutes: 0, seconds: 0};
+
 const TimerForm = compose(
-  withState('name',    'onChangeName',    ''),
-  withState('hours',   'onChangeHours',   0),
-  withState('minutes', 'onChangeMinutes', 0),
-  withState('seconds', 'onChangeSeconds', 0),
+  withStateHandlers(
+    (props) => ({
+      ...initialState,
+      ...(props.editing || {}),
+    }),
+    {
+      onChangeName:    (state, props) => name    => ({name}),
+      onChangeHours:   (state, props) => hours   => ({hours}),
+      onChangeMinutes: (state, props) => minutes => ({minutes}),
+      onChangeSeconds: (state, props) => seconds => ({seconds}),
+      onChange:        (state, props) => data    => ({...state, ...data}),
+    }
+  ),
+  withHandlers({
+    onSubmit: props => () => {
+      const data = {
+        id: props.id,
+        name: props.name,
+        hours: props.hours,
+        minutes: props.minutes,
+        seconds: props.seconds,
+      };
+      if(props.isValid || props.isValid(data)) {
+        props.onSubmit(data);
+        props.onChange(initialState);
+      }
+    },
+    onCancel: props => () => {
+      props.onCancel();
+    },
+  }),
+  lifecycle({
+    shouldComponentUpdate (nextProps) {
+      if(this.props.editing !== nextProps.editing) {
+        this.props.onChange(
+          nextProps.editing ?
+            {...nextProps.editing} :
+            {...initialState}
+        );
+      }
+      return true;
+    },
+  }),
 )(TimerFormView);
 
 export default TimerForm;
