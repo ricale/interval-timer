@@ -30,6 +30,28 @@ export const withState = (stateName, stateHandlerName, defaultValue) => BaseComp
     }
   };
 
+export const withStateHandlers = (initialState, stateUpdaters) => BaseComponent =>
+  class WithStateHandlers extends Component {
+    state = typeof initialState === 'function' ? initialState(this.props) : initialState
+
+    handlers = Object.keys(stateUpdaters).reduce((hash, key) => {
+      hash[key] = (...args) =>
+        this.setState((state, props) =>
+          stateUpdaters[key](state, props)(...args));
+      return hash;
+    }, {})
+
+    render () {
+      return (
+        <BaseComponent
+            {...this.props}
+            {...this.state}
+            {...this.handlers}
+            />
+      );
+    }
+  };
+
 export const withProps = mapper =>
   BaseComponent =>
     props =>

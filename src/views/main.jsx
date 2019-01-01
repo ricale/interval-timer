@@ -16,11 +16,25 @@ import './main.less';
 class Main extends Component {
   handleSubmit = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.createTimer({...d, timestamp});
+    if(d.id) {
+      this.props.updateTimer({...d, timestamp});
+    } else {
+      this.props.createTimer({...d, timestamp});
+    }
+  }
+
+  handleCancelEdit = () => {
+    this.props.cancelEditTimer();
   }
 
   render () {
-    const {list, lastId, player: {current, ...player}} = this.props;
+    const {
+      list,
+      lastId,
+      editing,
+      player: {current, ...player},
+    } = this.props;
+
     return (
       <div className='it-main'>
         <Timer
@@ -47,13 +61,17 @@ class Main extends Component {
 
         <Sider ref={r => this._sider = r}>
           <TimerForm
-              onSubmit={this.handleSubmit}
               defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
               isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
+              editing={editing}
+              onSubmit={this.handleSubmit}
+              onCancel={this.handleCancelEdit}
               />
           <TimerList
               data={list}
-              onDelete={({id}) => this.props.deleteTimer(id)}
+              editing={editing}
+              onEdit={(id) => this.props.editTimer(id)}
+              onDelete={(id) => this.props.deleteTimer(id)}
               onDeleteAll={() => this.props.deleteAllTimer()}
               />
         </Sider>
@@ -65,11 +83,15 @@ class Main extends Component {
 const mapStateToProps = (state, ownProps) => ({
   list: state.timers.list,
   lastId: state.timers.lastId,
+  editing: state.timers.editing,
   player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   createTimer: (...args) => dispatch(timerActions.createTimer(...args)),
+  editTimer: (...args) => dispatch(timerActions.editTimer(...args)),
+  cancelEditTimer: (...args) => dispatch(timerActions.cancelEditTimer(...args)),
+  updateTimer: (...args) => dispatch(timerActions.updateTimer(...args)),
   deleteTimer: (...args) => dispatch(timerActions.deleteTimer(...args)),
   deleteAllTimer: (...args) => dispatch(timerActions.deleteAllTimer(...args)),
 

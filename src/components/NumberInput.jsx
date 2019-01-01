@@ -1,5 +1,11 @@
+import React from 'react';
+
 import {getDigitFromNumber, fillWithZero} from 'lib';
 import {compose, withProps, withHandlers, lifecycle} from 'lib/recompose';
+
+const NumberInputView = ({value, digit, ...props}) => (
+  <input value={fillWithZero(value, digit)} {...props} />
+);
 
 const NumberInput = compose(
   withProps(({max, min}) => ({
@@ -29,15 +35,14 @@ const NumberInput = compose(
       });
     },
     onBlur: props => e => {
-      const {min, max, digit, onChange} = props;
+      const {min, max, onChange} = props;
 
       const parsedValue = parseInt(e.target.value, 10);
-      const validValue = (
+      const value = (
         parsedValue > max ? max :
         parsedValue < min ? min :
                             parsedValue
       );
-      const value = fillWithZero(validValue, digit);
 
       onChange && onChange({
         ...e,
@@ -52,8 +57,11 @@ const NumberInput = compose(
     componentDidMount () {
       this.props.onBlur({target: {value: this.props.value}});
     },
+    shouldComponentUpdate (nextProps) {
+      return this.props.value !== nextProps.value;
+    },
   })
 
-)('input');
+)(NumberInputView);
 
 export default NumberInput;
