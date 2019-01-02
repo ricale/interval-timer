@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {Button, Icon} from 'components';
+import {Button, FullScreenContainer, Icon} from 'components';
 import timerActions from 'actions/timers';
 import playerActions from 'actions/player';
 
@@ -37,29 +37,39 @@ class Main extends Component {
 
     return (
       <div className='it-main'>
-        <Timer
-            onStart={this.props.start}
-            onStop={this.props.stop}
-            onPause={this.props.pause}
-            onResume={this.props.resume}
-            onDone={this.props.goToNext}
-            turnOffAlarm={this.props.turnOffAlarm}
-            turnOnAlarm={this.props.turnOnAlarm}
-            ringAlarm={this.props.ringAlarm}
-            stopAlarm={this.props.stopAlarm}
+        <div className='it-main__content'>
+          <FullScreenContainer ref={r => this._fullscreenContainer = r}>
+            <Timer
+                onStart={this.props.start}
+                onStop={this.props.stop}
+                onPause={this.props.pause}
+                onResume={this.props.resume}
+                onDone={this.props.goToNext}
+                turnOffAlarm={this.props.turnOffAlarm}
+                turnOnAlarm={this.props.turnOnAlarm}
+                ringAlarm={this.props.ringAlarm}
+                stopAlarm={this.props.stopAlarm}
 
-            data={list[current % list.length]}
-            index={current}
-            {...player}
-            />
+                data={list[current % list.length]}
+                index={current}
+                {...player}
+                />
+          </FullScreenContainer>
 
-        <div className='it-main__controller'>
-          <Button onClick={() => this._sider.open()}>
-            <Icon name='bars' />
-          </Button>
+          <div className='it-main__controller'>
+            <Button className='it-fullscreen__button' onClick={() => this._fullscreenContainer.toggle()}>
+              <Icon name='expand' />
+            </Button>
+            <Button
+                onClick={() => this._sider.toggle()}>
+              <Icon name='bars' />
+            </Button>
+          </div>
         </div>
 
-        <Sider ref={r => this._sider = r}>
+        <Sider
+            title='목록'
+            ref={r => this._sider = r}>
           <TimerForm
               defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
               isValid={({hours, minutes, seconds}) => hours || minutes || seconds}

@@ -3,19 +3,18 @@
   top: 0;
   left: 0;
   width: 100%;
+  max-width: 768px;
   height: 100%;
 }
-
 .it-main-sider__wrapper.it-hide {
   display: none;
 }
 
 .it-main-sider {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
+  top: 0;
+  right: 0;
+  height: 100%;
 
   padding: 15px;
 
@@ -24,9 +23,30 @@
   background-color: rgba(255,255,255,0.9);
   box-shadow: 3px 3px 1em 0 rgba(0, 0, 0, 0.3);
 
-  .it-main-sider__menu {
-    position: absolute;
-    top: 0;
-    right: 0;
+  .it-main-sider__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding-bottom: 5px;
+    border-bottom: 1px solid #666;
+    margin-bottom: 15px;
+
+    h2 {
+      font-size: 1.2em;
+    }
+  }
+}
+
+@media (min-width: 998px) {
+  .it-main-sider__wrapper {
+    position: relative;
+    width: auto;
+    height: auto;
+    z-index: 2;
+  }
+
+  .it-main-sider {
+    position: static;
   }
 }

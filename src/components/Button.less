@@ -37,7 +37,8 @@
   opacity: 0.5;
 }
 
-.it-button:focus:not(:disabled) {
+.it-button:active:not(:disabled),
+.it-button.it-active:not(:disabled) {
   color: @default;
   background-color: transparent;
   background-image: none;
@@ -66,7 +67,8 @@ each(@colors, {
     border: 1px solid @value;
   }
 
-  .it-button.it-@{key}:focus:not(:disabled) {
+  .it-button.it-@{key}:active:not(:disabled),
+  .it-button.it-@{key}.it-active:not(:disabled) {
     color: @value;
     border-color: @value;
   }

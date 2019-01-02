@@ -62,12 +62,14 @@ const TimerFormView = ({
           onClick={onSubmit}
           primary={!id}
           success={!!id}
+          small={true}
           bordered={true}>
         <Icon name={id ? 'save' : 'plus'}/> {id ? '수정' : '생성'}
       </Button>
       {id &&
         <Button
             onClick={onCancel}
+            button={true}
             bordered={true}>
           <Icon name='cancel' /> 취소
         </Button>

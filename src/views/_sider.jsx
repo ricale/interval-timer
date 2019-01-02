@@ -6,30 +6,42 @@ import './_sider.less';
 
 class Sider extends Component {
   state = {
-    showSider: false,
+    show: false,
   };
 
+  handleClickWrapper = (e) => {
+    // FIXME
+    e.target.className.indexOf('it-main-sider__wrapper') !== -1 && this.hide();
+  }
+
   open () {
-    this.setState({showSider: true});
+    this.setState({show: true});
   }
 
   hide () {
-    this.setState({showSider: false});
+    this.setState({show: false});
+  }
+
+  toggle () {
+    this.setState({show: !this.state.show});
   }
 
   render () {
-    const {children} = this.props;
+    const {title, children} = this.props;
+    const className = `it-main-sider__wrapper ${this.state.show ? '' : 'it-hide'}`;
 
     return (
-      <div className={`it-main-sider__wrapper ${this.state.showSider ? '' : 'it-hide'}`}>
-        <div className={'it-main-sider'}>
-          {children}
-
-          <div className='it-main-sider__menu'>
-            <Button onClick={() => this.hide()}>
-              <Icon name='times'/>
-            </Button>
+      <div className={className} onClick={this.handleClickWrapper}>
+        <div className='it-main-sider'>
+          <div className='it-main-sider__header'>
+            <h2>{title}</h2>
+            <div className='it-main-sider__menu'>
+              <Button compact={true} onClick={() => this.hide()}>
+                <Icon name='times'/>
+              </Button>
+            </div>
           </div>
+          {children}
         </div>
       </div>
     );
