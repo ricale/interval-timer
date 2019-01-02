@@ -1,6 +1,9 @@
 .it-timer {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   padding: 0;
   margin: 0;
 
@@ -44,7 +47,10 @@
   }
 }
 
-.it-timer.it-full {
+.it-full > .it-timer {
+  width: 100%;
+  height: 100%;
+
   .it-timer-display {
     display: flex;
     flex-direction: column;
@@ -72,7 +78,7 @@
 }
 
 @media (min-width: 768.1px) {
-  .it-timer.it-full {
+  .it-full > .it-timer {
     .it-timer-controller {
       .it-button {
         font-size: 2.4em;
@@ -83,10 +89,15 @@
 }
 
 @media (max-width: 768px) {
-  .it-timer.it-full {
+  .it-full > .it-timer {
     .it-timer-display {
       .it-timer-display__digits {
         font-size: 3.5em;
+      }
+    }
+    .it-timer-controller {
+      .it-button {
+        font-size: 1.5em;
       }
     }
   }

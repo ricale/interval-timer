@@ -28,6 +28,16 @@ class FullScreenContainer extends Component {
   }
 
   handleClick = () => {
+    this.toggle();
+  }
+
+  getClassName () {
+    const {className} = this.props;
+    const modeClass = this.state.full ? ' it-full' : '';
+    return `it-fullscreen-container${modeClass} ${className || ''}`;
+  }
+
+  toggle () {
     this.setState({full: !this.state.full}, () => {
       this.state.full ?
         fscreen.requestFullscreen(this._container) :
@@ -37,21 +47,17 @@ class FullScreenContainer extends Component {
     });
   }
 
-  getClassName () {
-    const {className} = this.props;
-    const modeClass = this.state.full ? ' it-full' : '';
-    return `it-fullscreen-container${modeClass} ${className || ''}`;
-  }
-
   render () {
-    const {children, className, onChange, ...args} = this.props;
+    const {children, className, button, onChange, ...args} = this.props;
 
     return (
       <div {...args} className={this.getClassName()} ref={r => this._container = r}>
         {children}
-        <Button className='it-fullscreen__button' onClick={this.handleClick}>
-          <Icon name={this.state.full ? 'compress' : 'expand'} />
-        </Button>
+        {button &&
+          <Button className='it-fullscreen__button' onClick={this.handleClick}>
+            <Icon name={this.state.full ? 'compress' : 'expand'} />
+          </Button>
+        }
       </div>
     );
   }

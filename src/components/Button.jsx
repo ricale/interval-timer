@@ -8,6 +8,7 @@ const Button = ({
   small,
   compact,
   bordered,
+  active,
   primary,
   warning,
   success,
@@ -19,6 +20,7 @@ const Button = ({
   small    && _className.push('it-small');
   compact  && _className.push('it-compact');
   bordered && _className.push('it-bordered');
+  active   && _className.push('it-active');
 
   if(primary) {
     _className.push('it-primary');
