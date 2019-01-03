@@ -1,6 +1,6 @@
 const initialState = {
   list: [],
-  lastId: 0,
+  lastId: 1,
   editing: null,
 };
 
@@ -49,7 +49,7 @@ const getNewState = (state, action) => {
       };
 
     case 'TIMERS/DELETE_ALL_TIMER':
-      return {...state, list: [], lastId: 0};
+      return {...state, list: [], lastId: initialState.lastId};
 
     case 'TIMERS/DELETE_TIMER':
       return {

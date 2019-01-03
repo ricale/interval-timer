@@ -14,9 +14,13 @@ import Sider from './_sider';
 import './main.less';
 
 class Main extends Component {
+  handleValid = (d) => {
+    return d.hours || d.minutes || d.seconds;
+  }
+
   handleSubmit = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    if(d.id) {
+    if(d.id !== undefined && d.id !== null) {
       this.props.updateTimer({...d, timestamp});
     } else {
       this.props.createTimer({...d, timestamp});
@@ -72,7 +76,7 @@ class Main extends Component {
             ref={r => this._sider = r}>
           <TimerForm
               defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
-              isValid={({hours, minutes, seconds}) => hours || minutes || seconds}
+              isValid={this.handleValid}
               editing={editing}
               onSubmit={this.handleSubmit}
               onCancel={this.handleCancelEdit}
