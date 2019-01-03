@@ -70,14 +70,14 @@ const TimerFormView = ({
           success={!!isEdit}
           small={true}
           bordered={true}>
-        <Icon name={isEdit ? 'save' : 'plus'}/> {isEdit ? '수정' : '생성'}
+        <Icon name={isEdit ? 'save' : 'plus'} />
       </Button>
       {isEdit &&
         <Button
             onClick={onCancel}
             small={true}
             bordered={true}>
-          <Icon name='cancel' /> 취소
+          <Icon name='times' />
         </Button>
       }
     </div>
