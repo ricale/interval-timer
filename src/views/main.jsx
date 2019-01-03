@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import {Button, FullScreenContainer, Icon} from 'components';
+import {
+  Accordion,
+  Button,
+  FullScreenContainer,
+  Icon,
+} from 'components';
 import timerActions from 'actions/timers';
 import playerActions from 'actions/player';
 
@@ -14,6 +19,11 @@ import Sider from './_sider';
 import './main.less';
 
 class Main extends Component {
+  componentDidMount () {
+    if(this.props.list.length === 0) {
+      this._accordion.open();
+    }
+
   handleValid = (d) => {
     return d.hours || d.minutes || d.seconds;
   }
@@ -37,6 +47,16 @@ class Main extends Component {
       lastId,
       editing,
       player: {current, ...player},
+
+      start,
+      stop,
+      pause,
+      resume,
+      goToNext,
+      turnOffAlarm,
+      turnOnAlarm,
+      ringAlarm,
+      stopAlarm,
     } = this.props;
 
     return (
@@ -44,15 +64,15 @@ class Main extends Component {
         <div className='it-main__content'>
           <FullScreenContainer ref={r => this._fullscreenContainer = r}>
             <Timer
-                onStart={this.props.start}
-                onStop={this.props.stop}
-                onPause={this.props.pause}
-                onResume={this.props.resume}
-                onDone={this.props.goToNext}
-                turnOffAlarm={this.props.turnOffAlarm}
-                turnOnAlarm={this.props.turnOnAlarm}
-                ringAlarm={this.props.ringAlarm}
-                stopAlarm={this.props.stopAlarm}
+                onStart={start}
+                onStop={stop}
+                onPause={pause}
+                onResume={resume}
+                onDone={goToNext}
+                turnOffAlarm={turnOffAlarm}
+                turnOnAlarm={turnOnAlarm}
+                ringAlarm={ringAlarm}
+                stopAlarm={stopAlarm}
 
                 data={list[current % list.length]}
                 index={current}
@@ -64,8 +84,7 @@ class Main extends Component {
             <Button className='it-fullscreen__button' onClick={() => this._fullscreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button
-                onClick={() => this._sider.toggle()}>
+            <Button onClick={() => this._sider.toggle()}>
               <Icon name='bars' />
             </Button>
           </div>
@@ -74,13 +93,19 @@ class Main extends Component {
         <Sider
             title='목록'
             ref={r => this._sider = r}>
-          <TimerForm
-              defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
-              isValid={this.handleValid}
-              editing={editing}
-              onSubmit={this.handleSubmit}
-              onCancel={this.handleCancelEdit}
-              />
+          <Accordion 
+              className='it-main__form-accordion'
+              title='타이머 추가'
+              ref={r => this._accordion = r}>
+            <TimerForm
+                defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
+                isValid={this.handleValid}
+                editing={editing}
+                onSubmit={this.handleSubmit}
+                onCancel={this.handleCancelEdit}
+                />
+          </Accordion>
+
           <TimerList
               data={list}
               editing={editing}
