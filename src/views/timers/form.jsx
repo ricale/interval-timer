@@ -1,16 +1,22 @@
 import React from 'react';
 
-import {compose, withStateHandlers, withHandlers, lifecycle} from 'lib/recompose';
+import {
+  compose,
+  withStateHandlers,
+  withHandlers,
+  withProps,
+  lifecycle,
+} from 'lib/recompose';
 import {Button, Icon, NumberInput} from 'components';
 
 import './form.less';
 
 const TimerFormView = ({
-  id,
   name,
   hours,
   minutes,
   seconds,
+  isEdit,
   isValid,
   defaultName,
   onChangeName,
@@ -20,7 +26,7 @@ const TimerFormView = ({
   onSubmit,
   onCancel,
 }) => (
-  <div className={`it-timer-form${id ? ' it-editing' : ''}`}>
+  <div className={`it-timer-form${isEdit ? ' it-editing' : ''}`}>
     <div className='it-timer-form__row'>
       <input
           className='it-timer-form__str'
@@ -60,16 +66,16 @@ const TimerFormView = ({
     <div className='it-timer-form__row'>
       <Button
           onClick={onSubmit}
-          primary={!id}
-          success={!!id}
+          primary={!isEdit}
+          success={!!isEdit}
           small={true}
           bordered={true}>
-        <Icon name={id ? 'save' : 'plus'}/> {id ? '수정' : '생성'}
+        <Icon name={isEdit ? 'save' : 'plus'}/> {isEdit ? '수정' : '생성'}
       </Button>
-      {id &&
+      {isEdit &&
         <Button
             onClick={onCancel}
-            button={true}
+            small={true}
             bordered={true}>
           <Icon name='cancel' /> 취소
         </Button>
@@ -103,7 +109,7 @@ const TimerForm = compose(
         minutes: props.minutes,
         seconds: props.seconds,
       };
-      if(props.isValid || props.isValid(data)) {
+      if(!props.isValid || props.isValid(data)) {
         props.onSubmit(data);
         props.onChange(initialState);
       }
@@ -112,6 +118,9 @@ const TimerForm = compose(
       props.onCancel();
     },
   }),
+  withProps(({id}) => ({
+    isEdit: id !== undefined && id !== null,
+  })),
   lifecycle({
     shouldComponentUpdate (nextProps) {
       if(this.props.editing !== nextProps.editing) {
