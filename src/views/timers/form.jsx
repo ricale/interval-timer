@@ -77,7 +77,7 @@ const TimerFormView = ({
             onClick={onCancel}
             small={true}
             bordered={true}>
-          <Icon name='cancel' /> 취소
+          <Icon name='times' />
         </Button>
       }
     </div>

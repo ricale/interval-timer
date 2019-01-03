@@ -12,6 +12,7 @@ const Button = ({
   primary,
   warning,
   success,
+  light,
   ...args
 }) => {
 
@@ -28,6 +29,8 @@ const Button = ({
     _className.push('it-warning');
   } else if(success) {
     _className.push('it-success');
+  } else if(light) {
+    _className.push('it-light');
   }
 
   if(className) {

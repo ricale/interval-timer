@@ -23,6 +23,14 @@ class Main extends Component {
     if(this.props.list.length === 0) {
       this._accordion.open();
     }
+  }
+
+  shouldComponentUpdate (nextProps) {
+    if(this.props.list.length > 0 && nextProps.list.length === 0) {
+      this._accordion.open();
+    }
+    return true;
+  }
 
   handleValid = (d) => {
     return d.hours || d.minutes || d.seconds;
@@ -30,15 +38,24 @@ class Main extends Component {
 
   handleSubmit = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    if(d.id !== undefined && d.id !== null) {
-      this.props.updateTimer({...d, timestamp});
-    } else {
-      this.props.createTimer({...d, timestamp});
-    }
+    this.props.createTimer({...d, timestamp});
+  }
+
+  handleUpdate = (d) => {
+    const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
+    this.props.updateTimer({...d, timestamp});
   }
 
   handleCancelEdit = () => {
     this.props.cancelEditTimer();
+  }
+
+  handleDelete = (id) => {
+    this.props.deleteTimer(id);
+  }
+
+  handleDeleteAll = () => {
+    this.props.deleteAllTimer();
   }
 
   render () {
@@ -100,9 +117,7 @@ class Main extends Component {
             <TimerForm
                 defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
                 isValid={this.handleValid}
-                editing={editing}
                 onSubmit={this.handleSubmit}
-                onCancel={this.handleCancelEdit}
                 />
           </Accordion>
 
@@ -110,8 +125,10 @@ class Main extends Component {
               data={list}
               editing={editing}
               onEdit={(id) => this.props.editTimer(id)}
-              onDelete={(id) => this.props.deleteTimer(id)}
-              onDeleteAll={() => this.props.deleteAllTimer()}
+              onCancelEdit={this.handleCancelEdit}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
+              onDeleteAll={this.handleDeleteAll}
               />
         </Sider>
       </div>
