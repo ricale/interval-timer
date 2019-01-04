@@ -53,7 +53,7 @@ class FullScreenContainer extends Component {
     return (
       <div {...args} className={this.getClassName()} ref={r => this._container = r}>
         {children}
-        {button &&
+        {button || this.state.full &&
           <Button className='it-fullscreen__button' onClick={this.handleClick}>
             <Icon name={this.state.full ? 'compress' : 'expand'} />
           </Button>
