@@ -17,13 +17,15 @@
   }
 
   .it-interval-form__str {
-    flex: 1;
+    // flex: 1; // bug on firefox
+    flex-grow: 1;
     width: 1px;
     font-size: 1em;
   }
 
   .it-interval-form__number {
-    flex: 1;
+    // flex: 1; // bug on firefox
+    flex-grow: 1;
     width: 1px;
     padding-left: 0;
     padding-right: 0;
