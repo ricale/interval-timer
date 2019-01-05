@@ -6,6 +6,7 @@ import {
   Button,
   Icon,
 } from 'components';
+import {getMapDispatchToProps} from 'lib';
 import intervalActions from 'actions/intervals';
 import timerActions from 'actions/timer';
 
@@ -153,23 +154,9 @@ const mapStateToProps = (state, ownProps) => ({
   timer: state.timer,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  createInterval: (...args) => dispatch(intervalActions.createInterval(...args)),
-  editInterval: (...args) => dispatch(intervalActions.editInterval(...args)),
-  cancelEditInterval: (...args) => dispatch(intervalActions.cancelEditInterval(...args)),
-  updateInterval: (...args) => dispatch(intervalActions.updateInterval(...args)),
-  deleteInterval: (...args) => dispatch(intervalActions.deleteInterval(...args)),
-  deleteAllInterval: (...args) => dispatch(intervalActions.deleteAllInterval(...args)),
-
-  start: (...args) => dispatch(timerActions.start(...args)),
-  stop: (...args) => dispatch(timerActions.stop(...args)),
-  pause: (...args) => dispatch(timerActions.pause(...args)),
-  resume: (...args) => dispatch(timerActions.resume(...args)),
-  goToNext: (...args) => dispatch(timerActions.goToNext(...args)),
-  turnOffAlarm: (...args) => dispatch(timerActions.turnOffAlarm(...args)),
-  turnOnAlarm: (...args) => dispatch(timerActions.turnOnAlarm(...args)),
-  ringAlarm: (...args) => dispatch(timerActions.ringAlarm(...args)),
-  stopAlarm: (...args) => dispatch(timerActions.stopAlarm(...args)),
+const mapDispatchToProps = getMapDispatchToProps({
+  ...intervalActions,
+  ...timerActions,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
