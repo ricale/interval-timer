@@ -5,7 +5,12 @@ import Icon from './Icon';
 import './Accordion.less';
 
 class Accordion extends Component {
-  state = {}
+  constructor (props) {
+    super(props);
+    this.state = {
+      show: props.open,
+    };
+  }
 
   handleClick = () => {
     this.toggle();
