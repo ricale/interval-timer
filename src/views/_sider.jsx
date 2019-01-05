@@ -41,7 +41,9 @@ class Sider extends Component {
               </Button>
             </div>
           </div>
-          {children}
+          <div className='it-main-sider__content'>
+            {children}
+          </div>
         </div>
       </div>
     );
