@@ -19,6 +19,7 @@ const TimerView = ({
   isRunning,
   isPlaying,
   isRinging,
+  isNegative,
   startTime,
   onStart,
   onStop,
@@ -27,10 +28,11 @@ const TimerView = ({
   onDone,
   stopAlarm,
 }) => (
-  <div className='it-timer'>
+  <div className={`it-timer${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}`}>
     <TimerDisplay
         name={data.name}
         isPlaying={isPlaying}
+        isNegative={isNegative}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
         />
     <div className='it-timer-controller'>
@@ -47,8 +49,6 @@ const TimerView = ({
         <Button onClick={() => onDone()}>
           <Icon name='forward' />
         </Button>
-      </div>
-      <div className='it-timer-controller__row'>
         <Button onClick={() => stopAlarm()} disabled={!isRinging}>
           <Icon name='bell-slash' />
         </Button>
@@ -61,11 +61,12 @@ const Timer = compose(
   withState('startTime', 'onChangeStartTime', null),
   withState('pauseTime', 'onChangePauseTime', null),
   withState('currentTimestamp', 'onChangeCurrnetTimestamp', (props) => (props.data || {}).timestamp),
-  withProps(({data, playState, alarmState, ...args}) => ({
+  withProps(({data, currentTimestamp, playState, alarmState, showMilliseconds, ...args}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,
     isPlaying: playState !== PLAY_STATE.IDLE && playState !== PLAY_STATE.PAUSE,
     isRinging: alarmState === ALARM_STATE.RING,
+    isNegative: showMilliseconds ? currentTimestamp < 0 : Math.ceil(currentTimestamp / 1000) <= 0,
   })),
   lifecycle({
     shouldComponentUpdate (nextProps, nextState) {
