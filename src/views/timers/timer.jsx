@@ -20,7 +20,7 @@ const TimerView = ({
   isPlaying,
   isRinging,
   isNegative,
-  startTime,
+  disabled,
   onStart,
   onStop,
   onPause,
@@ -37,23 +37,28 @@ const TimerView = ({
         />
     <div className='it-timer-controller'>
       <div className='it-timer-controller__row'>
-        <Button onClick={() => onStart()} disabled={isPlaying}>
+        <Button onClick={() => onStart()} disabled={disabled || isPlaying}>
           <Icon name='play' />
         </Button>
-        <Button onClick={() => onPause()} disabled={!isPlaying}>
+        <Button onClick={() => onPause()} disabled={disabled || !isPlaying}>
           <Icon name='pause' />
         </Button>
-        <Button onClick={() => onStop()} disabled={!isRunning}>
+        <Button onClick={() => onStop()} disabled={disabled || !isRunning}>
           <Icon name='stop' />
         </Button>
-        <Button onClick={() => onDone()}>
+        <Button onClick={() => onDone()} disabled={disabled}>
           <Icon name='forward' />
         </Button>
-        <Button onClick={() => stopAlarm()} disabled={!isRinging}>
+        <Button onClick={() => stopAlarm()} disabled={disabled || !isRinging}>
           <Icon name='bell-slash' />
         </Button>
       </div>
     </div>
+    {disabled &&
+      <div className='it-timer-message-overlay'>
+        Add Interval first.
+      </div>
+    }
   </div>
 );
 
