@@ -11,7 +11,7 @@ import {Button, Icon, NumberInput} from 'components';
 
 import './form.less';
 
-const TimerFormView = ({
+const IntervalFormView = ({
   name,
   hours,
   minutes,
@@ -26,36 +26,36 @@ const TimerFormView = ({
   onSubmit,
   onCancel,
 }) => (
-  <div className={`it-timer-form${isEdit ? ' it-editing' : ''}`}>
-    <div className='it-timer-form__row'>
+  <div className={`it-interval-form${isEdit ? ' it-editing' : ''}`}>
+    <div className='it-interval-form__row'>
       <input
-          className='it-timer-form__str'
+          className='it-interval-form__str'
           value={name}
           onChange={e => onChangeName(e.target.value)}
           placeholder={defaultName}
           />
     </div>
-    <div className='it-timer-form__row'>
+    <div className='it-interval-form__row'>
       <NumberInput
-          className='it-timer-form__number'
+          className='it-interval-form__number'
           type='number'
           max={99}
           min={0}
           value={hours}
           onChange={e => onChangeHours(e.target.value)}
           />
-      <span className='it-timer-form__divider'>:</span>
+      <span className='it-interval-form__divider'>:</span>
       <NumberInput
-          className='it-timer-form__number'
+          className='it-interval-form__number'
           type='number'
           min={0}
           max={59}
           value={minutes}
           onChange={e => onChangeMinutes(e.target.value)}
           />
-      <span className='it-timer-form__divider'>:</span>
+      <span className='it-interval-form__divider'>:</span>
       <NumberInput
-          className='it-timer-form__number'
+          className='it-interval-form__number'
           type='number'
           min={0}
           max={59}
@@ -63,7 +63,7 @@ const TimerFormView = ({
           onChange={e => onChangeSeconds(e.target.value)}
           />
     </div>
-    <div className='it-timer-form__row'>
+    <div className='it-interval-form__row'>
       <Button
           onClick={onSubmit}
           primary={!isEdit}
@@ -86,7 +86,7 @@ const TimerFormView = ({
 
 const initialState = {id: null, name: '', hours: 0, minutes: 0, seconds: 0};
 
-const TimerForm = compose(
+const IntervalForm = compose(
   withStateHandlers(
     (props) => ({
       ...initialState,
@@ -133,6 +133,6 @@ const TimerForm = compose(
       return true;
     },
   }),
-)(TimerFormView);
+)(IntervalFormView);
 
-export default TimerForm;
+export default IntervalForm;
