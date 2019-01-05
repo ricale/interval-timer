@@ -49,12 +49,18 @@ const getNewState = (state, action) => {
       };
 
     case 'TIMERS/DELETE_ALL_TIMER':
-      return {...state, list: [], lastId: initialState.lastId};
+      return {
+        ...state,
+        list: [],
+        editing: null,
+        lastId: initialState.lastId,
+      };
 
     case 'TIMERS/DELETE_TIMER':
       return {
         ...state,
         list: state.list.filter(({id}) => id !== action.payload.id),
+        editing: null,
       };
   }
   return state;

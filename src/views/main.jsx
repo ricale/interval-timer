@@ -21,6 +21,7 @@ import './main.less';
 class Main extends Component {
   componentDidMount () {
     if(this.props.list.length === 0) {
+      this._sider.open();
       this._accordion.open();
     }
   }
@@ -93,6 +94,7 @@ class Main extends Component {
 
                 data={list[current % list.length]}
                 index={current}
+                disabled={list.length === 0}
                 {...player}
                 />
           </FullScreenContainer>
@@ -108,11 +110,11 @@ class Main extends Component {
         </div>
 
         <Sider
-            title='목록'
+            title='Intervals'
             ref={r => this._sider = r}>
           <Accordion 
               className='it-main__form-accordion'
-              title='타이머 추가'
+              title='Add Interval'
               ref={r => this._accordion = r}>
             <TimerForm
                 defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
