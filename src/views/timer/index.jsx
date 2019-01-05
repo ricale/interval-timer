@@ -7,9 +7,9 @@ import Sounds from 'lib/Sounds';
 import {Button, Icon} from 'components';
 import {PLAY_STATE, ALARM_STATE} from 'constants';
 
-import TimerDisplay from './_timerDisplay';
+import TimerDisplay from './_display';
 
-import './timer.less';
+import './index.less';
 
 const noSleep = new NoSleep();
 

@@ -8,43 +8,43 @@ const initialState = {
 
 const isPlaying = ({playState}) => playState === PLAY_STATE.PLAYING;
 
-export default function player (state = initialState, action) {
+export default function timer (state = initialState, action) {
   switch(action.type) {
-    case 'PLAYER/START':
+    case 'TIMER/START':
       return isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.PLAYING,
       };
 
-    case 'PLAYER/STOP':
+    case 'TIMER/STOP':
       return !isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.IDLE,
         current: 0,
       };
 
-    case 'PLAYER/PAUSE':
+    case 'TIMER/PAUSE':
       return !isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.PAUSE,
       };
 
-    case 'PLAYER/RESUME':
+    case 'TIMER/RESUME':
       return isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.PLAYING,
       };
 
-    case 'PLAYER/TURN_ON_ALARM':
+    case 'TIMER/TURN_ON_ALARM':
       return {...state, alarmState: ALARM_STATE.OFF};
-    case 'PLAYER/TURN_OFF_ALARM':
+    case 'TIMER/TURN_OFF_ALARM':
       return {...state, alarmState: ALARM_STATE.ON};
-    case 'PLAYER/RING_ALARM':
+    case 'TIMER/RING_ALARM':
       return {...state, alarmState: ALARM_STATE.RING};
-    case 'PLAYER/STOP_ALARM':
+    case 'TIMER/STOP_ALARM':
       return {...state, alarmState: ALARM_STATE.ON};
 
-    case 'PLAYER/GO_TO_NEXT':
+    case 'TIMER/GO_TO_NEXT':
       return {
         ...state,
         current: state.current + 1,
