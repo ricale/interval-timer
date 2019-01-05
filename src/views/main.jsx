@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {
   Accordion,
   Button,
-  FullScreenContainer,
   Icon,
 } from 'components';
 import intervalActions from 'actions/intervals';
@@ -19,6 +18,10 @@ import Sider from './_sider';
 import './main.less';
 
 class Main extends Component {
+  state = {
+    filled: false,
+  }
+
   componentDidMount () {
     if(this.props.list.length === 0) {
       this._sider.open();
@@ -80,27 +83,32 @@ class Main extends Component {
     return (
       <div className='it-main'>
         <div className='it-main__content'>
-          <FullScreenContainer ref={r => this._fullscreenContainer = r}>
-            <Timer
-                onStart={start}
-                onStop={stop}
-                onPause={pause}
-                onResume={resume}
-                onDone={goToNext}
-                turnOffAlarm={turnOffAlarm}
-                turnOnAlarm={turnOnAlarm}
-                ringAlarm={ringAlarm}
-                stopAlarm={stopAlarm}
+          <Timer
+              onStart={start}
+              onStop={stop}
+              onPause={pause}
+              onResume={resume}
+              onDone={goToNext}
+              turnOffAlarm={turnOffAlarm}
+              turnOnAlarm={turnOnAlarm}
+              ringAlarm={ringAlarm}
+              stopAlarm={stopAlarm}
 
-                data={list[current % list.length]}
-                index={current}
-                disabled={list.length === 0}
-                {...timer}
-                />
-          </FullScreenContainer>
+              data={list[current % list.length]}
+              index={current}
+              disabled={list.length === 0}
+              filled={this.state.filled}
+
+              fullScreenContainerRef={r => this._fullScreenContainer = r}
+
+              {...timer}
+              />
 
           <div className='it-main__controller'>
-            <Button className='it-fullscreen__button' onClick={() => this._fullscreenContainer.toggle()}>
+            <Button onClick={() => this.setState({filled: !this.state.filled})}>
+              <Icon name={this.state.filled ? 'fill' : 'fill-drip'} />
+            </Button>
+            <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
             <Button onClick={() => this._sider.toggle()}>

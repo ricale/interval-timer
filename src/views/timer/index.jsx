@@ -4,7 +4,11 @@ import NoSleep from 'nosleep.js';
 
 import {compose, withState, withProps, lifecycle} from 'lib/recompose';
 import Sounds from 'lib/Sounds';
-import {Button, Icon} from 'components';
+import {
+  Button,
+  FullScreenContainer,
+  Icon,
+} from 'components';
 import {PLAY_STATE, ALARM_STATE} from 'constants';
 
 import TimerDisplay from './_display';
@@ -21,6 +25,8 @@ const TimerView = ({
   isRinging,
   isNegative,
   disabled,
+  filled,
+  fullScreenContainerRef,
   onStart,
   onStop,
   onPause,
@@ -28,7 +34,9 @@ const TimerView = ({
   onDone,
   stopAlarm,
 }) => (
-  <div className={`it-timer${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}`}>
+  <FullScreenContainer
+      ref={fullScreenContainerRef}
+      className={`it-timer${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}${filled ? ' it-filled' : ''}`}>
     <TimerDisplay
         name={data.name}
         isPlaying={isPlaying}
@@ -59,7 +67,7 @@ const TimerView = ({
         Add Interval first.
       </div>
     }
-  </div>
+  </FullScreenContainer>
 );
 
 const Timer = compose(
