@@ -52,6 +52,9 @@ const NumberInput = compose(
         },
       });
     },
+    onFocus: props => e => {
+      e.target.select();
+    },
   }),
   lifecycle({
     componentDidMount () {
