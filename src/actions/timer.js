@@ -1,7 +1,7 @@
 import {createActions} from 'redux-actions';
 
 const actions = createActions({
-  PLAYER: {
+  TIMER: {
     START: () => ({}),
     STOP: () => ({}),
     PAUSE: () => ({}),
@@ -15,4 +15,4 @@ const actions = createActions({
   },
 });
 
-export default {...actions.player};
+export default {...actions.timer};

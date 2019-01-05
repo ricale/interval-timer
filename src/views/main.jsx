@@ -7,12 +7,12 @@ import {
   FullScreenContainer,
   Icon,
 } from 'components';
-import timerActions from 'actions/timers';
-import playerActions from 'actions/player';
+import intervalActions from 'actions/intervals';
+import timerActions from 'actions/timer';
 
-import Timer from './timers/timer';
-import TimerForm from './timers/form';
-import TimerList from './timers/list';
+import Timer from './timer';
+import IntervalForm from './intervals/form';
+import IntervalList from './intervals/list';
 
 import Sider from './_sider';
 
@@ -39,24 +39,24 @@ class Main extends Component {
 
   handleSubmit = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.createTimer({...d, timestamp});
+    this.props.createInterval({...d, timestamp});
   }
 
   handleUpdate = (d) => {
     const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.updateTimer({...d, timestamp});
+    this.props.updateInterval({...d, timestamp});
   }
 
   handleCancelEdit = () => {
-    this.props.cancelEditTimer();
+    this.props.cancelEditInterva();
   }
 
   handleDelete = (id) => {
-    this.props.deleteTimer(id);
+    this.props.deleteInterval(id);
   }
 
   handleDeleteAll = () => {
-    this.props.deleteAllTimer();
+    this.props.deleteAllInterval();
   }
 
   render () {
@@ -64,7 +64,7 @@ class Main extends Component {
       list,
       lastId,
       editing,
-      player: {current, ...player},
+      timer: {current, ...timer},
 
       start,
       stop,
@@ -95,7 +95,7 @@ class Main extends Component {
                 data={list[current % list.length]}
                 index={current}
                 disabled={list.length === 0}
-                {...player}
+                {...timer}
                 />
           </FullScreenContainer>
 
@@ -116,17 +116,17 @@ class Main extends Component {
               className='it-main__form-accordion'
               title='Add Interval'
               ref={r => this._accordion = r}>
-            <TimerForm
-                defaultName={`timer #${lastId}`} // FIXME: duplicated with createTimer on reducers/timers
+            <IntervalForm
+                defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
                 isValid={this.handleValid}
                 onSubmit={this.handleSubmit}
                 />
           </Accordion>
 
-          <TimerList
+          <IntervalList
               data={list}
               editing={editing}
-              onEdit={(id) => this.props.editTimer(id)}
+              onEdit={(id) => this.props.editInterval(id)}
               onCancelEdit={this.handleCancelEdit}
               onUpdate={this.handleUpdate}
               onDelete={this.handleDelete}
@@ -139,29 +139,29 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  list: state.timers.list,
-  lastId: state.timers.lastId,
-  editing: state.timers.editing,
-  player: state.player,
+  list: state.intervals.list,
+  lastId: state.intervals.lastId,
+  editing: state.intervals.editing,
+  timer: state.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  createTimer: (...args) => dispatch(timerActions.createTimer(...args)),
-  editTimer: (...args) => dispatch(timerActions.editTimer(...args)),
-  cancelEditTimer: (...args) => dispatch(timerActions.cancelEditTimer(...args)),
-  updateTimer: (...args) => dispatch(timerActions.updateTimer(...args)),
-  deleteTimer: (...args) => dispatch(timerActions.deleteTimer(...args)),
-  deleteAllTimer: (...args) => dispatch(timerActions.deleteAllTimer(...args)),
+  createInterval: (...args) => dispatch(intervalActions.createInterval(...args)),
+  editInterval: (...args) => dispatch(intervalActions.editInterval(...args)),
+  cancelEditInterval: (...args) => dispatch(intervalActions.cancelEditInterval(...args)),
+  updateInterval: (...args) => dispatch(intervalActions.updateInterval(...args)),
+  deleteInterval: (...args) => dispatch(intervalActions.deleteInterval(...args)),
+  deleteAllInterval: (...args) => dispatch(intervalActions.deleteAllInterval(...args)),
 
-  start: (...args) => dispatch(playerActions.start(...args)),
-  stop: (...args) => dispatch(playerActions.stop(...args)),
-  pause: (...args) => dispatch(playerActions.pause(...args)),
-  resume: (...args) => dispatch(playerActions.resume(...args)),
-  goToNext: (...args) => dispatch(playerActions.goToNext(...args)),
-  turnOffAlarm: (...args) => dispatch(playerActions.turnOffAlarm(...args)),
-  turnOnAlarm: (...args) => dispatch(playerActions.turnOnAlarm(...args)),
-  ringAlarm: (...args) => dispatch(playerActions.ringAlarm(...args)),
-  stopAlarm: (...args) => dispatch(playerActions.stopAlarm(...args)),
+  start: (...args) => dispatch(timerActions.start(...args)),
+  stop: (...args) => dispatch(timerActions.stop(...args)),
+  pause: (...args) => dispatch(timerActions.pause(...args)),
+  resume: (...args) => dispatch(timerActions.resume(...args)),
+  goToNext: (...args) => dispatch(timerActions.goToNext(...args)),
+  turnOffAlarm: (...args) => dispatch(timerActions.turnOffAlarm(...args)),
+  turnOnAlarm: (...args) => dispatch(timerActions.turnOnAlarm(...args)),
+  ringAlarm: (...args) => dispatch(timerActions.ringAlarm(...args)),
+  stopAlarm: (...args) => dispatch(timerActions.stopAlarm(...args)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

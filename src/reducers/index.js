@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux';
 
-import player from './player';
-import timers from './timers';
+import intervals from './intervals';
+import timer from './timer';
 
 export default combineReducers({
-  player,
-  timers,
+  intervals,
+  timer,
 });

@@ -3,11 +3,11 @@ import React from 'react';
 import {fillWithZero} from 'lib';
 import {Button, Icon} from 'components';
 
-import TimerForm from './form';
+import IntervalForm from './form';
 
 import './list.less';
 
-const TimerItem = ({
+const IntervalItem = ({
   id,
   name,
   hours,
@@ -19,11 +19,11 @@ const TimerItem = ({
   onUpdate,
   onDelete,
 }) => (
-  <div className={`it-timer-list__item${isEditing ? ' it-editing' : ''}`}>
+  <div className={`it-interval-list__item${isEditing ? ' it-editing' : ''}`}>
     {!isEditing &&
-      <div className='it-timer-item__header'>
-        <span className='it-timer-item__name'>{name}</span>
-        <div className='it-timer-item__menu'>
+      <div className='it-interval-item__header'>
+        <span className='it-interval-item__name'>{name}</span>
+        <div className='it-interval-item__menu'>
           <Button onClick={() => onEdit(id)} small={true} bordered={true}>
             <Icon name='edit' />
           </Button>
@@ -35,23 +35,23 @@ const TimerItem = ({
     }
 
     {!isEditing &&
-      <div className='it-timer-item__digits'>
-        <span className='it-timer-item__hours'>
+      <div className='it-interval-item__digits'>
+        <span className='it-interval-item__hours'>
           {fillWithZero(hours)}
         </span>
-        <span className='it-timer-item__divider'>:</span>
-        <span className='it-timer-item__minutes'>
+        <span className='it-interval-item__divider'>:</span>
+        <span className='it-interval-item__minutes'>
           {fillWithZero(minutes)}
         </span>
-        <span className='it-timer-item__divider'>:</span>
-        <span className='it-timer-item__seconds'>
+        <span className='it-interval-item__divider'>:</span>
+        <span className='it-interval-item__seconds'>
           {fillWithZero(seconds)}
         </span>
       </div>
     }
 
     {isEditing &&
-      <TimerForm
+      <IntervalForm
           editing={{id, name, hours, minutes, seconds}}
           onSubmit={onUpdate}
           onCancel={onCancelEdit}
@@ -60,7 +60,7 @@ const TimerItem = ({
   </div>
 );
 
-const TimerList = ({
+const IntervalList = ({
   data = [],
   editing,
   onEdit,
@@ -69,9 +69,9 @@ const TimerList = ({
   onDelete,
   onDeleteAll,
 }) => (
-  <div className='it-timer-list'>
+  <div className='it-interval-list'>
     {data.map(d =>
-      <TimerItem
+      <IntervalItem
           key={d.id}
           isEditing={editing && editing.id === d.id}
           onEdit={onEdit}
@@ -90,4 +90,4 @@ const TimerList = ({
   </div>
 );
 
-export default TimerList;
+export default IntervalList;
