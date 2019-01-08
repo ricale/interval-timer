@@ -23,6 +23,7 @@ const IntervalFormView = ({
   onChangeHours,
   onChangeMinutes,
   onChangeSeconds,
+  onKeyPress,
   onSubmit,
   onCancel,
 }) => (
@@ -33,6 +34,7 @@ const IntervalFormView = ({
           value={name}
           onChange={e => onChangeName(e.target.value)}
           placeholder={defaultName}
+          onKeyPress={onKeyPress}
           />
     </div>
     <div className='it-interval-form__row'>
@@ -43,6 +45,7 @@ const IntervalFormView = ({
           min={0}
           value={hours}
           onChange={e => onChangeHours(e.target.value)}
+          onKeyPress={onKeyPress}
           />
       <span className='it-interval-form__divider'>:</span>
       <NumberInput
@@ -52,6 +55,7 @@ const IntervalFormView = ({
           max={59}
           value={minutes}
           onChange={e => onChangeMinutes(e.target.value)}
+          onKeyPress={onKeyPress}
           />
       <span className='it-interval-form__divider'>:</span>
       <NumberInput
@@ -61,6 +65,7 @@ const IntervalFormView = ({
           max={59}
           value={seconds}
           onChange={e => onChangeSeconds(e.target.value)}
+          onKeyPress={onKeyPress}
           />
     </div>
     <div className='it-interval-form__row'>
@@ -101,7 +106,25 @@ const IntervalForm = compose(
     }
   ),
   withHandlers({
+    onKeyPress: props => (e) => {
+      const keyCode = e.keyCode || e.which;
+      if(keyCode == '13'/* enter key */) {
+        // FIXME: duplicated with onSubmit
+        const data = {
+          id: props.id,
+          name: props.name,
+          hours: props.hours,
+          minutes: props.minutes,
+          seconds: props.seconds,
+        };
+        if(!props.isValid || props.isValid(data)) {
+          props.onSubmit(data);
+          props.onChange(initialState);
+        }
+      }
+    },
     onSubmit: props => () => {
+      // FIXME: duplicated with onKeyPress
       const data = {
         id: props.id,
         name: props.name,
