@@ -14,6 +14,7 @@ import {PLAY_STATE, ALARM_STATE} from 'constants';
 import TimerDisplay from './_display';
 
 import './index.less';
+import './shake.less';
 
 const noSleep = new NoSleep();
 
@@ -42,6 +43,8 @@ const TimerView = ({
         isPlaying={isPlaying}
         isNegative={isNegative}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
+
+        digitsClassName={isNegative ? 'it-anim-shake' : ''}
         />
     <div className='it-timer-controller'>
       <div className='it-timer-controller__row'>
