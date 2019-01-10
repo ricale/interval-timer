@@ -77,7 +77,7 @@ const Timer = compose(
   withState('startTime', 'onChangeStartTime', null),
   withState('pauseTime', 'onChangePauseTime', null),
   withState('currentTimestamp', 'onChangeCurrnetTimestamp', (props) => (props.data || {}).timestamp),
-  withProps(({data, currentTimestamp, playState, alarmState, showMilliseconds, ...args}) => ({
+  withProps(({data, currentTimestamp, playState, alarmState, showMilliseconds}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,
     isPlaying: playState !== PLAY_STATE.IDLE && playState !== PLAY_STATE.PAUSE,

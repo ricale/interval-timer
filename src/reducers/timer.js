@@ -35,10 +35,6 @@ export default function timer (state = initialState, action) {
         playState: PLAY_STATE.PLAYING,
       };
 
-    case 'TIMER/TURN_ON_ALARM':
-      return {...state, alarmState: ALARM_STATE.OFF};
-    case 'TIMER/TURN_OFF_ALARM':
-      return {...state, alarmState: ALARM_STATE.ON};
     case 'TIMER/RING_ALARM':
       return {...state, alarmState: ALARM_STATE.RING};
     case 'TIMER/STOP_ALARM':

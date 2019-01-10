@@ -7,6 +7,8 @@ import {
   Icon,
 } from 'components';
 import {getMapDispatchToProps} from 'lib';
+
+import configActions from 'actions/config';
 import intervalActions from 'actions/intervals';
 import timerActions from 'actions/timer';
 
@@ -19,10 +21,6 @@ import Sider from './_sider';
 import './main.less';
 
 class Main extends Component {
-  state = {
-    filled: false,
-  }
-
   componentDidMount () {
     if(this.props.list.length === 0) {
       this._sider.open();
@@ -69,16 +67,17 @@ class Main extends Component {
       lastId,
       editing,
       timer: {current, ...timer},
+      filled,
 
       start,
       stop,
       pause,
       resume,
       goToNext,
-      turnOffAlarm,
-      turnOnAlarm,
       ringAlarm,
       stopAlarm,
+
+      toggleFilled,
     } = this.props;
 
     return (
@@ -90,15 +89,13 @@ class Main extends Component {
               onPause={pause}
               onResume={resume}
               onDone={goToNext}
-              turnOffAlarm={turnOffAlarm}
-              turnOnAlarm={turnOnAlarm}
               ringAlarm={ringAlarm}
               stopAlarm={stopAlarm}
 
               data={list[current % list.length]}
               index={current}
               disabled={list.length === 0}
-              filled={this.state.filled}
+              filled={filled}
 
               fullScreenContainerRef={r => this._fullScreenContainer = r}
 
@@ -106,8 +103,8 @@ class Main extends Component {
               />
 
           <div className='it-main__controller'>
-            <Button onClick={() => this.setState({filled: !this.state.filled})}>
-              <Icon name={this.state.filled ? 'fill' : 'fill-drip'} />
+            <Button onClick={() => toggleFilled()}>
+              <Icon name={filled ? 'fill' : 'fill-drip'} />
             </Button>
             <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
@@ -152,9 +149,11 @@ const mapStateToProps = (state, ownProps) => ({
   lastId: state.intervals.lastId,
   editing: state.intervals.editing,
   timer: state.timer,
+  filled: state.config.filled,
 });
 
 const mapDispatchToProps = getMapDispatchToProps({
+  ...configActions,
   ...intervalActions,
   ...timerActions,
 });

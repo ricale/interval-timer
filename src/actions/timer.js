@@ -8,8 +8,6 @@ const actions = createActions({
     RESUME: () => ({}),
     GO_TO_NEXT: () => ({}),
 
-    TURN_OFF_ALARM: () => ({}),
-    TURN_ON_ALARM: () => ({}),
     RING_ALARM: () => ({}),
     STOP_ALARM: () => ({}),
   },
