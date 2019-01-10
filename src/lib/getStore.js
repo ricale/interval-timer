@@ -2,10 +2,14 @@ import {createStore} from 'redux';
 
 export default function getStore (reducers) {
   const preloadedState = {};
-  const preloadedIntervalsState = localStorage.getItem('intervals');
-  if(preloadedIntervalsState) {
-    preloadedState.intervals = JSON.parse(preloadedIntervalsState);
-  }
+
+  const keys = ['intervals', 'config'];
+  keys.forEach(key => {
+    const data = localStorage.getItem(key);
+    if(data) {
+      preloadedState[key] = JSON.parse(data);
+    }
+  });
 
   return createStore(
     reducers,
