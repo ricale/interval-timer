@@ -1,4 +1,4 @@
 # Interval Timer
 
-- [demo page](https://interval-timer.github.io/)
-- [pivotal tracker proejct](https://www.pivotaltracker.com/n/projects/2232937)
+- [Demo](https://interval-timer.github.io/)
+- [Tasks](https://www.pivotaltracker.com/n/projects/2232937)

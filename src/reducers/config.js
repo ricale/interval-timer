@@ -1,5 +1,6 @@
 const initialState = {
   filled: false,
+  ringable: true,
 };
 
 const isChanged = (type) => (

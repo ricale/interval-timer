@@ -5,9 +5,12 @@ import {Button, Icon} from 'components';
 import './_sider.less';
 
 class Sider extends Component {
-  state = {
-    show: false,
-  };
+  constructor (props) {
+    super(props);
+    this.state = {
+      show: props.show,
+    };
+  }
 
   handleClickWrapper = (e) => {
     // FIXME

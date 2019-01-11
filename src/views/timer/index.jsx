@@ -26,7 +26,7 @@ const TimerView = ({
   isRinging,
   isNegative,
   disabled,
-  filled,
+  config,
   fullScreenContainerRef,
   onStart,
   onStop,
@@ -37,7 +37,7 @@ const TimerView = ({
 }) => (
   <FullScreenContainer
       ref={fullScreenContainerRef}
-      className={`it-timer${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}${filled ? ' it-filled' : ''}`}>
+      className={`it-timer${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}${config.filled ? ' it-filled' : ''}`}>
     <TimerDisplay
         name={data.name}
         isPlaying={isPlaying}
@@ -85,13 +85,21 @@ const Timer = compose(
     isNegative: showMilliseconds ? currentTimestamp < 0 : Math.ceil(currentTimestamp / 1000) <= 0,
   })),
   lifecycle({
+    ringAlarmIfPossible () {
+      if(this.props.config.ringable) {
+        this.props.ringAlarm();
+      }
+    },
+    stopAlarmIfPossible () {
+      if(this.props.isRinging) {
+        this.props.ringAlarm();
+      }
+    },
     shouldComponentUpdate (nextProps, nextState) {
       const {
         onChangeStartTime,
         onChangePauseTime,
         onChangeCurrnetTimestamp,
-        ringAlarm,
-        stopAlarm,
 
         playState,
         alarmState,
@@ -124,7 +132,7 @@ const Timer = compose(
             break;
 
           case PLAY_STATE.PAUSE:
-            stopAlarm();
+            this.stopAlarmIfPossible();
             onChangePauseTime(moment());
             clearInterval(this._timer);
 
@@ -132,7 +140,7 @@ const Timer = compose(
             break;
 
           case PLAY_STATE.IDLE:
-            stopAlarm();
+            this.stopAlarmIfPossible();
             onChangeStartTime(null);
             onChangePauseTime(null);
             onChangeCurrnetTimestamp(data.timestamp);
@@ -146,7 +154,6 @@ const Timer = compose(
       if(nextProps.alarmState !== alarmState) {
         switch(nextProps.alarmState) {
           case ALARM_STATE.OFF:
-          case ALARM_STATE.ON:
             Sounds.stop();
             break;
           case ALARM_STATE.RING:
@@ -155,14 +162,16 @@ const Timer = compose(
         }
       }
 
-      if(nextProps.currentTimestamp !== currentTimestamp) {
-        if(nextProps.currentTimestamp < 0 && currentTimestamp >= 0) {
-          ringAlarm();
+      if(nextProps.playState === PLAY_STATE.PLAYING) {
+        if(nextProps.currentTimestamp !== currentTimestamp) {
+          if(nextProps.currentTimestamp < 0 && currentTimestamp >= 0) {
+            this.ringAlarmIfPossible();
+          }
         }
       }
 
       if(nextProps.index !== index) {
-        stopAlarm();
+        this.stopAlarmIfPossible();
         onChangeStartTime(moment());
         onChangePauseTime();
         onChangeCurrnetTimestamp(nextProps.data.timestamp);
