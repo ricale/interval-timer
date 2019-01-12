@@ -3,8 +3,8 @@ import {createActions} from 'redux-actions';
 const actions = createActions({
   CONFIG: {
     TOGGLE_FILLED: () => ({}),
-    TURN_ON_FILLED: () => ({}),
-    TURN_OFF_FILLED: () => ({}),
+    TOGGLE_RINGABLE: () => ({}),
+    TOGGLE_ANIMATABLE: () => ({}),
   },
 });
 

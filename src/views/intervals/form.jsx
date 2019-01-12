@@ -71,8 +71,7 @@ const IntervalFormView = ({
     <div className='it-interval-form__row'>
       <Button
           onClick={onSubmit}
-          primary={!isEdit}
-          success={!!isEdit}
+          primary={true}
           small={true}
           bordered={true}>
         <Icon name={isEdit ? 'save' : 'plus'} />

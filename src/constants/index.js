@@ -6,6 +6,5 @@ export const PLAY_STATE = {
 
 export const ALARM_STATE = {
   OFF: 0,
-  ON: 1,
-  RING: 2,
+  RING: 1,
 };

@@ -15,6 +15,7 @@ import timerActions from 'actions/timer';
 import Timer from './timer';
 import IntervalForm from './intervals/form';
 import IntervalList from './intervals/list';
+import SiderConfig from './sider/config';
 
 import Sider from './_sider';
 
@@ -23,7 +24,7 @@ import './main.less';
 class Main extends Component {
   componentDidMount () {
     if(this.props.list.length === 0) {
-      this._sider.open();
+      this._siderIntervals.open();
       this._accordion.open();
     }
   }
@@ -67,7 +68,7 @@ class Main extends Component {
       lastId,
       editing,
       timer: {current, ...timer},
-      filled,
+      config,
 
       start,
       stop,
@@ -77,6 +78,8 @@ class Main extends Component {
       ringAlarm,
       stopAlarm,
 
+      toggleRingable,
+      toggleAnimatable,
       toggleFilled,
     } = this.props;
 
@@ -95,7 +98,7 @@ class Main extends Component {
               data={list[current % list.length]}
               index={current}
               disabled={list.length === 0}
-              filled={filled}
+              config={config}
 
               fullScreenContainerRef={r => this._fullScreenContainer = r}
 
@@ -103,21 +106,21 @@ class Main extends Component {
               />
 
           <div className='it-main__controller'>
-            <Button onClick={() => toggleFilled()}>
-              <Icon name={filled ? 'fill' : 'fill-drip'} />
-            </Button>
             <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button onClick={() => this._sider.toggle()}>
+            <Button onClick={() => this._siderIntervals.toggle()}>
               <Icon name='bars' />
+            </Button>
+            <Button onClick={() => this._siderConfig.toggle()}>
+              <Icon name='cog' />
             </Button>
           </div>
         </div>
 
         <Sider
             title='Intervals'
-            ref={r => this._sider = r}>
+            ref={r => this._siderIntervals = r}>
           <Accordion 
               className='it-main__form-accordion'
               title='Add Interval'
@@ -139,6 +142,14 @@ class Main extends Component {
               onDeleteAll={this.handleDeleteAll}
               />
         </Sider>
+
+        <SiderConfig
+            {...config}
+            siderRef={r => this._siderConfig = r}
+            toggleRingable={toggleRingable}
+            toggleAnimatable={toggleAnimatable}
+            toggleFilled={toggleFilled}
+            />
       </div>
     );
   }
@@ -149,7 +160,7 @@ const mapStateToProps = (state, ownProps) => ({
   lastId: state.intervals.lastId,
   editing: state.intervals.editing,
   timer: state.timer,
-  filled: state.config.filled,
+  config: state.config,
 });
 
 const mapDispatchToProps = getMapDispatchToProps({
