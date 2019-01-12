@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {
   Accordion,
   Button,
-  Checkbox,
   Icon,
 } from 'components';
 import {getMapDispatchToProps} from 'lib';
@@ -16,6 +15,7 @@ import timerActions from 'actions/timer';
 import Timer from './timer';
 import IntervalForm from './intervals/form';
 import IntervalList from './intervals/list';
+import SiderConfig from './sider/config';
 
 import Sider from './_sider';
 
@@ -78,6 +78,8 @@ class Main extends Component {
       ringAlarm,
       stopAlarm,
 
+      toggleRingable,
+      toggleAnimatable,
       toggleFilled,
     } = this.props;
 
@@ -107,11 +109,11 @@ class Main extends Component {
             <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button onClick={() => this._siderConfig.toggle()}>
-              <Icon name='cog' />
-            </Button>
             <Button onClick={() => this._siderIntervals.toggle()}>
               <Icon name='bars' />
+            </Button>
+            <Button onClick={() => this._siderConfig.toggle()}>
+              <Icon name='cog' />
             </Button>
           </div>
         </div>
@@ -141,12 +143,13 @@ class Main extends Component {
               />
         </Sider>
 
-        <Sider title='Settings' ref={r => this._siderConfig = r} show={true}>
-          <div style={{width: 200}}>
-            <label>배경 색 채움</label>
-            <Checkbox checked={config.filled} onChange={() => toggleFilled()} />
-          </div>
-        </Sider>
+        <SiderConfig
+            {...config}
+            siderRef={r => this._siderConfig = r}
+            toggleRingable={toggleRingable}
+            toggleAnimatable={toggleAnimatable}
+            toggleFilled={toggleFilled}
+            />
       </div>
     );
   }

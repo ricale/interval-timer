@@ -18,6 +18,14 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 
+input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+      -ms-appearance: none;
+       -o-appearance: none;
+          appearance: none;
+}
+
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none;
@@ -37,8 +45,7 @@ input[type="number"] {
 //  from: https://gist.github.com/anthonyshort/552543
 
 button,
-input[type=button],
-input[type=checkbox] {
+input[type=button] {
   margin:0;
   border:0;
   padding:0;

@@ -44,7 +44,7 @@ const TimerView = ({
         isNegative={isNegative}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
 
-        digitsClassName={isNegative ? 'it-anim-shake' : ''}
+        digitsClassName={config.animatable && isNegative ? 'it-anim-shake' : ''}
         />
     <div className='it-timer-controller'>
       <div className='it-timer-controller__row'>
