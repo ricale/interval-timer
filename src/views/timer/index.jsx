@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import NoSleep from 'nosleep.js';
 
-import {compose, withState, withProps, lifecycle} from 'lib/recompose';
+import {compose, withStateHandlers, withProps, lifecycle} from 'lib/recompose';
 import Sounds from 'lib/Sounds';
 import {
   Button,
@@ -73,10 +73,21 @@ const TimerView = ({
   </FullScreenContainer>
 );
 
+const initialState = {startTime: null, pauseTime: null};
+
 const Timer = compose(
-  withState('startTime', 'onChangeStartTime', null),
-  withState('pauseTime', 'onChangePauseTime', null),
-  withState('currentTimestamp', 'onChangeCurrnetTimestamp', (props) => (props.data || {}).timestamp),
+  withStateHandlers(
+    (props) => ({
+      ...initialState,
+      currentTimestamp: (props.data || {}).timestamp,
+    }),
+    {
+      onChangeStartTime:        (state, props) => v => ({startTime: v}),
+      onChangePauseTime:        (state, props) => v => ({pauseTime: v}),
+      onChangeCurrnetTimestamp: (state, props) => v => ({currentTimestamp: v}),
+      onChange:                 (state, props) => d => ({...state, ...d}),
+    }
+  ),
   withProps(({data, currentTimestamp, playState, alarmState, showMilliseconds}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,
@@ -85,14 +96,15 @@ const Timer = compose(
     isNegative: showMilliseconds ? currentTimestamp < 0 : Math.ceil(currentTimestamp / 1000) <= 0,
   })),
   lifecycle({
-    ringAlarmIfPossible () {
-      if(this.props.config.ringable) {
-        this.props.ringAlarm();
-      }
-    },
-    stopAlarmIfPossible () {
-      if(this.props.isRinging) {
-        this.props.ringAlarm();
+    ringAlarmIfNeeded (nextProps) {
+      if(nextProps.playState === PLAY_STATE.PLAYING) {
+        if(nextProps.currentTimestamp !== this.props.currentTimestamp) {
+          if(nextProps.currentTimestamp < 0 && this.props.currentTimestamp >= 0) {
+            if(nextProps.config.ringable) {
+              this.props.ringAlarm();
+            }
+          }
+        }
       }
     },
     shouldComponentUpdate (nextProps, nextState) {
@@ -100,12 +112,12 @@ const Timer = compose(
         onChangeStartTime,
         onChangePauseTime,
         onChangeCurrnetTimestamp,
+        onChange,
 
         playState,
         alarmState,
         startTime,
         pauseTime,
-        currentTimestamp,
         index,
         data,
       } = this.props;
@@ -114,8 +126,10 @@ const Timer = compose(
         switch(nextProps.playState) {
           case PLAY_STATE.PLAYING:
             if(pauseTime) {
-              onChangeStartTime(startTime.add(moment().diff(pauseTime)));
-              onChangePauseTime(null);
+              onChange({
+                startTime: startTime.add(moment().diff(pauseTime)),
+                pauseTIme: null,
+              });
 
             } else {
               onChangeStartTime(moment());
@@ -132,7 +146,6 @@ const Timer = compose(
             break;
 
           case PLAY_STATE.PAUSE:
-            this.stopAlarmIfPossible();
             onChangePauseTime(moment());
             clearInterval(this._timer);
 
@@ -140,10 +153,11 @@ const Timer = compose(
             break;
 
           case PLAY_STATE.IDLE:
-            this.stopAlarmIfPossible();
-            onChangeStartTime(null);
-            onChangePauseTime(null);
-            onChangeCurrnetTimestamp(data.timestamp);
+            onChange({
+              startTime: null,
+              pauseTime: null,
+              currentTimestamp: data.timestamp,
+            });
             clearInterval(this._timer);
 
             noSleep.disable();
@@ -162,19 +176,14 @@ const Timer = compose(
         }
       }
 
-      if(nextProps.playState === PLAY_STATE.PLAYING) {
-        if(nextProps.currentTimestamp !== currentTimestamp) {
-          if(nextProps.currentTimestamp < 0 && currentTimestamp >= 0) {
-            this.ringAlarmIfPossible();
-          }
-        }
-      }
+      this.ringAlarmIfNeeded(nextProps);
 
       if(nextProps.index !== index) {
-        this.stopAlarmIfPossible();
-        onChangeStartTime(moment());
-        onChangePauseTime();
-        onChangeCurrnetTimestamp(nextProps.data.timestamp);
+        onChange({
+          startTime: moment(),
+          pauseTime: null,
+          currentTimestamp: nextProps.data.timestamp,
+        });
       }
 
       return true;

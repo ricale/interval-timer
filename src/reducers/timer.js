@@ -28,6 +28,7 @@ export default function timer (state = initialState, action) {
       return !isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.PAUSE,
+        alarmState: ALARM_STATE.OFF,
       };
 
     case 'TIMER/RESUME':
@@ -45,6 +46,7 @@ export default function timer (state = initialState, action) {
       return {
         ...state,
         current: state.current + 1,
+        alarmState: ALARM_STATE.OFF,
       };
   }
   return state;
