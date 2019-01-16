@@ -3,13 +3,12 @@ import moment from 'moment';
 import NoSleep from 'nosleep.js';
 
 import {compose, withStateHandlers, withProps, lifecycle} from 'lib/recompose';
-import Sounds from 'lib/Sounds';
 import {
   Button,
   FullScreenContainer,
   Icon,
 } from 'components';
-import {PLAY_STATE, ALARM_STATE} from 'constants';
+import {PLAY_STATE} from 'constants';
 
 import TimerDisplay from './_display';
 
@@ -88,11 +87,11 @@ const Timer = compose(
       onChange:                 (state, props) => d => ({...state, ...d}),
     }
   ),
-  withProps(({data, currentTimestamp, playState, alarmState, showMilliseconds}) => ({
+  withProps(({data, currentTimestamp, playState, alarming, showMilliseconds}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,
     isPlaying: playState !== PLAY_STATE.IDLE && playState !== PLAY_STATE.PAUSE,
-    isRinging: alarmState === ALARM_STATE.RING,
+    isRinging: alarming,
     isNegative: showMilliseconds ? currentTimestamp < 0 : Math.ceil(currentTimestamp / 1000) <= 0,
   })),
   lifecycle({
@@ -115,7 +114,6 @@ const Timer = compose(
         onChange,
 
         playState,
-        alarmState,
         startTime,
         pauseTime,
         index,
@@ -161,17 +159,6 @@ const Timer = compose(
             clearInterval(this._timer);
 
             noSleep.disable();
-            break;
-        }
-      }
-
-      if(nextProps.alarmState !== alarmState) {
-        switch(nextProps.alarmState) {
-          case ALARM_STATE.OFF:
-            Sounds.stop();
-            break;
-          case ALARM_STATE.RING:
-            Sounds.play();
             break;
         }
       }

@@ -1,8 +1,8 @@
-import {PLAY_STATE, ALARM_STATE} from 'constants';
+import {PLAY_STATE} from 'constants';
 
 const initialState = {
   playState: PLAY_STATE.IDLE,
-  alarmState: ALARM_STATE.OFF,
+  alarming: false,
   current: 0,
 };
 
@@ -20,7 +20,7 @@ export default function timer (state = initialState, action) {
       return !isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.IDLE,
-        alarmState: ALARM_STATE.OFF,
+        alarming: false,
         current: 0,
       };
 
@@ -28,7 +28,7 @@ export default function timer (state = initialState, action) {
       return !isPlaying(state) ? state : {
         ...state,
         playState: PLAY_STATE.PAUSE,
-        alarmState: ALARM_STATE.OFF,
+        alarming: false,
       };
 
     case 'TIMER/RESUME':
@@ -38,15 +38,15 @@ export default function timer (state = initialState, action) {
       };
 
     case 'TIMER/RING_ALARM':
-      return {...state, alarmState: ALARM_STATE.RING};
+      return {...state, alarming: true};
     case 'TIMER/STOP_ALARM':
-      return {...state, alarmState: ALARM_STATE.OFF};
+      return {...state, alarming: false};
 
     case 'TIMER/GO_TO_NEXT':
       return {
         ...state,
         current: state.current + 1,
-        alarmState: ALARM_STATE.OFF,
+        alarming: false,
       };
   }
   return state;
