@@ -125,8 +125,7 @@ const Timer = compose(
             if(pauseTime) {
               onChange({
                 startTime: startTime.add(moment().diff(pauseTime)),
-                pauseTIme: null,
-                currentTimestamp: data.timestamp,
+                pauseTime: null,
               });
 
             } else {
