@@ -7,6 +7,7 @@ const initialState = {
 };
 
 const isPlaying = ({playState}) => playState === PLAY_STATE.PLAYING;
+const isIdle = ({playState}) => playState === PLAY_STATE.IDLE;
 
 export default function timer (state = initialState, action) {
   switch(action.type) {
@@ -17,7 +18,7 @@ export default function timer (state = initialState, action) {
       };
 
     case 'TIMER/STOP':
-      return !isPlaying(state) ? state : {
+      return isIdle(state) ? state : {
         ...state,
         playState: PLAY_STATE.IDLE,
         alarming: false,
