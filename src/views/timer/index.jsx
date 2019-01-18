@@ -81,7 +81,7 @@ const Timer = compose(
       currentTimestamp: (props.data || {}).timestamp,
     }),
     {
-      onChangeStartTime:        (state, props) => v => ({startTime: v}),
+      // onChangeStartTime:        (state, props) => v => ({startTime: v}),
       onChangePauseTime:        (state, props) => v => ({pauseTime: v}),
       onChangeCurrnetTimestamp: (state, props) => v => ({currentTimestamp: v}),
       onChange:                 (state, props) => d => ({...state, ...d}),
@@ -108,7 +108,6 @@ const Timer = compose(
     },
     shouldComponentUpdate (nextProps, nextState) {
       const {
-        onChangeStartTime,
         onChangePauseTime,
         onChangeCurrnetTimestamp,
         onChange,
@@ -127,10 +126,14 @@ const Timer = compose(
               onChange({
                 startTime: startTime.add(moment().diff(pauseTime)),
                 pauseTIme: null,
+                currentTimestamp: data.timestamp,
               });
 
             } else {
-              onChangeStartTime(moment());
+              onChange({
+                startTime: moment(),
+                currentTimestamp: data.timestamp,
+              });
             }
 
             this._timer =
