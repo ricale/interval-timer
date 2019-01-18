@@ -13,7 +13,10 @@ const IntervalItem = ({
   hours,
   minutes,
   seconds,
+
   isEditing,
+  canEdit,
+
   onEdit,
   onCancelEdit,
   onUpdate,
@@ -24,10 +27,10 @@ const IntervalItem = ({
       <div className='it-interval-item__header'>
         <span className='it-interval-item__name'>{name}</span>
         <div className='it-interval-item__menu'>
-          <Button onClick={() => onEdit(id)} small={true} bordered={true}>
+          <Button onClick={() => onEdit(id)} small={true} bordered={true} disabled={!canEdit}>
             <Icon name='edit' />
           </Button>
-          <Button onClick={() => onDelete(id)} small={true} bordered={true}>
+          <Button onClick={() => onDelete(id)} small={true} bordered={true} disabled={!canEdit}>
             <Icon name='trash-alt' />
           </Button>
         </div>
@@ -63,6 +66,7 @@ const IntervalItem = ({
 const IntervalList = ({
   data = [],
   editing,
+  canEdit,
   onEdit,
   onCancelEdit,
   onUpdate,
@@ -74,6 +78,7 @@ const IntervalList = ({
       <IntervalItem
           key={d.id}
           isEditing={editing && editing.id === d.id}
+          canEdit={canEdit}
           onEdit={onEdit}
           onCancelEdit={onCancelEdit}
           onUpdate={onUpdate}

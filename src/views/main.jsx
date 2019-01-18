@@ -7,6 +7,7 @@ import {
   Icon,
 } from 'components';
 import {getMapDispatchToProps} from 'lib';
+import {PLAY_STATE} from 'constants';
 
 import configActions from 'actions/config';
 import intervalActions from 'actions/intervals';
@@ -51,7 +52,7 @@ class Main extends Component {
   }
 
   handleCancelEdit = () => {
-    this.props.cancelEditInterva();
+    this.props.cancelEditInterval();
   }
 
   handleDelete = (id) => {
@@ -135,6 +136,7 @@ class Main extends Component {
           <IntervalList
               data={list}
               editing={editing}
+              canEdit={timer.playState === PLAY_STATE.IDLE}
               onEdit={(id) => this.props.editInterval(id)}
               onCancelEdit={this.handleCancelEdit}
               onUpdate={this.handleUpdate}
