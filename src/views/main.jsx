@@ -63,6 +63,14 @@ class Main extends Component {
     this.props.deleteAllInterval();
   }
 
+  handleToggleIntervalsSider = () => {
+    this._siderIntervals.toggle();
+  }
+
+  handleToggleConfigSider = () => {
+    this._siderConfig.toggle();
+  }
+
   render () {
     const {
       list,
@@ -110,10 +118,10 @@ class Main extends Component {
             <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button onClick={() => this._siderIntervals.toggle()}>
+            <Button onClick={this.handleToggleIntervalsSider}>
               <Icon name='bars' />
             </Button>
-            <Button onClick={() => this._siderConfig.toggle()}>
+            <Button onClick={this.handleToggleConfigSider}>
               <Icon name='cog' />
             </Button>
           </div>

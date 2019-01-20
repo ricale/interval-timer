@@ -14,7 +14,7 @@ class Sider extends Component {
 
   handleClickWrapper = (e) => {
     // FIXME
-    e.target.className.indexOf('it-main-sider__wrapper') !== -1 && this.hide();
+    e.target.className.indexOf('it-sider__wrapper') !== -1 && this.hide();
   }
 
   open () {
@@ -30,21 +30,21 @@ class Sider extends Component {
   }
 
   render () {
-    const {title, children} = this.props;
-    const className = `it-main-sider__wrapper ${this.state.show ? '' : 'it-hide'}`;
+    const {title, className, children} = this.props;
+    const _className = `it-sider__wrapper${className ? ` ${className}` : ''}${!this.state.show ? ' it-hide' : ''}`;
 
     return (
-      <div className={className} onClick={this.handleClickWrapper}>
-        <div className='it-main-sider'>
-          <div className='it-main-sider__header'>
+      <div className={_className} onClick={this.handleClickWrapper}>
+        <div className='it-sider'>
+          <div className='it-sider__header'>
             <h2>{title}</h2>
-            <div className='it-main-sider__menu'>
+            <div className='it-sider__menu'>
               <Button compact={true} onClick={() => this.hide()}>
                 <Icon name='times'/>
               </Button>
             </div>
           </div>
-          <div className='it-main-sider__content'>
+          <div className='it-sider__content'>
             {children}
           </div>
         </div>
