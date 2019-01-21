@@ -78,7 +78,7 @@ const IntervalList = ({
       <IntervalItem
           key={d.id}
           isEditing={editing && editing.id === d.id}
-          canEdit={canEdit}
+          canEdit={!editing && canEdit}
           onEdit={onEdit}
           onCancelEdit={onCancelEdit}
           onUpdate={onUpdate}
