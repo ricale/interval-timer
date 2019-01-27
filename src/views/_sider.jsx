@@ -14,15 +14,19 @@ class Sider extends Component {
 
   handleClickWrapper = (e) => {
     // FIXME
-    e.target.className.indexOf('it-sider__wrapper') !== -1 && this.hide();
+    e.target.className.indexOf('it-sider__wrapper') !== -1 && this.close();
   }
 
   open () {
     this.setState({show: true});
   }
 
-  hide () {
+  close () {
     this.setState({show: false});
+  }
+
+  isOpen () {
+    return this.state.show;
   }
 
   toggle () {
@@ -39,7 +43,7 @@ class Sider extends Component {
           <div className='it-sider__header'>
             <h2>{title}</h2>
             <div className='it-sider__menu'>
-              <Button compact={true} onClick={() => this.hide()}>
+              <Button compact={true} onClick={() => this.close()}>
                 <Icon name='times'/>
               </Button>
             </div>

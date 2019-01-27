@@ -23,9 +23,17 @@ import Sider from './_sider';
 import './main.less';
 
 class Main extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      sider: 'intervals',
+    };
+    this._siders = {};
+  }
+
   componentDidMount () {
     if(this.props.list.length === 0) {
-      this._siderIntervals.open();
+      this._siders['intervals'].open();
       this._accordion.open();
     }
   }
@@ -64,11 +72,30 @@ class Main extends Component {
   }
 
   handleToggleIntervalsSider = () => {
-    this._siderIntervals.toggle();
+    this.toggleSiders('intervals');
   }
 
   handleToggleConfigSider = () => {
-    this._siderConfig.toggle();
+    this.toggleSiders('config');
+  }
+
+  toggleSiders (siderName) {
+    const prevSider = this.state.sider;
+    const nextSider = this.state.sider === siderName ? null : siderName;
+
+    this.setState({sider: nextSider}, () => {
+      if(prevSider === null || prevSider === siderName) {
+        this._siders[siderName].toggle();
+
+      } else {
+        Object.keys(this._siders).forEach(key => {
+          if(siderName !== key) {
+            this._siders[key].close();
+          }
+        });
+        this._siders[siderName].toggle();
+      }
+    });
   }
 
   render () {
@@ -127,39 +154,41 @@ class Main extends Component {
           </div>
         </div>
 
-        <Sider
-            title='Intervals'
-            ref={r => this._siderIntervals = r}>
-          <Accordion 
-              className='it-main__form-accordion'
-              title='Add Interval'
-              ref={r => this._accordion = r}>
-            <IntervalForm
-                defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
-                isValid={this.handleValid}
-                onSubmit={this.handleSubmit}
+        <div className='it-main__sider'>
+          <Sider
+              title='Intervals'
+              ref={r => this._siders.intervals = r}>
+            <Accordion 
+                className='it-main__form-accordion'
+                title='Add Interval'
+                ref={r => this._accordion = r}>
+              <IntervalForm
+                  defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
+                  isValid={this.handleValid}
+                  onSubmit={this.handleSubmit}
+                  />
+            </Accordion>
+
+            <IntervalList
+                data={list}
+                editing={editing}
+                canEdit={timer.playState === PLAY_STATE.IDLE}
+                onEdit={(id) => this.props.editInterval(id)}
+                onCancelEdit={this.handleCancelEdit}
+                onUpdate={this.handleUpdate}
+                onDelete={this.handleDelete}
+                onDeleteAll={this.handleDeleteAll}
                 />
-          </Accordion>
+          </Sider>
 
-          <IntervalList
-              data={list}
-              editing={editing}
-              canEdit={timer.playState === PLAY_STATE.IDLE}
-              onEdit={(id) => this.props.editInterval(id)}
-              onCancelEdit={this.handleCancelEdit}
-              onUpdate={this.handleUpdate}
-              onDelete={this.handleDelete}
-              onDeleteAll={this.handleDeleteAll}
+          <SiderConfig
+              {...config}
+              siderRef={r => this._siders.config = r}
+              toggleRingable={toggleRingable}
+              toggleAnimatable={toggleAnimatable}
+              toggleFilled={toggleFilled}
               />
-        </Sider>
-
-        <SiderConfig
-            {...config}
-            siderRef={r => this._siderConfig = r}
-            toggleRingable={toggleRingable}
-            toggleAnimatable={toggleAnimatable}
-            toggleFilled={toggleFilled}
-            />
+        </div>
       </div>
     );
   }
