@@ -1,7 +1,12 @@
 import React from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
 import {fillWithZero} from 'lib';
 import {compose, withProps, lifecycle} from 'lib/recompose';
+
+import './_display.less';
+
+const cn = factoryBemClass('it-timer-display');
 
 const TimerDisplayView = ({
   name,
@@ -16,23 +21,23 @@ const TimerDisplayView = ({
 
   digitsClassName,
 }) => (
-  <div className={`it-timer-display${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}`}>
-    <div className='it-timer-display__name'>{name}</div>
-    <div className={`it-timer-display__digits ${digitsClassName || ''}`}>
+  <div className={`${cn()}${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}`}>
+    <div className={cn('name')}>{name}</div>
+    <div className={`${cn('digits')} ${digitsClassName || ''}`}>
       {showHours &&
-        <span className='it-timer-display__hours'>{fillWithZero(hours)}</span>
+        <span className={cn('hours')}>{fillWithZero(hours)}</span>
       }
       {showHours &&
-        <span className='it-timer-display__divider'>:</span>
+        <span className={cn('divider')}>:</span>
       }
-      <span className='it-timer-display__minutes'>{fillWithZero(minutes)}</span>
-      <span className='it-timer-display__divider'>:</span>
-      <span className='it-timer-display__seconds'>{fillWithZero(seconds)}</span>
+      <span className={cn('minutes')}>{fillWithZero(minutes)}</span>
+      <span className={cn('divider')}>:</span>
+      <span className={cn('seconds')}>{fillWithZero(seconds)}</span>
       {showMilliseconds &&
-        <span className='it-timer-display__divider'>:</span>
+        <span className={cn('divider')}>:</span>
       }
       {showMilliseconds &&
-        <span className='it-timer-display__milliseconds'>
+        <span className={cn('milliseconds')}>
           {parseInt(milliseconds / 100)}
         </span>
       }

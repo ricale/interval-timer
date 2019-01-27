@@ -1,0 +1,54 @@
+@display-color:  #DDD;
+@active-color:   #AFDFF3;
+@negative-color: #EAA6A6;
+
+.it-timer-display {
+  display: inline-block;
+  padding: 20px 30px;
+  margin: 0;
+
+  font-family: monospace;
+  color: #333;
+
+  &__name {
+    font-size: 1.2em;
+  }
+
+  &__digits {
+    font-size: 3.5em;
+    line-height: 100%;
+  }
+}
+
+.it-timer-display {
+  background-color: @display-color;
+}
+
+.it-timer-display.it-active {
+  background-color: @active-color;
+}
+
+.it-timer-display.it-negative {
+  background-color: @negative-color;
+}
+
+.it-timer.it-full {
+  .it-timer-display {
+    &__name {
+      font-size: 2.4em;
+    }
+    &__digits {
+      font-size: 10em;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .it-timer.it-full {
+    .it-timer-display {
+      &__digits {
+        font-size: 3.5em;
+      }
+    }
+  }
+}

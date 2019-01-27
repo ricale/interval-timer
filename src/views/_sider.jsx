@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
 import {Button, Icon} from 'components';
 
 import './_sider.less';
+
+const cn = factoryBemClass('it-sider');
 
 class Sider extends Component {
   constructor (props) {
@@ -14,7 +17,7 @@ class Sider extends Component {
 
   handleClickWrapper = (e) => {
     // FIXME
-    e.target.className.indexOf('it-sider__wrapper') !== -1 && this.close();
+    e.target.className.indexOf(cn('wrapper')) !== -1 && this.close();
   }
 
   open () {
@@ -35,20 +38,20 @@ class Sider extends Component {
 
   render () {
     const {title, className, children} = this.props;
-    const _className = `it-sider__wrapper${className ? ` ${className}` : ''}${!this.state.show ? ' it-hide' : ''}`;
+    const _className = `${cn('wrapper')}${className ? ` ${className}` : ''}${!this.state.show ? ' it-hide' : ''}`;
 
     return (
       <div className={_className} onClick={this.handleClickWrapper}>
-        <div className='it-sider'>
-          <div className='it-sider__header'>
+        <div className={cn()}>
+          <div className={cn('header')}>
             <h2>{title}</h2>
-            <div className='it-sider__menu'>
+            <div className={cn('menu')}>
               <Button compact={true} onClick={() => this.close()}>
                 <Icon name='times'/>
               </Button>
             </div>
           </div>
-          <div className='it-sider__content'>
+          <div className={cn('content')}>
             {children}
           </div>
         </div>
