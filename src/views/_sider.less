@@ -71,20 +71,17 @@
     transition: width 0.2s ease-out;
   }
   .it-sider__wrapper:not(.it-hide) {
+    order: 3;
   }
   .it-sider__wrapper.it-hide {
     width: 0;
+    order: 2;
   }
 
   .it-sider__wrapper {
     position: relative;
     width: 230px;
-    height: auto;
-    z-index: 2;
-  }
-
-  .it-sider__wrapper:not(.it-hide):not(:last-child) {
-    margin-right: 2px
+    height: 100%;
   }
 
   .it-sider {
