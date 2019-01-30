@@ -18,12 +18,11 @@ const TimerDisplayView = ({
   showMilliseconds,
   isNegative,
   isPlaying,
-
-  digitsClassName,
+  shake,
 }) => (
-  <div className={`${cn({mods: {active: isPlaying, negative: isNegative}})}`}>
+  <div className={`${cn({mods: {active: isPlaying, negative: isNegative, shake}})}`}>
     <div className={cn('name')}>{name}</div>
-    <div className={`${cn('digits')} ${digitsClassName || ''}`}>
+    <div className={cn('digits')}>
       {showHours &&
         <span className={cn('hours')}>{fillWithZero(hours)}</span>
       }

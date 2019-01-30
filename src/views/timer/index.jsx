@@ -14,7 +14,6 @@ import {PLAY_STATE} from 'constants';
 import TimerDisplay from './_display';
 
 import './index.less';
-import './shake.less';
 
 const cn = factoryBemClass('it-timer');
 
@@ -42,11 +41,10 @@ const TimerView = ({
       className={cn({mods: {active: isPlaying, negative: isNegative, filled: config.filled}})}>
     <TimerDisplay
         name={data.name}
+        timestamp={isRunning ? currentTimestamp : data.timestamp}
         isPlaying={isPlaying}
         isNegative={isNegative}
-        timestamp={isRunning ? currentTimestamp : data.timestamp}
-
-        digitsClassName={config.animatable && isNegative ? 'it-anim-shake' : ''}
+        shake={config.animatable && isNegative}
         />
     <div className={cn('controller')}>
       <Button onClick={onStart} disabled={disabled || isPlaying}>
