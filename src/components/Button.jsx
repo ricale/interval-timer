@@ -1,6 +1,9 @@
 import React from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
 import './Button.less';
+
+const cn = factoryBemClass('it-button');
 
 const Button = ({
   children,
@@ -16,29 +19,21 @@ const Button = ({
   ...args
 }) => {
 
-  const _className = ['it-button'];
-
-  small    && _className.push('it-small');
-  compact  && _className.push('it-compact');
-  bordered && _className.push('it-bordered');
-  active   && _className.push('it-active');
-
-  if(primary) {
-    _className.push('it-primary');
-  } else if(warning) {
-    _className.push('it-warning');
-  } else if(success) {
-    _className.push('it-success');
-  } else if(light) {
-    _className.push('it-light');
-  }
-
-  if(className) {
-    _className.push(`${className}`);
-  }
+  const _className = cn({
+    mods: {
+      small,
+      compact,
+      bordered,
+      active,
+      primary,
+      warning,
+      success,
+      light,
+    },
+  });
 
   return (
-    <button {...args} className={_className.join(' ')}>
+    <button {...args} className={`${_className} ${className}`}>
       {children}
     </button>
   );

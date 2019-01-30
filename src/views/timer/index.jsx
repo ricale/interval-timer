@@ -39,7 +39,7 @@ const TimerView = ({
 }) => (
   <FullScreenContainer
       ref={fullScreenContainerRef}
-      className={`${cn()}${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}${config.filled ? ' it-filled' : ''}`}>
+      className={cn({mods: {active: isPlaying, negative: isNegative, filled: config.filled}})}>
     <TimerDisplay
         name={data.name}
         isPlaying={isPlaying}

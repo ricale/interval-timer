@@ -34,38 +34,43 @@
     color: #FFF;
     font-weight: bold;
   }
+
+  &--filled {
+    width: 100%;
+    height: 100%;
+    background-color: @display-color;
+
+    &.it-timer--active {
+      background-color: @active-color;
+    }
+
+    &.it-timer--negative {
+      background-color: @negative-color;
+    }
+  }
 }
 
-.it-timer.it-full {
+.it-timer.it-fullscreen--full {
+  width: 100%;
+  height: 100%;
+  background-color: @display-color;
+
+  &.it-timer--active {
+    background-color: @active-color;
+  }
+
+  &.it-timer--negative {
+    background-color: @negative-color;
+  }
+
   .it-timer__controller {
     display: flex;
     flex-direction: row;
   }
 }
 
-.it-timer.it-full,
-.it-timer.it-filled {
-  width: 100%;
-  height: 100%;
-}
-
-.it-timer.it-full,
-.it-timer.it-filled {
-  background-color: @display-color;
-}
-
-.it-timer.it-full.it-active,
-.it-timer.it-filled.it-active {
-  background-color: @active-color;
-}
-
-.it-timer.it-full.it-negative,
-.it-timer.it-filled.it-negative {
-  background-color: @negative-color;
-}
-
 @media (min-width: 768px) {
-  .it-timer.it-full {
+  .it-timer.it-fullscreen--full {
     .it-timer__controller {
       .it-button {
         font-size: 2.4em;
@@ -76,7 +81,7 @@
 }
 
 @media (max-width: 768px) {
-  .it-timer.it-full {
+  .it-timer.it-fullscreen--full {
     .it-timer__controller {
       .it-button {
         font-size: 1.5em;

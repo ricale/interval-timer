@@ -11,21 +11,21 @@
   border: 1px solid #AAA;
   border-radius: 2px;
   background-color: #FFF;
-}
 
-.it-checkbox:checked::after {
-  content: '';
+  &:checked::after {
+    content: '';
 
-  position: absolute;
-  top: 1px;
-  left: 1px;
+    position: absolute;
+    top: 1px;
+    left: 1px;
 
-  box-sizing: border-box;
-  width: 16px;
-  height: 16px;
-  // border: 1px solid #666;
-  border-radius: 2px;
-  background-color: @default;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    // border: 1px solid #666;
+    border-radius: 2px;
+    background-color: @default;
+  }
 }
 
 @colors: {
@@ -36,7 +36,7 @@
 };
 
 each(@colors, {
-  .it-checkbox.it-@{key}:checked::after {
+  .it-checkbox--@{key}:checked::after {
     background-color: @value;
   }
 });

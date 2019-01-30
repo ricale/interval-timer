@@ -2022,9 +2022,9 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
-factory-bem-class@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/factory-bem-class/-/factory-bem-class-0.1.3.tgz#098fce6edd339acb901581bbdde4fc69bf79bc41"
+factory-bem-class@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/factory-bem-class/-/factory-bem-class-0.1.6.tgz#7c5cce4473481928990702e848e50ae01190df75"
 
 fast-deep-equal@^2.0.1:
   version "2.0.1"

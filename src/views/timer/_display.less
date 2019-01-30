@@ -10,6 +10,16 @@
   font-family: monospace;
   color: #333;
 
+  background-color: @display-color;
+
+  &--active {
+    background-color: @active-color;
+  }
+
+  &--negative {
+    background-color: @negative-color;
+  }
+
   &__name {
     font-size: 1.2em;
   }
@@ -20,19 +30,7 @@
   }
 }
 
-.it-timer-display {
-  background-color: @display-color;
-}
-
-.it-timer-display.it-active {
-  background-color: @active-color;
-}
-
-.it-timer-display.it-negative {
-  background-color: @negative-color;
-}
-
-.it-timer.it-full {
+.it-timer.it-fullscreen--full {
   .it-timer-display {
     &__name {
       font-size: 2.4em;
@@ -44,7 +42,7 @@
 }
 
 @media (max-width: 768px) {
-  .it-timer.it-full {
+  .it-timer.it-fullscreen--full {
     .it-timer-display {
       &__digits {
         font-size: 3.5em;

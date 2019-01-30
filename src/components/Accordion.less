@@ -1,7 +1,7 @@
 .it-accordion {
   margin-bottom: 10px;
 
-  .it-accordion__header {
+  &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,19 +15,17 @@
     }
   }
 
-  .it-accordion__body {
+  &__body {
     display: none;
     padding: 5px;
   }
-}
 
-.it-accordion.it-active {
-  .it-accordion__header {
+  &--active &__header {
     border: 1px solid #cce4ff;
     background-color: #cce4ff;
   }
 
-  .it-accordion__body {
+  &--active &__body {
     display: block;
     border-left: 1px solid #DDD;
     border-right: 1px solid #DDD;

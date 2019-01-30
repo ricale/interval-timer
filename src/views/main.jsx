@@ -145,7 +145,7 @@ class Main extends Component {
               />
 
           <div className={cn('controller')}>
-            <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
+            <Button onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
             <Button onClick={this.handleToggleIntervalsSider}>

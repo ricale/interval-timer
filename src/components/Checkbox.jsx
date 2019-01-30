@@ -1,6 +1,9 @@
 import React from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
 import './Checkbox.less';
+
+const cn = factoryBemClass('it-checkbox');
 
 const Checkbox = ({
   className = '',
@@ -11,24 +14,17 @@ const Checkbox = ({
   ...args
 }) => {
 
-  const _className = ['it-checkbox'];
-
-  if(primary) {
-    _className.push('it-primary');
-  } else if(warning) {
-    _className.push('it-warning');
-  } else if(success) {
-    _className.push('it-success');
-  } else if(light) {
-    _className.push('it-light');
-  }
-
-  if(className) {
-    _className.push(`${className}`);
-  }
+  const _className = cn({
+    mods: {
+      primary,
+      warning,
+      success,
+      light,
+    },
+  });
 
   return (
-    <input {...args} type='checkbox' className={_className.join(' ')} />
+    <input {...args} type='checkbox' className={`${_className} ${className}`} />
   );
 };
 
