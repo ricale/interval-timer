@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import NoSleep from 'nosleep.js';
+import {factoryBemClass} from 'factory-bem-class';
 
 import {compose, withStateHandlers, withProps, lifecycle} from 'lib/recompose';
 import {
@@ -13,7 +14,8 @@ import {PLAY_STATE} from 'constants';
 import TimerDisplay from './_display';
 
 import './index.less';
-import './shake.less';
+
+const cn = factoryBemClass('it-timer');
 
 const noSleep = new NoSleep();
 
@@ -36,36 +38,33 @@ const TimerView = ({
 }) => (
   <FullScreenContainer
       ref={fullScreenContainerRef}
-      className={`it-timer${isPlaying ? ' it-active' : ''}${isNegative ? ' it-negative' : ''}${config.filled ? ' it-filled' : ''}`}>
+      className={cn({mods: {active: isPlaying, negative: isNegative, filled: config.filled}})}>
     <TimerDisplay
         name={data.name}
+        timestamp={isRunning ? currentTimestamp : data.timestamp}
         isPlaying={isPlaying}
         isNegative={isNegative}
-        timestamp={isRunning ? currentTimestamp : data.timestamp}
-
-        digitsClassName={config.animatable && isNegative ? 'it-anim-shake' : ''}
+        shake={config.animatable && isNegative}
         />
-    <div className='it-timer-controller'>
-      <div className='it-timer-controller__row'>
-        <Button onClick={() => onStart()} disabled={disabled || isPlaying}>
-          <Icon name='play' />
-        </Button>
-        <Button onClick={() => onPause()} disabled={disabled || !isPlaying}>
-          <Icon name='pause' />
-        </Button>
-        <Button onClick={() => onStop()} disabled={disabled || !isRunning}>
-          <Icon name='stop' />
-        </Button>
-        <Button onClick={() => onDone()} disabled={disabled}>
-          <Icon name='forward' />
-        </Button>
-        <Button onClick={() => stopAlarm()} disabled={disabled || !isRinging}>
-          <Icon name='bell-slash' />
-        </Button>
-      </div>
+    <div className={cn('controller')}>
+      <Button onClick={onStart} disabled={disabled || isPlaying}>
+        <Icon name='play' />
+      </Button>
+      <Button onClick={onPause} disabled={disabled || !isPlaying}>
+        <Icon name='pause' />
+      </Button>
+      <Button onClick={onStop} disabled={disabled || !isRunning}>
+        <Icon name='stop' />
+      </Button>
+      <Button onClick={onDone} disabled={disabled}>
+        <Icon name='forward' />
+      </Button>
+      <Button onClick={stopAlarm} disabled={disabled || !isRinging}>
+        <Icon name='bell-slash' />
+      </Button>
     </div>
     {disabled &&
-      <div className='it-timer-message-overlay'>
+      <div className={cn('message-overlay')}>
         Add Interval first.
       </div>
     }

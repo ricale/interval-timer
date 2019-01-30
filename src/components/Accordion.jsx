@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
 import Icon from './Icon';
 
 import './Accordion.less';
+
+const cn = factoryBemClass('it-accordion');
 
 class Accordion extends Component {
   constructor (props) {
@@ -33,7 +36,7 @@ class Accordion extends Component {
     const {show} = this.state;
 
     return (
-      <div className={`${className} it-accordion${show ? ' it-active' : ''}`}>
+      <div className={`${className} ${cn({mods: {active: show}})}`}>
         <div className='it-accordion__header' onClick={this.handleClick}>
           {title}
           <Icon name={show ? 'chevron-up' : 'chevron-down'} />

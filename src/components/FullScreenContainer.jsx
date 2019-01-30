@@ -2,11 +2,14 @@
 
 import React, {Component} from 'react';
 import fscreen from 'fscreen';
+import {factoryBemClass} from 'factory-bem-class';
 
 import Button from './Button';
 import Icon from './Icon';
 
 import './FullScreenContainer.less';
+
+const cn = factoryBemClass('it-fullscreen');
 
 class FullScreenContainer extends Component {
   state = {
@@ -31,12 +34,6 @@ class FullScreenContainer extends Component {
     this.toggle();
   }
 
-  getClassName () {
-    const {className} = this.props;
-    const modeClass = this.state.full ? ' it-full' : '';
-    return `it-fullscreen-container${modeClass} ${className || ''}`;
-  }
-
   toggle () {
     this.setState({full: !this.state.full}, () => {
       this.state.full ?
@@ -49,12 +46,13 @@ class FullScreenContainer extends Component {
 
   render () {
     const {children, className, button, onChange, ...args} = this.props;
+    const _className = `${cn({mods: {full: this.state.full}})} ${className || ''}`;
 
     return (
-      <div {...args} className={this.getClassName()} ref={r => this._container = r}>
+      <div {...args} className={_className} ref={r => this._container = r}>
         {children}
         {button || this.state.full &&
-          <Button className='it-fullscreen__button' onClick={this.handleClick}>
+          <Button className={cn('button')} onClick={this.handleClick}>
             <Icon name={this.state.full ? 'compress' : 'expand'} />
           </Button>
         }

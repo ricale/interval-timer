@@ -1,67 +1,10 @@
 import React from 'react';
 
-import {fillWithZero} from 'lib';
 import {Button, Icon} from 'components';
 
-import IntervalForm from './form';
+import IntervalItem from './_item';
 
 import './list.less';
-
-const IntervalItem = ({
-  id,
-  name,
-  hours,
-  minutes,
-  seconds,
-
-  isEditing,
-  canEdit,
-
-  onEdit,
-  onCancelEdit,
-  onUpdate,
-  onDelete,
-}) => (
-  <div className={`it-interval-list__item${isEditing ? ' it-editing' : ''}`}>
-    {!isEditing &&
-      <div className='it-interval-item__header'>
-        <span className='it-interval-item__name'>{name}</span>
-        <div className='it-interval-item__menu'>
-          <Button onClick={() => onEdit(id)} small={true} bordered={true} disabled={!canEdit}>
-            <Icon name='edit' />
-          </Button>
-          <Button onClick={() => onDelete(id)} small={true} bordered={true} disabled={!canEdit}>
-            <Icon name='trash-alt' />
-          </Button>
-        </div>
-      </div>
-    }
-
-    {!isEditing &&
-      <div className='it-interval-item__digits'>
-        <span className='it-interval-item__hours'>
-          {fillWithZero(hours)}
-        </span>
-        <span className='it-interval-item__divider'>:</span>
-        <span className='it-interval-item__minutes'>
-          {fillWithZero(minutes)}
-        </span>
-        <span className='it-interval-item__divider'>:</span>
-        <span className='it-interval-item__seconds'>
-          {fillWithZero(seconds)}
-        </span>
-      </div>
-    }
-
-    {isEditing &&
-      <IntervalForm
-          editing={{id, name, hours, minutes, seconds}}
-          onSubmit={onUpdate}
-          onCancel={onCancelEdit}
-          />
-    }
-  </div>
-);
 
 const IntervalList = ({
   data = [],

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {factoryBemClass} from 'factory-bem-class';
 
 import {
   Accordion,
@@ -21,6 +22,8 @@ import SiderConfig from './sider/config';
 import Sider from './_sider';
 
 import './main.less';
+
+const cn = factoryBemClass('it-main');
 
 class Main extends Component {
   constructor (props) {
@@ -120,8 +123,8 @@ class Main extends Component {
     } = this.props;
 
     return (
-      <div className='it-main'>
-        <div className='it-main__content'>
+      <div className={cn()}>
+        <div className={cn('content')}>
           <Timer
               onStart={start}
               onStop={stop}
@@ -141,8 +144,8 @@ class Main extends Component {
               {...timer}
               />
 
-          <div className='it-main__controller'>
-            <Button className='it-fullscreen__button' onClick={() => this._fullScreenContainer.toggle()}>
+          <div className={cn('controller')}>
+            <Button onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
             <Button onClick={this.handleToggleIntervalsSider}>
@@ -154,12 +157,12 @@ class Main extends Component {
           </div>
         </div>
 
-        <div className='it-main__sider'>
+        <div className={cn('sider')}>
           <Sider
               title='Intervals'
               ref={r => this._siders.intervals = r}>
             <Accordion 
-                className='it-main__form-accordion'
+                className={cn('form-accordion')}
                 title='Add Interval'
                 ref={r => this._accordion = r}>
               <IntervalForm

@@ -1,4 +1,5 @@
 import React from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
 import {
   compose,
@@ -10,6 +11,8 @@ import {
 import {Button, Icon, NumberInput} from 'components';
 
 import './form.less';
+
+const cn = factoryBemClass('it-interval-form');
 
 const IntervalFormView = ({
   name,
@@ -27,19 +30,19 @@ const IntervalFormView = ({
   onSubmit,
   onCancel,
 }) => (
-  <div className={`it-interval-form${isEdit ? ' it-editing' : ''}`}>
-    <div className='it-interval-form__row'>
+  <div className={`${cn()}${isEdit ? ' it-editing' : ''}`}>
+    <div className={cn('row')}>
       <input
-          className='it-interval-form__str'
+          className={cn('str')}
           value={name}
           onChange={e => onChangeName(e.target.value)}
           placeholder={defaultName}
           onKeyPress={onKeyPress}
           />
     </div>
-    <div className='it-interval-form__row'>
+    <div className={cn('row')}>
       <NumberInput
-          className='it-interval-form__number'
+          className={cn('number')}
           type='number'
           max={99}
           min={0}
@@ -47,9 +50,9 @@ const IntervalFormView = ({
           onChange={e => onChangeHours(e.target.value)}
           onKeyPress={onKeyPress}
           />
-      <span className='it-interval-form__divider'>:</span>
+      <span className={cn('divider')}>:</span>
       <NumberInput
-          className='it-interval-form__number'
+          className={cn('number')}
           type='number'
           min={0}
           max={59}
@@ -57,9 +60,9 @@ const IntervalFormView = ({
           onChange={e => onChangeMinutes(e.target.value)}
           onKeyPress={onKeyPress}
           />
-      <span className='it-interval-form__divider'>:</span>
+      <span className={cn('divider')}>:</span>
       <NumberInput
-          className='it-interval-form__number'
+          className={cn('number')}
           type='number'
           min={0}
           max={59}
@@ -68,7 +71,7 @@ const IntervalFormView = ({
           onKeyPress={onKeyPress}
           />
     </div>
-    <div className='it-interval-form__row'>
+    <div className={cn('row')}>
       <Button
           onClick={onSubmit}
           primary={true}
