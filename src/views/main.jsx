@@ -29,7 +29,7 @@ class Main extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      sider: 'intervals',
+      sider: null,
     };
     this._siders = {};
   }
@@ -157,41 +157,39 @@ class Main extends Component {
           </div>
         </div>
 
-        <div className={cn('sider')}>
-          <Sider
-              title='Intervals'
-              ref={r => this._siders.intervals = r}>
-            <Accordion 
-                className={cn('form-accordion')}
-                title='Add Interval'
-                ref={r => this._accordion = r}>
-              <IntervalForm
-                  defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
-                  isValid={this.handleValid}
-                  onSubmit={this.handleSubmit}
-                  />
-            </Accordion>
-
-            <IntervalList
-                data={list}
-                editing={editing}
-                canEdit={timer.playState === PLAY_STATE.IDLE}
-                onEdit={(id) => this.props.editInterval(id)}
-                onCancelEdit={this.handleCancelEdit}
-                onUpdate={this.handleUpdate}
-                onDelete={this.handleDelete}
-                onDeleteAll={this.handleDeleteAll}
+        <Sider
+            title='Intervals'
+            ref={r => this._siders.intervals = r}>
+          <Accordion 
+              className={cn('form-accordion')}
+              title='Add Interval'
+              ref={r => this._accordion = r}>
+            <IntervalForm
+                defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
+                isValid={this.handleValid}
+                onSubmit={this.handleSubmit}
                 />
-          </Sider>
+          </Accordion>
 
-          <SiderConfig
-              {...config}
-              siderRef={r => this._siders.config = r}
-              toggleRingable={toggleRingable}
-              toggleAnimatable={toggleAnimatable}
-              toggleFilled={toggleFilled}
+          <IntervalList
+              data={list}
+              editing={editing}
+              canEdit={timer.playState === PLAY_STATE.IDLE}
+              onEdit={(id) => this.props.editInterval(id)}
+              onCancelEdit={this.handleCancelEdit}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
+              onDeleteAll={this.handleDeleteAll}
               />
-        </div>
+        </Sider>
+
+        <SiderConfig
+            {...config}
+            siderRef={r => this._siders.config = r}
+            toggleRingable={toggleRingable}
+            toggleAnimatable={toggleAnimatable}
+            toggleFilled={toggleFilled}
+            />
       </div>
     );
   }
