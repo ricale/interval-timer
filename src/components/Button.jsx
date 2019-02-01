@@ -20,16 +20,14 @@ const Button = ({
 }) => {
 
   const _className = cn({
-    mods: {
-      small,
-      compact,
-      bordered,
-      active,
-      primary,
-      warning,
-      success,
-      light,
-    },
+    small,
+    compact,
+    bordered,
+    active,
+    primary,
+    warning,
+    success,
+    light,
   });
 
   return (

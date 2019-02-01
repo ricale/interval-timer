@@ -38,7 +38,7 @@ const TimerView = ({
 }) => (
   <FullScreenContainer
       ref={fullScreenContainerRef}
-      className={cn({mods: {active: isPlaying, negative: isNegative, filled: config.filled}})}>
+      className={cn({active: isPlaying, negative: isNegative, filled: config.filled})}>
     <TimerDisplay
         name={data.name}
         timestamp={isRunning ? currentTimestamp : data.timestamp}

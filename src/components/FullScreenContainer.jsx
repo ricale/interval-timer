@@ -46,7 +46,7 @@ class FullScreenContainer extends Component {
 
   render () {
     const {children, className, button, onChange, ...args} = this.props;
-    const _className = `${cn({mods: {full: this.state.full}})} ${className || ''}`;
+    const _className = `${cn({full: this.state.full})} ${className || ''}`;
 
     return (
       <div {...args} className={_className} ref={r => this._container = r}>

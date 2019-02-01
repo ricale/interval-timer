@@ -36,7 +36,7 @@ class Accordion extends Component {
     const {show} = this.state;
 
     return (
-      <div className={`${className} ${cn({mods: {active: show}})}`}>
+      <div className={`${className} ${cn({active: show})}`}>
         <div className='it-accordion__header' onClick={this.handleClick}>
           {title}
           <Icon name={show ? 'chevron-up' : 'chevron-down'} />

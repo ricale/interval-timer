@@ -30,7 +30,7 @@ const IntervalFormView = ({
   onSubmit,
   onCancel,
 }) => (
-  <div className={`${cn()}${isEdit ? ' it-editing' : ''}`}>
+  <div className={cn()}>
     <div className={cn('row')}>
       <input
           className={cn('str')}

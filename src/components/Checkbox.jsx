@@ -15,12 +15,10 @@ const Checkbox = ({
 }) => {
 
   const _className = cn({
-    mods: {
-      primary,
-      warning,
-      success,
-      light,
-    },
+    primary,
+    warning,
+    success,
+    light,
   });
 
   return (

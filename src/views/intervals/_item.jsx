@@ -25,7 +25,7 @@ const IntervalItem = ({
   onUpdate,
   onDelete,
 }) => (
-  <div className={cn({mods: {editing: isEditing}})}>
+  <div className={cn({editing: isEditing})}>
     {!isEditing &&
       <div className={cn('header')}>
         <span className={cn('name')}>{name}</span>
