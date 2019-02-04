@@ -145,13 +145,13 @@ class Main extends Component {
               />
 
           <div className={cn('controller')}>
-            <Button onClick={() => this._fullScreenContainer.toggle()}>
+            <Button tooltip={{text: 'Fullscreen', position: 'bottom'}} onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button onClick={this.handleToggleIntervalsSider}>
+            <Button tooltip={{text: 'Intervals', position: 'bottom'}} onClick={this.handleToggleIntervalsSider}>
               <Icon name='bars' />
             </Button>
-            <Button onClick={this.handleToggleConfigSider}>
+            <Button tooltip={{text: 'Settings', position: 'bottom-right'}} onClick={this.handleToggleConfigSider}>
               <Icon name='cog' />
             </Button>
           </div>

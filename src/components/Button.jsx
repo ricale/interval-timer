@@ -1,6 +1,8 @@
 import React from 'react';
 import {factoryBemClass} from 'factory-bem-class';
 
+import Tooltip from './Tooltip';
+
 import './Button.less';
 
 const cn = factoryBemClass('it-button');
@@ -8,14 +10,18 @@ const cn = factoryBemClass('it-button');
 const Button = ({
   children,
   className = '',
+  onClick,
+
   small,
   compact,
   bordered,
   active,
+  disabled,
   primary,
   warning,
   success,
   light,
+  tooltip,
   ...args
 }) => {
 
@@ -24,16 +30,20 @@ const Button = ({
     compact,
     bordered,
     active,
+    disabled,
     primary,
     warning,
     success,
     light,
   });
 
+  const Tag = tooltip ? Tooltip : 'div';
+  const tooltipAttrs = tooltip || {};
+
   return (
-    <button {...args} className={`${_className} ${className}`}>
+    <Tag {...args} className={`${_className} ${className}`} onClick={!disabled ? onClick : undefined} {...tooltipAttrs}>
       {children}
-    </button>
+    </Tag>
   );
 };
 

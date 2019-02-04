@@ -1,0 +1,71 @@
+@backgroundColor: rgba(0,0,0,0.5);
+
+.it-tooltip {
+  position: relative;
+
+  &__body {
+    position: absolute;
+    flex-direction: column;
+
+    display: none;
+  }
+
+  &:hover &__body {
+    display: flex;
+  }
+
+  &__content {
+    order: 1;
+    max-width: 150px;
+    padding: 10px;
+
+    text-align: center;
+    background-color: @backgroundColor;
+    font-size: 0.85em;
+    color: #FFF;
+  }
+}
+
+.it-tooltip {
+  &--top       &__body,
+  &--top-left  &__body,
+  &--top-right &__body {
+    bottom: 100%;
+  }
+  &--top       &__arrow,
+  &--top-left  &__arrow,
+  &--top-right &__arrow {
+    order: 2;
+    display: inline-block;
+    border-top: 5px solid @backgroundColor;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+  }
+  &--bottom       &__body,
+  &--bottom-left  &__body,
+  &--bottom-right &__body {
+    top: 100%;
+  }
+  &--bottom       &__arrow,
+  &--bottom-left  &__arrow,
+  &--bottom-right &__arrow {
+    order: 0;
+    display: inline-block;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid @backgroundColor;
+  }
+
+  &--top    &__body,
+  &--bottom &__body {
+    align-items: center;
+  }
+  &--top-left    &__body,
+  &--bottom-left &__body {
+    align-items: flex-start;
+  }
+  &--top-right    &__body,
+  &--bottom-right &__body {
+    align-items: flex-end;
+  }
+}

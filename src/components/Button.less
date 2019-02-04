@@ -7,9 +7,11 @@
 @light:   #f8f9fa;
 
 .it-button {
+  display: inline-block;
   margin: 2px;
   padding: 6px 12px;
 
+  border-width: 0;
   border-style: solid;
   border-radius: 3px;
   background-color: transparent;
@@ -33,11 +35,13 @@
     border: 1px solid @default;
   }
 
-  &:disabled {
+  &:disabled,
+  &--disabled, {
     opacity: 0.5;
   }
 
-  &--bordered:disabled {
+  &--bordered:disabled,
+  &--bordered&--disabled {
     position: relative;
 
     &::after {
@@ -54,7 +58,9 @@
   }
 
   &:active:not(:disabled),
-  &--active:not(:disabled) {
+  &--active:not(:disabled),
+  &:active:not(&--disabled),
+  &--active:not(&--disabled) {
     color: @default;
     background-color: transparent;
     background-image: none;
@@ -62,7 +68,8 @@
     box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
   }
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled),
+  &:hover:not(&--disabled) {
     color: #fff;
     background-color: @default;
     border-color: @default;

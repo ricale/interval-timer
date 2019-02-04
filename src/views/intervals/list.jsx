@@ -31,7 +31,11 @@ const IntervalList = ({
     )}
 
     {data.length > 0 &&
-      <Button onClick={onDeleteAll} warning={true} bordered={true}>
+      <Button
+          onClick={onDeleteAll}
+          warning={true}
+          bordered={true}
+          tooltip={{text: 'Remove all intervals'}}>
         <Icon name='trash-alt'/>
       </Button>
     }
