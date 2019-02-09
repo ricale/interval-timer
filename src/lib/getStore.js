@@ -11,9 +11,15 @@ export default function getStore (reducers) {
     }
   });
 
+  const devtoolExtension = (
+    process.env.NODE_ENV !== 'production' ?
+      (window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) :
+      undefined
+  );
+
   return createStore(
     reducers,
     preloadedState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    devtoolExtension
   );
 }
