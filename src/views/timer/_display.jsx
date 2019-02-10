@@ -2,7 +2,7 @@ import React from 'react';
 import {factoryBemClass} from 'factory-bem-class';
 
 import {fillWithZero} from 'lib';
-import {compose, withProps, lifecycle} from 'lib/recompose';
+import {compose, withProps, lifecycle} from 'lib';
 
 import './_display.less';
 

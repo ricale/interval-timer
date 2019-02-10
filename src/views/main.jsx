@@ -17,6 +17,7 @@ import timerActions from 'actions/timer';
 import Timer from './timer';
 import IntervalForm from './intervals/form';
 import IntervalList from './intervals/list';
+import HistoryList from './history/list';
 import SiderConfig from './sider/config';
 
 import Sider from './_sider';
@@ -36,9 +37,10 @@ class Main extends Component {
 
   componentDidMount () {
     if(this.props.list.length === 0) {
-      this._siders['intervals'].open();
+      this.toggleSiders('intervals');
       this._accordion.open();
     }
+    this.toggleSiders('history');
   }
 
   shouldComponentUpdate (nextProps) {
@@ -78,6 +80,10 @@ class Main extends Component {
     this.toggleSiders('intervals');
   }
 
+  handleToggleHistorySider = () => {
+    this.toggleSiders('history');
+  }
+
   handleToggleConfigSider = () => {
     this.toggleSiders('config');
   }
@@ -108,6 +114,7 @@ class Main extends Component {
       editing,
       timer: {current, ...timer},
       config,
+      history,
 
       start,
       stop,
@@ -151,6 +158,9 @@ class Main extends Component {
             <Button tooltip={{text: 'Intervals', position: 'bottom'}} onClick={this.handleToggleIntervalsSider}>
               <Icon name='bars' />
             </Button>
+            <Button tooltip={{text: 'History', position: 'bottom'}} onClick={this.handleToggleHistorySider}>
+              <Icon name='history' />
+            </Button>
             <Button tooltip={{text: 'Settings', position: 'bottom-right'}} onClick={this.handleToggleConfigSider}>
               <Icon name='cog' />
             </Button>
@@ -190,6 +200,13 @@ class Main extends Component {
             toggleAnimatable={toggleAnimatable}
             toggleFilled={toggleFilled}
             />
+        <Sider
+            title='History'
+            ref={r => this._siders.history = r}>
+            <HistoryList
+                data={history}
+                />
+        </Sider>
       </div>
     );
   }
@@ -201,6 +218,7 @@ const mapStateToProps = (state, ownProps) => ({
   editing: state.intervals.editing,
   timer: state.timer,
   config: state.config,
+  history: state.history.list,
 });
 
 const mapDispatchToProps = getMapDispatchToProps({

@@ -7,7 +7,7 @@ import {
   withHandlers,
   withProps,
   lifecycle,
-} from 'lib/recompose';
+} from 'lib';
 import {Button, Icon, NumberInput} from 'components';
 
 import './form.less';

@@ -1,0 +1,37 @@
+.it-history-list {
+  &__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    width: 200px;
+  }
+
+  &__item-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  &__item-title {
+  }
+  &__item-start-time {
+    font-size: 0.8em;
+  }
+
+  &__item-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-top: 10px;
+    padding: 5px;
+    flex: 1;
+    background-color: #FFF;
+  }
+
+  &__item--stop &__item-body {
+    background-color: transparent;
+  }
+}

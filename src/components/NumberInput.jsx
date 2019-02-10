@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {getDigitFromNumber, fillWithZero} from 'lib';
-import {compose, withProps, withHandlers, lifecycle} from 'lib/recompose';
+import {compose, withProps, withHandlers, lifecycle} from 'lib';
 
 const NumberInputView = ({value, digit, ...props}) => (
   <input value={fillWithZero(value, digit)} {...props} />
