@@ -29,8 +29,28 @@ const getAddedHistory = (state, action) => {
   return state;
 };
 
+const getHistoryAfterInit = (state, action) => {
+  if(state.list.length === 0) {
+    return state;
+  }
+  if(state.list[state.list.length - 1].type === 'TIMER/QUIT') {
+    return state;
+  }
+
+  return {
+    ...state,
+    list: [
+      ...state.list,
+      {
+        type: 'TIMER/QUIT',
+      },
+    ],
+  };
+};
+
 const handlers = {
   'HISTORY/ADD': getAddedHistory,
+  '@@INIT': getHistoryAfterInit,
 };
 
 const isUpdated = (type) => Object.keys(handlers).indexOf(type) !== -1;

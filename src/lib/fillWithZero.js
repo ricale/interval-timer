@@ -3,7 +3,7 @@ export default function fillWithZero (number, digit = 2) {
 
   let result = `${number}`;
   while(result.length < `${tens}`.length) {
-    result = `0${result}`
+    result = `0${result}`;
   }
 
   return result;
