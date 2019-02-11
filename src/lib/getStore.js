@@ -1,9 +1,10 @@
-import {createStore} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import getActionHistoryMiddleware from './getActionHistoryMiddleware';
 
 export default function getStore (reducers) {
   const preloadedState = {};
 
-  const keys = ['intervals', 'config'];
+  const keys = ['intervals', 'config', 'history'];
   keys.forEach(key => {
     const data = localStorage.getItem(key);
     if(data) {
@@ -11,15 +12,18 @@ export default function getStore (reducers) {
     }
   });
 
-  const devtoolExtension = (
+  const composeEnhancers =
     process.env.NODE_ENV !== 'production' ?
-      (window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) :
-      undefined
-  );
+      (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose) :
+      compose;
 
   return createStore(
     reducers,
     preloadedState,
-    devtoolExtension
+    composeEnhancers(
+      applyMiddleware(
+        getActionHistoryMiddleware()
+      )
+    )
   );
 }

@@ -3,7 +3,7 @@ import moment from 'moment';
 import NoSleep from 'nosleep.js';
 import {factoryBemClass} from 'factory-bem-class';
 
-import {compose, withStateHandlers, withProps, lifecycle} from 'lib/recompose';
+import {compose, withStateHandlers, withProps, lifecycle} from 'lib';
 import {
   Button,
   FullScreenContainer,
