@@ -40,7 +40,6 @@ class Main extends Component {
       this.toggleSiders('intervals');
       this._accordion.open();
     }
-    this.toggleSiders('history');
   }
 
   shouldComponentUpdate (nextProps) {
