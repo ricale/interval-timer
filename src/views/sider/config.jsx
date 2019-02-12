@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
+import {factoryBemClass} from 'factory-bem-class';
 
-import {Checkbox} from 'components';
+import {Checkbox, Icon} from 'components';
+import {GITHUB_REPOSITORY_URL, MY_EMAIL_ADDRESS} from 'constants';
 
 import Sider from '../_sider';
 
 import './config.less';
 
-const ConfigItem = ({label, checked, onChange}) => (
-  <div className='it-config-item'>
+const cn = factoryBemClass('it-config');
+
+const ConfigCheckField = ({label, checked, onChange}) => (
+  <div className={cn('check-item')}>
     <label>{label}</label>
     <div>
       <Checkbox checked={checked} primary={true} onChange={onChange} />
@@ -32,21 +36,35 @@ class SiderConfig extends Component {
 
     return (
       <Sider title='Settings' ref={r => this._siderConfig = r}>
-        <ConfigItem
+        <ConfigCheckField
             label='Alarm sound'
             checked={ringable}
             onChange={toggleRingable}
             />
-        <ConfigItem
+        <ConfigCheckField
             label='Alarm shaking animation'
             checked={animatable}
             onChange={toggleAnimatable}
             />
-        <ConfigItem
+        <ConfigCheckField
             label='Fill background'
             checked={filled}
             onChange={toggleFilled}
             />
+
+        <div className={cn('row')}>
+          <a
+              className={cn('link')}
+              href={GITHUB_REPOSITORY_URL}
+              target='_blank'
+              rel="noopener noreferrer"
+              alt=''>
+            <Icon name='github' option='brand' />
+          </a>
+          <a className={cn('link')} href={`mailto:${MY_EMAIL_ADDRESS}`} alt=''>
+            <Icon name='at' />
+          </a>
+        </div>
       </Sider>
     );
   }
