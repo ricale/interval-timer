@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {factoryBemClass} from 'factory-bem-class';
 
 import {
-  Accordion,
   Button,
   Icon,
 } from 'components';
@@ -15,10 +14,9 @@ import intervalActions from 'actions/intervals';
 import timerActions from 'actions/timer';
 
 import Timer from './timer';
-import IntervalForm from './intervals/form';
-import IntervalList from './intervals/list';
 import HistoryList from './history/list';
-import SiderConfig from './sider/config';
+import Config from './config';
+import Intervals from './intervals';
 
 import Sider from './_sider';
 
@@ -27,83 +25,14 @@ import './main.less';
 const cn = factoryBemClass('it-main');
 
 class Main extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      sider: null,
-    };
-    this._siders = {};
-  }
-
   componentDidMount () {
     if(this.props.list.length === 0) {
-      this.toggleSiders('intervals');
-      this._accordion.open();
+      this._sider.toggle();
     }
-  }
-
-  shouldComponentUpdate (nextProps) {
-    if(this.props.list.length > 0 && nextProps.list.length === 0) {
-      this._accordion.open();
-    }
-    return true;
-  }
-
-  handleValid = (d) => {
-    return d.hours || d.minutes || d.seconds;
-  }
-
-  handleSubmit = (d) => {
-    const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.createInterval({...d, timestamp});
-  }
-
-  handleUpdate = (d) => {
-    const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.updateInterval({...d, timestamp});
-  }
-
-  handleCancelEdit = () => {
-    this.props.cancelEditInterval();
-  }
-
-  handleDelete = (id) => {
-    this.props.deleteInterval(id);
-  }
-
-  handleDeleteAll = () => {
-    this.props.deleteAllInterval();
   }
 
   handleToggleIntervalsSider = () => {
-    this.toggleSiders('intervals');
-  }
-
-  handleToggleHistorySider = () => {
-    this.toggleSiders('history');
-  }
-
-  handleToggleConfigSider = () => {
-    this.toggleSiders('config');
-  }
-
-  toggleSiders (siderName) {
-    const prevSider = this.state.sider;
-    const nextSider = this.state.sider === siderName ? null : siderName;
-
-    this.setState({sider: nextSider}, () => {
-      if(prevSider === null || prevSider === siderName) {
-        this._siders[siderName].toggle();
-
-      } else {
-        Object.keys(this._siders).forEach(key => {
-          if(siderName !== key) {
-            this._siders[key].close();
-          }
-        });
-        this._siders[siderName].toggle();
-      }
-    });
+    this._sider.toggle();
   }
 
   render () {
@@ -126,6 +55,12 @@ class Main extends Component {
       toggleRingable,
       toggleAnimatable,
       toggleFilled,
+      editInterval,
+      updateInterval,
+      cancelEditInterval,
+      deleteInterval,
+      deleteAllInterval,
+      createInterval,
     } = this.props;
 
     return (
@@ -154,57 +89,39 @@ class Main extends Component {
             <Button tooltip={{text: 'Fullscreen', position: 'bottom'}} onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button tooltip={{text: 'Intervals', position: 'bottom'}} onClick={this.handleToggleIntervalsSider}>
-              <Icon name='bars' />
-            </Button>
-            <Button tooltip={{text: 'History', position: 'bottom'}} onClick={this.handleToggleHistorySider}>
-              <Icon name='history' />
-            </Button>
-            <Button tooltip={{text: 'Settings', position: 'bottom-right'}} onClick={this.handleToggleConfigSider}>
-              <Icon name='cog' />
+            <Button tooltip={{text: 'Menu', position: 'bottom-right'}} onClick={this.handleToggleIntervalsSider}>
+              <Icon name='wrench' />
             </Button>
           </div>
         </div>
 
-        <Sider
-            title='Intervals'
-            ref={r => this._siders.intervals = r}>
-          <Accordion 
-              className={cn('form-accordion')}
-              title='Add Interval'
-              ref={r => this._accordion = r}>
-            <IntervalForm
-                defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
-                isValid={this.handleValid}
-                onSubmit={this.handleSubmit}
-                />
-          </Accordion>
-
-          <IntervalList
-              data={list}
+        <Sider ref={r => this._sider = r}>
+          <Intervals
+              title={<Icon name='bars' />}
+              list={list}
+              defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
               editing={editing}
               canEdit={timer.playState === PLAY_STATE.IDLE}
-              onEdit={(id) => this.props.editInterval(id)}
-              onCancelEdit={this.handleCancelEdit}
-              onUpdate={this.handleUpdate}
-              onDelete={this.handleDelete}
-              onDeleteAll={this.handleDeleteAll}
+              editInterval={editInterval}
+              cancelEditInterval={cancelEditInterval}
+              updateInterval={updateInterval}
+              deleteInterval={deleteInterval}
+              deleteAllInterval={deleteAllInterval}
+              createInterval={createInterval}
               />
-        </Sider>
-
-        <SiderConfig
-            {...config}
-            siderRef={r => this._siders.config = r}
-            toggleRingable={toggleRingable}
-            toggleAnimatable={toggleAnimatable}
-            toggleFilled={toggleFilled}
-            />
-        <Sider
-            title='History'
-            ref={r => this._siders.history = r}>
+          {history && history.length > 0 &&
             <HistoryList
+                title={<Icon name='history' />}
                 data={history}
                 />
+          }
+          <Config
+              {...config}
+              title={<Icon name='cog' />}
+              toggleRingable={toggleRingable}
+              toggleAnimatable={toggleAnimatable}
+              toggleFilled={toggleFilled}
+              />
         </Sider>
       </div>
     );
