@@ -29,7 +29,7 @@ class SiderConfig extends Component {
     } = this.props;
 
     return (
-      <div>
+      <div className={cn()}>
         <ConfigCheckField
             label='Alarm sound'
             checked={ringable}

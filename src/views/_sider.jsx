@@ -51,7 +51,7 @@ class Sider extends Component {
           </div>
           <div className={cn('content')}>
             <div className={cn('tabs')}>
-              {children.map((child, i) =>
+              {children.map((child, i) => child &&
                 <div
                     onClick={() => this.setState({activeTab: i})}
                     className={cn('tab', {active: this.state.activeTab === i})}
@@ -60,7 +60,7 @@ class Sider extends Component {
                 </div>
               )}
             </div>
-            {children.map((child, i) =>
+            {children.map((child, i) => child &&
               <div className={cn('tab-content', {active: this.state.activeTab === i})} key={i}>
                 {child}
               </div>

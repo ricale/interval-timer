@@ -25,50 +25,14 @@ import './main.less';
 const cn = factoryBemClass('it-main');
 
 class Main extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      sider: null,
-    };
-    this._siders = {};
-  }
-
   componentDidMount () {
     if(this.props.list.length === 0) {
-      this.toggleSiders('intervals');
-      this._accordion.open();
+      this._sider.toggle();
     }
-    this.toggleSiders('intervals');
-  }
-
-  shouldComponentUpdate (nextProps) {
-    if(this.props.list.length > 0 && nextProps.list.length === 0) {
-      this._accordion.open();
-    }
-    return true;
   }
 
   handleToggleIntervalsSider = () => {
-    this.toggleSiders('intervals');
-  }
-
-  toggleSiders (siderName) {
-    const prevSider = this.state.sider;
-    const nextSider = this.state.sider === siderName ? null : siderName;
-
-    this.setState({sider: nextSider}, () => {
-      if(prevSider === null || prevSider === siderName) {
-        this._siders[siderName].toggle();
-
-      } else {
-        Object.keys(this._siders).forEach(key => {
-          if(siderName !== key) {
-            this._siders[key].close();
-          }
-        });
-        this._siders[siderName].toggle();
-      }
-    });
+    this._sider.toggle();
   }
 
   render () {
@@ -92,6 +56,7 @@ class Main extends Component {
       toggleAnimatable,
       toggleFilled,
       editInterval,
+      updateInterval,
       cancelEditInterval,
       deleteInterval,
       deleteAllInterval,
@@ -124,13 +89,13 @@ class Main extends Component {
             <Button tooltip={{text: 'Fullscreen', position: 'bottom'}} onClick={() => this._fullScreenContainer.toggle()}>
               <Icon name='expand' />
             </Button>
-            <Button tooltip={{text: 'Intervals', position: 'bottom'}} onClick={this.handleToggleIntervalsSider}>
+            <Button tooltip={{text: 'Menu', position: 'bottom-right'}} onClick={this.handleToggleIntervalsSider}>
               <Icon name='wrench' />
             </Button>
           </div>
         </div>
 
-        <Sider ref={r => this._siders.intervals = r}>
+        <Sider ref={r => this._sider = r}>
           <Intervals
               title={<Icon name='bars' />}
               list={list}
@@ -139,14 +104,17 @@ class Main extends Component {
               canEdit={timer.playState === PLAY_STATE.IDLE}
               editInterval={editInterval}
               cancelEditInterval={cancelEditInterval}
+              updateInterval={updateInterval}
               deleteInterval={deleteInterval}
               deleteAllInterval={deleteAllInterval}
               createInterval={createInterval}
               />
-          <HistoryList
-              title={<Icon name='history' />}
-              data={history}
-              />
+          {history && history.length > 0 &&
+            <HistoryList
+                title={<Icon name='history' />}
+                data={history}
+                />
+          }
           <Config
               {...config}
               title={<Icon name='cog' />}
