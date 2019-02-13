@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {factoryBemClass} from 'factory-bem-class';
 
-import {Button, Icon} from 'components';
+import {Button, Icon, Tabs} from 'components';
 
 import './_sider.less';
 
@@ -50,21 +50,7 @@ class Sider extends Component {
             </Button>
           </div>
           <div className={cn('content')}>
-            <div className={cn('tabs')}>
-              {children.map((child, i) => child &&
-                <div
-                    onClick={() => this.setState({activeTab: i})}
-                    className={cn('tab', {active: this.state.activeTab === i})}
-                    key={i}>
-                  {child.props.title}
-                </div>
-              )}
-            </div>
-            {children.map((child, i) => child &&
-              <div className={cn('tab-content', {active: this.state.activeTab === i})} key={i}>
-                {child}
-              </div>
-            )}
+            <Tabs>{children}</Tabs>
           </div>
         </div>
       </div>
