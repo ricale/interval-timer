@@ -17,6 +17,9 @@ const HistoryList = ({data, reverse = true}) => (
           reverse={reverse}
           />
     )}
+    {data.length === 0 &&
+      <p className={cn('message')}>No history.</p>
+    }
   </div>
 );
 
