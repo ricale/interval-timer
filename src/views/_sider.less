@@ -6,32 +6,48 @@
   display: flex;
   flex-direction: column;
 
-  padding: 15px 0;
-  background-color: #F6F6F6;
+  padding: 5px;
+  background-color: #DDD;
 
   &__wrapper {
     background-color: rgba(0,0,0,0.3);
     overflow: hidden;
   }
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    padding: 0 5px 5px;
-    border-bottom: 1px solid #666;
-    margin: 0 15px 15px;
-
-    h2 {
-      font-size: 1.2em;
-    }
+  &__menu {
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 
   &__content {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    padding: 0 20px;
-    overflow-y: auto;
+  }
+
+  &__tabs {
+    display: flex;
+    flex-direction: row;
+  }
+  &__tab {
+    padding: 5px 10px;
+    margin-right: 2px;
+    cursor: pointer;
+    user-select: none;
+  }
+  &__tab--active {
+    background-color: #F6F6F6;
+  }
+  &__tab-content {
+    display: none;
+    padding: 10px;
+    flex: 1;
+    overflow: auto;
+  }
+  &__tab-content--active {
+    display: block;
+    background-color: #F6F6F6;
   }
 }
 

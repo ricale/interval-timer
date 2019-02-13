@@ -12,6 +12,7 @@ class Sider extends Component {
     super(props);
     this.state = {
       show: props.show,
+      activeTab: 0,
     };
   }
 
@@ -37,22 +38,33 @@ class Sider extends Component {
   }
 
   render () {
-    const {title, className, children} = this.props;
+    const {className, children} = this.props;
     const _className = `${cn('wrapper')}${className ? ` ${className}` : ''}${!this.state.show ? ' it-hide' : ''}`;
 
     return (
       <div className={_className} onClick={this.handleClickWrapper}>
         <div className={cn()}>
-          <div className={cn('header')}>
-            <h2>{title}</h2>
-            <div className={cn('menu')}>
-              <Button compact={true} onClick={() => this.close()}>
-                <Icon name='times'/>
-              </Button>
-            </div>
+          <div className={cn('menu')}>
+            <Button compact={true} onClick={() => this.close()}>
+              <Icon name='times'/>
+            </Button>
           </div>
           <div className={cn('content')}>
-            {children}
+            <div className={cn('tabs')}>
+              {children.map((child, i) =>
+                <div
+                    onClick={() => this.setState({activeTab: i})}
+                    className={cn('tab', {active: this.state.activeTab === i})}
+                    key={i}>
+                  {child.props.title}
+                </div>
+              )}
+            </div>
+            {children.map((child, i) =>
+              <div className={cn('tab-content', {active: this.state.activeTab === i})} key={i}>
+                {child}
+              </div>
+            )}
           </div>
         </div>
       </div>

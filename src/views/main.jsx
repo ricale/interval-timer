@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {factoryBemClass} from 'factory-bem-class';
 
 import {
-  Accordion,
   Button,
   Icon,
 } from 'components';
@@ -15,10 +14,9 @@ import intervalActions from 'actions/intervals';
 import timerActions from 'actions/timer';
 
 import Timer from './timer';
-import IntervalForm from './intervals/form';
-import IntervalList from './intervals/list';
 import HistoryList from './history/list';
-import SiderConfig from './sider/config';
+import Config from './config';
+import Intervals from './intervals';
 
 import Sider from './_sider';
 
@@ -40,6 +38,7 @@ class Main extends Component {
       this.toggleSiders('intervals');
       this._accordion.open();
     }
+    this.toggleSiders('intervals');
   }
 
   shouldComponentUpdate (nextProps) {
@@ -49,42 +48,8 @@ class Main extends Component {
     return true;
   }
 
-  handleValid = (d) => {
-    return d.hours || d.minutes || d.seconds;
-  }
-
-  handleSubmit = (d) => {
-    const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.createInterval({...d, timestamp});
-  }
-
-  handleUpdate = (d) => {
-    const timestamp = (d.hours * 60 * 60 * 1000) + (d.minutes * 60 * 1000) + (d.seconds * 1000);
-    this.props.updateInterval({...d, timestamp});
-  }
-
-  handleCancelEdit = () => {
-    this.props.cancelEditInterval();
-  }
-
-  handleDelete = (id) => {
-    this.props.deleteInterval(id);
-  }
-
-  handleDeleteAll = () => {
-    this.props.deleteAllInterval();
-  }
-
   handleToggleIntervalsSider = () => {
     this.toggleSiders('intervals');
-  }
-
-  handleToggleHistorySider = () => {
-    this.toggleSiders('history');
-  }
-
-  handleToggleConfigSider = () => {
-    this.toggleSiders('config');
   }
 
   toggleSiders (siderName) {
@@ -126,6 +91,11 @@ class Main extends Component {
       toggleRingable,
       toggleAnimatable,
       toggleFilled,
+      editInterval,
+      cancelEditInterval,
+      deleteInterval,
+      deleteAllInterval,
+      createInterval,
     } = this.props;
 
     return (
@@ -155,56 +125,35 @@ class Main extends Component {
               <Icon name='expand' />
             </Button>
             <Button tooltip={{text: 'Intervals', position: 'bottom'}} onClick={this.handleToggleIntervalsSider}>
-              <Icon name='bars' />
-            </Button>
-            <Button tooltip={{text: 'History', position: 'bottom'}} onClick={this.handleToggleHistorySider}>
-              <Icon name='history' />
-            </Button>
-            <Button tooltip={{text: 'Settings', position: 'bottom-right'}} onClick={this.handleToggleConfigSider}>
-              <Icon name='cog' />
+              <Icon name='wrench' />
             </Button>
           </div>
         </div>
 
-        <Sider
-            title='Intervals'
-            ref={r => this._siders.intervals = r}>
-          <Accordion 
-              className={cn('form-accordion')}
-              title='Add Interval'
-              ref={r => this._accordion = r}>
-            <IntervalForm
-                defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
-                isValid={this.handleValid}
-                onSubmit={this.handleSubmit}
-                />
-          </Accordion>
-
-          <IntervalList
-              data={list}
+        <Sider ref={r => this._siders.intervals = r}>
+          <Intervals
+              title={<Icon name='bars' />}
+              list={list}
+              defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
               editing={editing}
               canEdit={timer.playState === PLAY_STATE.IDLE}
-              onEdit={(id) => this.props.editInterval(id)}
-              onCancelEdit={this.handleCancelEdit}
-              onUpdate={this.handleUpdate}
-              onDelete={this.handleDelete}
-              onDeleteAll={this.handleDeleteAll}
+              editInterval={editInterval}
+              cancelEditInterval={cancelEditInterval}
+              deleteInterval={deleteInterval}
+              deleteAllInterval={deleteAllInterval}
+              createInterval={createInterval}
               />
-        </Sider>
-
-        <SiderConfig
-            {...config}
-            siderRef={r => this._siders.config = r}
-            toggleRingable={toggleRingable}
-            toggleAnimatable={toggleAnimatable}
-            toggleFilled={toggleFilled}
-            />
-        <Sider
-            title='History'
-            ref={r => this._siders.history = r}>
-            <HistoryList
-                data={history}
-                />
+          <HistoryList
+              title={<Icon name='history' />}
+              data={history}
+              />
+          <Config
+              {...config}
+              title={<Icon name='cog' />}
+              toggleRingable={toggleRingable}
+              toggleAnimatable={toggleAnimatable}
+              toggleFilled={toggleFilled}
+              />
         </Sider>
       </div>
     );

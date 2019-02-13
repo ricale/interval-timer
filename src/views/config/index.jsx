@@ -4,9 +4,7 @@ import {factoryBemClass} from 'factory-bem-class';
 import {Checkbox, Icon} from 'components';
 import {GITHUB_REPOSITORY_URL, MY_EMAIL_ADDRESS} from 'constants';
 
-import Sider from '../_sider';
-
-import './config.less';
+import './index.less';
 
 const cn = factoryBemClass('it-config');
 
@@ -20,10 +18,6 @@ const ConfigCheckField = ({label, checked, onChange}) => (
 );
 
 class SiderConfig extends Component {
-  componentDidMount () {
-    this.props.siderRef(this._siderConfig);
-  }
-
   render () {
     const {
       ringable,
@@ -35,7 +29,7 @@ class SiderConfig extends Component {
     } = this.props;
 
     return (
-      <Sider title='Settings' ref={r => this._siderConfig = r}>
+      <div>
         <ConfigCheckField
             label='Alarm sound'
             checked={ringable}
@@ -65,7 +59,7 @@ class SiderConfig extends Component {
             <Icon name='at' />
           </a>
         </div>
-      </Sider>
+      </div>
     );
   }
 }
