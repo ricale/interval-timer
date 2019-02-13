@@ -1,0 +1,29 @@
+.it-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  &__tabs {
+    display: flex;
+    flex-direction: row;
+  }
+  &__tab {
+    padding: 10px 15px;
+    margin-right: 2px;
+    cursor: pointer;
+    user-select: none;
+  }
+  &__tab--active {
+    background-color: #F6F6F6;
+  }
+  &__tab-content {
+    display: none;
+    padding: 10px;
+    flex: 1;
+    overflow: auto;
+  }
+  &__tab-content--active {
+    display: block;
+    background-color: #F6F6F6;
+  }
+}
