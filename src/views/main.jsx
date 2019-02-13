@@ -109,12 +109,10 @@ class Main extends Component {
               deleteAllInterval={deleteAllInterval}
               createInterval={createInterval}
               />
-          {history && history.length > 0 &&
-            <HistoryList
-                title={<Icon name='history' />}
-                data={history}
-                />
-          }
+          <HistoryList
+              title={<Icon name='history' />}
+              data={history}
+              />
           <Config
               {...config}
               title={<Icon name='cog' />}
