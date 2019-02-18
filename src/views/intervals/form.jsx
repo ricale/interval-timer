@@ -1,5 +1,5 @@
 import React from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled from 'styled-components';
 
 import {
   compose,
@@ -8,11 +8,45 @@ import {
   withProps,
   lifecycle,
 } from 'lib';
-import {Button, Icon, NumberInput} from 'components';
+import {Button, Icon, NumberInput as NInput} from 'components';
 
-import './form.less';
+const Container = styled.div`
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+`;
 
-const cn = factoryBemClass('it-interval-form');
+const Row = styled.div`
+  display: flex;
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  flex-grow: 1;
+  width: 1px;
+  font-size: 1em;
+`;
+
+const NumberInput = styled(NInput)`
+  flex-grow: 1;
+  width: 1px;
+  padding-left: 0;
+  padding-right: 0;
+
+  font-size: 2em;
+  font-family: monospace;
+  text-align: center;
+`;
+
+const Divider = styled.span`
+  font-size: 2em;
+  font-family: monospace;
+  color: #DDD;
+
+  ::before {
+    content: ':';
+  };
+`;
 
 const IntervalFormView = ({
   name,
@@ -30,19 +64,17 @@ const IntervalFormView = ({
   onSubmit,
   onCancel,
 }) => (
-  <div className={cn()}>
-    <div className={cn('row')}>
-      <input
-          className={cn('str')}
+  <Container>
+    <Row>
+      <Input
           value={name}
           onChange={e => onChangeName(e.target.value)}
           placeholder={defaultName}
           onKeyPress={onKeyPress}
           />
-    </div>
-    <div className={cn('row')}>
+    </Row>
+    <Row>
       <NumberInput
-          className={cn('number')}
           type='number'
           max={99}
           min={0}
@@ -50,9 +82,8 @@ const IntervalFormView = ({
           onChange={e => onChangeHours(e.target.value)}
           onKeyPress={onKeyPress}
           />
-      <span className={cn('divider')}>:</span>
+      <Divider />
       <NumberInput
-          className={cn('number')}
           type='number'
           min={0}
           max={59}
@@ -60,9 +91,8 @@ const IntervalFormView = ({
           onChange={e => onChangeMinutes(e.target.value)}
           onKeyPress={onKeyPress}
           />
-      <span className={cn('divider')}>:</span>
+      <Divider />
       <NumberInput
-          className={cn('number')}
           type='number'
           min={0}
           max={59}
@@ -70,8 +100,8 @@ const IntervalFormView = ({
           onChange={e => onChangeSeconds(e.target.value)}
           onKeyPress={onKeyPress}
           />
-    </div>
-    <div className={cn('row')}>
+    </Row>
+    <Row>
       <Button
           onClick={onSubmit}
           primary={true}
@@ -87,8 +117,8 @@ const IntervalFormView = ({
           <Icon name='times' />
         </Button>
       }
-    </div>
-  </div>
+    </Row>
+  </Container>
 );
 
 const initialState = {id: null, name: '', hours: 0, minutes: 0, seconds: 0};

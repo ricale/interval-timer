@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {factoryBemClass} from 'factory-bem-class';
+import styled from 'styled-components';
 
 import {
   Button,
@@ -20,15 +20,54 @@ import Intervals from './intervals';
 
 import Sider from './_sider';
 
-import './main.less';
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
 
-const cn = factoryBemClass('it-main');
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  background-color: #EFEFEF;
+`;
+
+const Content = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  flex-grow: 1;
+  height: 100%;
+
+  background-color: #FFF;
+`;
+
+const Controller = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+`;
 
 class Main extends Component {
+  state = {
+    full: false,
+  }
+
   componentDidMount () {
     if(this.props.list.length === 0) {
       this._sider.toggle();
     }
+  }
+
+  handleToggleFullScreen = () => {
+    this.setState({full: !this.state.full}, () => this._fullScreenContainer.toggle());
+  }
+
+  handleChangeFull = (full) => {
+    this.setState({full});
   }
 
   handleToggleIntervalsSider = () => {
@@ -64,8 +103,8 @@ class Main extends Component {
     } = this.props;
 
     return (
-      <div className={cn()}>
-        <div className={cn('content')}>
+      <Container>
+        <Content>
           <Timer
               onStart={start}
               onStop={stop}
@@ -81,19 +120,21 @@ class Main extends Component {
               config={config}
 
               fullScreenContainerRef={r => this._fullScreenContainer = r}
+              full={this.state.full}
+              onChangeFull={this.handleChangeFull}
 
               {...timer}
               />
 
-          <div className={cn('controller')}>
-            <Button tooltip={{text: 'Fullscreen', position: 'bottom'}} onClick={() => this._fullScreenContainer.toggle()}>
+          <Controller>
+            <Button tooltip={{text: 'FullScreen', position: 'bottom'}} onClick={this.handleToggleFullScreen}>
               <Icon name='expand' />
             </Button>
             <Button tooltip={{text: 'Menu', position: 'bottom-right'}} onClick={this.handleToggleIntervalsSider}>
               <Icon name='wrench' />
             </Button>
-          </div>
-        </div>
+          </Controller>
+        </Content>
 
         <Sider ref={r => this._sider = r}>
           <Intervals
@@ -121,7 +162,7 @@ class Main extends Component {
               toggleFilled={toggleFilled}
               />
         </Sider>
-      </div>
+      </Container>
     );
   }
 }

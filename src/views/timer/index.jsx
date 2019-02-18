@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import NoSleep from 'nosleep.js';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
 import {compose, withStateHandlers, withProps, lifecycle} from 'lib';
 import {
@@ -13,11 +13,61 @@ import {PLAY_STATE} from 'constants';
 
 import TimerDisplay from './_display';
 
-import './index.less';
-
-const cn = factoryBemClass('it-timer');
-
 const noSleep = new NoSleep();
+
+const Container = styled(FullScreenContainer)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  ${props => (props.filled || props.full) && css`
+    width: 100%;
+    height: 100%;
+    background-color: ${
+      props.active   ? '#AFDFF3' :
+      props.negative ? '#EAA6A6' :
+                       '#DDD'
+    }
+  `}
+`;
+
+const ControlPanel = styled.div`
+  margin-top: 10px;
+`;
+
+const PanelButton = styled(Button)`
+  font-size: 1em;
+  ${props => props.full && css`
+    @media (min-width: 768px) {
+      font-size: 2.4em;
+      padding: 20px 25px;
+    }
+    @media (max-width: 768px) {
+      font-size: 1.5em;
+    }
+  `}
+`;
+
+const MessageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  background-color: rgba(0,0,0,0.7);
+  color: #FFF;
+  font-weight: bold;
+`;
 
 const TimerView = ({
   data,
@@ -28,6 +78,8 @@ const TimerView = ({
   isNegative,
   disabled,
   config,
+  full,
+  onChangeFull,
   fullScreenContainerRef,
   onStart,
   onStop,
@@ -36,39 +88,44 @@ const TimerView = ({
   onDone,
   stopAlarm,
 }) => (
-  <FullScreenContainer
+  <Container
       ref={fullScreenContainerRef}
-      className={cn({active: isPlaying, negative: isNegative, filled: config.filled})}>
+      onChange={onChangeFull}
+      full={full}
+      active={isPlaying}
+      negative={isNegative}
+      filled={config.filled}>
     <TimerDisplay
         name={data.name}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
         isPlaying={isPlaying}
         isNegative={isNegative}
         shake={config.animatable && isNegative}
+        full={full}
         />
-    <div className={cn('controller')}>
-      <Button onClick={onStart} disabled={disabled || isPlaying}>
+    <ControlPanel>
+      <PanelButton full={full}onClick={onStart} disabled={disabled || isPlaying}>
         <Icon name='play' />
-      </Button>
-      <Button onClick={onPause} disabled={disabled || !isPlaying}>
+      </PanelButton>
+      <PanelButton full={full}onClick={onPause} disabled={disabled || !isPlaying}>
         <Icon name='pause' />
-      </Button>
-      <Button onClick={onStop} disabled={disabled || !isRunning}>
+      </PanelButton>
+      <PanelButton full={full}onClick={onStop} disabled={disabled || !isRunning}>
         <Icon name='stop' />
-      </Button>
-      <Button onClick={onDone} disabled={disabled}>
+      </PanelButton>
+      <PanelButton full={full}onClick={onDone} disabled={disabled}>
         <Icon name='forward' />
-      </Button>
-      <Button onClick={stopAlarm} disabled={disabled || !isRinging}>
+      </PanelButton>
+      <PanelButton full={full}onClick={stopAlarm} disabled={disabled || !isRinging}>
         <Icon name='bell-slash' />
-      </Button>
-    </div>
+      </PanelButton>
+    </ControlPanel>
     {disabled &&
-      <div className={cn('message-overlay')}>
+      <MessageOverlay>
         Add Interval first.
-      </div>
+      </MessageOverlay>
     }
-  </FullScreenContainer>
+  </Container>
 );
 
 const initialState = {startTime: null, pauseTime: null};

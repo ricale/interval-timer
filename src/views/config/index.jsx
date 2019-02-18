@@ -1,20 +1,43 @@
 import React, {Component} from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled from 'styled-components';
 
 import {Checkbox, Icon} from 'components';
 import {GITHUB_REPOSITORY_URL, MY_EMAIL_ADDRESS} from 'constants';
 
-import './index.less';
+const Container = styled.div`
+  width: 100%;
+`;
 
-const cn = factoryBemClass('it-config');
+const CheckItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 5px;
+  border-bottom: 1px solid #DDD;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 10px 5px;
+  border-bottom: 1px solid #DDD;
+`;
+
+const Link = styled.a`
+  margin-right: 5px;
+`;
 
 const ConfigCheckField = ({label, checked, onChange}) => (
-  <div className={cn('check-item')}>
+  <CheckItem>
     <label>{label}</label>
     <div>
       <Checkbox checked={checked} primary={true} onChange={onChange} />
     </div>
-  </div>
+  </CheckItem>
 );
 
 class SiderConfig extends Component {
@@ -29,7 +52,7 @@ class SiderConfig extends Component {
     } = this.props;
 
     return (
-      <div className={cn()}>
+      <Container>
         <ConfigCheckField
             label='Alarm sound'
             checked={ringable}
@@ -46,20 +69,19 @@ class SiderConfig extends Component {
             onChange={toggleFilled}
             />
 
-        <div className={cn('row')}>
-          <a
-              className={cn('link')}
+        <Row>
+          <Link
               href={GITHUB_REPOSITORY_URL}
               target='_blank'
               rel="noopener noreferrer"
               alt=''>
             <Icon name='github' option='brand' />
-          </a>
-          <a className={cn('link')} href={`mailto:${MY_EMAIL_ADDRESS}`} alt=''>
+          </Link>
+          <Link href={`mailto:${MY_EMAIL_ADDRESS}`} alt=''>
             <Icon name='at' />
-          </a>
-        </div>
-      </div>
+          </Link>
+        </Row>
+      </Container>
     );
   }
 }

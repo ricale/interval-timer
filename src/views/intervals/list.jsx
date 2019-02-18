@@ -1,10 +1,17 @@
 import React from 'react';
+import styled from 'styled-components' ;
 
 import {Button, Icon} from 'components';
 
 import IntervalItem from './_item';
 
-import './list.less';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  margin-bottom: 10px;
+`;
 
 const IntervalList = ({
   data = [],
@@ -16,7 +23,7 @@ const IntervalList = ({
   onDelete,
   onDeleteAll,
 }) => (
-  <div className='it-interval-list'>
+  <Container>
     {data.map(d =>
       <IntervalItem
           key={d.id}
@@ -39,7 +46,7 @@ const IntervalList = ({
         <Icon name='trash-alt'/>
       </Button>
     }
-  </div>
+  </Container>
 );
 
 export default IntervalList;
