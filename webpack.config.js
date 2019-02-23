@@ -16,15 +16,6 @@ module.exports = {
         },
       },
       {
-        test: /\.less$/,
-        exclude: /node_modules/,
-        use: [
-          {loader: 'style-loader'},
-          {loader: 'css-loader'},
-          {loader: 'less-loader'},
-        ],
-      },
-      {
         test: /\.(wav|mp3)$/,
         exclude: /node_modules/,
         use: {

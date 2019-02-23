@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {
   Button,
   Icon,
+  Tooltip,
 } from 'components';
 import {getMapDispatchToProps} from 'lib';
 import {PLAY_STATE} from 'constants';
@@ -127,10 +128,16 @@ class Main extends Component {
               />
 
           <Controller>
-            <Button tooltip={{text: 'FullScreen', position: 'bottom'}} onClick={this.handleToggleFullScreen}>
+            <Button 
+                onClick={this.handleToggleFullScreen}
+                as={Tooltip}
+                tooltip={{text: 'FullScreen', position: 'bottom'}} >
               <Icon name='expand' />
             </Button>
-            <Button tooltip={{text: 'Menu', position: 'bottom-right'}} onClick={this.handleToggleIntervalsSider}>
+            <Button 
+                onClick={this.handleToggleIntervalsSider}
+                as={Tooltip}
+                tooltip={{text: 'Menu', position: 'bottom-right'}} >
               <Icon name='wrench' />
             </Button>
           </Controller>

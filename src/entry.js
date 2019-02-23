@@ -3,6 +3,7 @@ import {Provider} from 'react-redux';
 
 import reducers from 'reducers';
 import {getStore, Alarm} from 'lib';
+import GlobalStyle from './globalStyle';
 
 import MainView from './views/main';
 
@@ -13,7 +14,10 @@ class Entry extends Component {
   render () {
     return (
       <Provider store={store}>
-        <MainView />
+        <>
+          <GlobalStyle />
+          <MainView />
+        </>
       </Provider>
     );
   }

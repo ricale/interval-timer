@@ -104,19 +104,19 @@ const TimerView = ({
         full={full}
         />
     <ControlPanel>
-      <PanelButton full={full}onClick={onStart} disabled={disabled || isPlaying}>
+      <PanelButton full={full} onClick={onStart} disabled={disabled || isPlaying}>
         <Icon name='play' />
       </PanelButton>
-      <PanelButton full={full}onClick={onPause} disabled={disabled || !isPlaying}>
+      <PanelButton full={full} onClick={onPause} disabled={disabled || !isPlaying}>
         <Icon name='pause' />
       </PanelButton>
-      <PanelButton full={full}onClick={onStop} disabled={disabled || !isRunning}>
+      <PanelButton full={full} onClick={onStop} disabled={disabled || !isRunning}>
         <Icon name='stop' />
       </PanelButton>
-      <PanelButton full={full}onClick={onDone} disabled={disabled}>
+      <PanelButton full={full} onClick={onDone} disabled={disabled}>
         <Icon name='forward' />
       </PanelButton>
-      <PanelButton full={full}onClick={stopAlarm} disabled={disabled || !isRinging}>
+      <PanelButton full={full} onClick={stopAlarm} disabled={disabled || !isRinging}>
         <Icon name='bell-slash' />
       </PanelButton>
     </ControlPanel>

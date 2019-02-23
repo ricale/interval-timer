@@ -1,32 +1,62 @@
 import React from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
 import {withState} from 'lib';
 
-import './Tabs.less';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
 
-const cn = factoryBemClass('it-tabs');
+const TabButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Tab = styled.div`
+  padding: 10px 15px;
+  margin-right: 2px;
+  cursor: pointer;
+  user-select: none;
+
+  ${p => p.active && css`
+    background-color: #F6F6F6;
+  `}
+`;
+
+const Content = styled.div`
+  display: none;
+  padding: 10px;
+  flex: 1;
+  overflow: auto;
+
+  ${p => p.active && css`
+    display: block;
+    background-color: #F6F6F6;
+  `}
+`;
 
 const TabsView = ({children, activeTab, onChangeActiveTab}) => (
-  <div className={cn()}>
-    <div className={cn('tabs')}>
+  <Container>
+    <TabButtons>
       {children.map((child, i) => child &&
-        <div
+        <Tab
             onClick={() => onChangeActiveTab(i)}
-            className={cn('tab', {active: activeTab === i})}
+            active={activeTab === i}
             key={i}>
           {child.props.title}
-        </div>
+        </Tab>
       )}
-    </div>
+    </TabButtons>
     {children.map((child, i) => child &&
-      <div
-          className={cn('tab-content', {active: activeTab === i})}
+      <Content
+          active={activeTab === i}
           key={i}>
         {child}
-      </div>
+      </Content>
     )}
-  </div>
+  </Container>
 );
 
 const Tabs = withState(

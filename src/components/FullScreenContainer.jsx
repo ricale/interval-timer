@@ -2,14 +2,23 @@
 
 import React, {Component} from 'react';
 import fscreen from 'fscreen';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
 import Button from './Button';
 import Icon from './Icon';
 
-import './FullScreenContainer.less';
+const Container = styled.div`
+  ${p => p.full && css`
+    width: 100%;
+    height: 100%;
+  `}
+`;
 
-const cn = factoryBemClass('it-fullscreen');
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+`;
 
 class FullScreenContainer extends Component {
   state = {
@@ -46,17 +55,22 @@ class FullScreenContainer extends Component {
 
   render () {
     const {children, className, button, onChange, ...args} = this.props;
-    const _className = `${cn({full: this.state.full})} ${className || ''}`;
 
     return (
-      <div {...args} className={_className} ref={r => this._container = r}>
+      <Container
+          {...args}
+          className={className}
+          full={this.state.full}
+          ref={r => this._container = r}>
         {children}
         {button || this.state.full &&
-          <Button className={cn('button')} onClick={this.handleClick}>
-            <Icon name={this.state.full ? 'compress' : 'expand'} />
-          </Button>
+          <ButtonWrapper>
+            <Button onClick={this.handleClick}>
+              <Icon name={this.state.full ? 'compress' : 'expand'} />
+            </Button>
+          </ButtonWrapper>
         }
-      </div>
+      </Container>
     );
   }
 }
