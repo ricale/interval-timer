@@ -1,14 +1,25 @@
 import React from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
 import HistoryItem from './_item';
 
-import './list.less';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
 
-const cn = factoryBemClass('it-history-list');
+  width: 100%;
+
+  ${props => props.reverse && css`
+    flex-direction: column-reverse;
+  `}
+`;
+
+const Message = styled.p`
+  text-align: center;
+`;
 
 const HistoryList = ({data, reverse = true}) => (
-  <div className={cn({reverse})}>
+  <Container reverse={reverse}>
     {data.map((d,i) =>
       <HistoryItem
           key={i}
@@ -18,9 +29,9 @@ const HistoryList = ({data, reverse = true}) => (
           />
     )}
     {data.length === 0 &&
-      <p className={cn('message')}>No history.</p>
+      <Message>No history.</Message>
     }
-  </div>
+  </Container>
 );
 
 export default HistoryList;

@@ -1,29 +1,39 @@
-import React from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
-import './Checkbox.less';
+const Checkbox = styled.input.attrs({type: 'checkbox'})`
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #AAA;
+  border-radius: 2px;
+  background-color: #FFF;
 
-const cn = factoryBemClass('it-checkbox');
+  &:checked::after {
+    content: '';
 
-const Checkbox = ({
-  className = '',
-  primary,
-  warning,
-  success,
-  light,
-  ...args
-}) => {
+    position: absolute;
+    top: 1px;
+    left: 1px;
 
-  const _className = cn({
-    primary,
-    warning,
-    success,
-    light,
-  });
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: #6C757D;
 
-  return (
-    <input {...args} type='checkbox' className={`${_className} ${className}`} />
-  );
-};
+    ${p => p.primary && css`
+      background-color: #017CFF;
+    `};
+    ${p => p.warning && css`
+      background-color: #FFC208;
+    `};
+    ${p => p.success && css`
+      background-color: #28a745;
+    `};
+    ${p => p.light && css`
+      background-color: #f8f9fa;
+    `};
+  }
+`;
 
 export default Checkbox;

@@ -1,12 +1,69 @@
 import React from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css, keyframes} from 'styled-components';
 
 import {fillWithZero} from 'lib';
 import {compose, withProps, lifecycle} from 'lib';
 
-import './_display.less';
+const shakeAnimation = keyframes`
+   0% {transform: translate( 1px, 0);}
+  10% {transform: translate(-1px, 0);}
+  20% {transform: translate( 2px, 0);}
+  30% {transform: translate(-2px, 0);}
+  40% {transform: translate( 1px, 0);}
+  50% {transform: translate(-1px, 0);}
+  60% {transform: translate( 2px, 0);}
+  70% {transform: translate(-2px, 0);}
+  80% {transform: translate( 1px, 0);}
+  90% {transform: translate(-1px, 0);}
+`;
 
-const cn = factoryBemClass('it-timer-display');
+const Container = styled.div`
+  display: inline-block;
+  padding: 20px 30px;
+  margin: 0;
+
+  font-family: monospace;
+  color: #333;
+  background-color: #DDD
+
+  ${props => props.active && css`
+    background-color: #AFDFF3;
+  `}
+
+  ${props => props.negative && css `
+    background-color: #EAA6A6;
+  `}
+`;
+
+const Name = styled.div`
+  font-size: ${props => props.big ? 2.4 : 1.2}em;
+
+  @media (max-width: 768px) {
+    font-size: 1.2em;
+  }
+`;
+
+const Digits = styled.div`
+  font-size: ${props => props.big ? 10 : 3.5}em;
+  line-height: 100%;
+
+  ${props => props.shake && css`
+    animation-name: ${shakeAnimation};
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  `}
+
+  @media (max-width: 768px) {
+    font-size: 3.5em;
+  }
+`;
+
+const Number = styled.span``;
+const Divider = styled.span`
+  ::before {
+    content: ":";
+  }
+`;
 
 const TimerDisplayView = ({
   name,
@@ -14,34 +71,33 @@ const TimerDisplayView = ({
   minutes,
   seconds,
   milliseconds,
+  full,
   showHours = true,
   showMilliseconds,
   isNegative,
   isPlaying,
   shake,
 }) => (
-  <div className={`${cn({active: isPlaying, negative: isNegative, shake})}`}>
-    <div className={cn('name')}>{name}</div>
-    <div className={cn('digits')}>
+  <Container active={isPlaying} negative={isNegative} shake={shake}>
+    <Name big={full}>{name}</Name>
+    <Digits big={full} shake={shake}>
       {showHours &&
-        <span className={cn('hours')}>{fillWithZero(hours)}</span>
+        <>
+          <Number>{fillWithZero(hours)}</Number>
+          <Divider />
+        </>
       }
-      {showHours &&
-        <span className={cn('divider')}>:</span>
-      }
-      <span className={cn('minutes')}>{fillWithZero(minutes)}</span>
-      <span className={cn('divider')}>:</span>
-      <span className={cn('seconds')}>{fillWithZero(seconds)}</span>
+      <Number>{fillWithZero(minutes)}</Number>
+      <Divider />
+      <Number>{fillWithZero(seconds)}</Number>
       {showMilliseconds &&
-        <span className={cn('divider')}>:</span>
+        <>
+          <Divider />
+          <Number>{parseInt(milliseconds / 100)}</Number>
+        </>
       }
-      {showMilliseconds &&
-        <span className={cn('milliseconds')}>
-          {parseInt(milliseconds / 100)}
-        </span>
-      }
-    </div>
-  </div>
+    </Digits>
+  </Container>
 );
 
 const TimerDisplay = compose(
@@ -68,6 +124,7 @@ const TimerDisplay = compose(
         'hours',
         'minutes',
         'seconds',
+        'full',
         'isNegative',
         'isPlaying',
       ];

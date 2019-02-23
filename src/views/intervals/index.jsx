@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {factoryBemClass} from 'factory-bem-class';
 
 import {
   Accordion,
@@ -7,10 +6,6 @@ import {
 
 import IntervalForm from './form';
 import IntervalList from './list';
-
-import './index.less';
-
-const cn = factoryBemClass('it-intervals');
 
 class Intervals extends Component {
   componentDidMount () {
@@ -59,9 +54,8 @@ class Intervals extends Component {
   render () {
     const {list, editing, canEdit, defaultName} = this.props;
     return (
-      <div className={cn()}>
+      <div>
         <Accordion 
-            className={cn('accordion')}
             title='Add Interval'
             ref={r => this._accordion = r}>
           <IntervalForm

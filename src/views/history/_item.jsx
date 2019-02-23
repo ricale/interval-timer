@@ -1,43 +1,86 @@
 import React, {Fragment} from 'react';
 import moment from 'moment';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
 import {withProps, getDuringTime} from 'lib';
 
-import './_item.less';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
 
-const cn = factoryBemClass('it-history-item');
+  ${props => props.reverse && css`
+    flex-direction: column-reverse;
+  `}
+`;
+
+const Header = styled.div``;
+
+const StartTime = styled.div`
+  font-size: 0.8em;
+`;
+
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  padding: 5px;
+  flex: 1;
+
+  background-color: #FFF;
+
+  ${props => props.state === 'pause' && css`
+    background-color: #EFEFEF;
+  `}
+
+  ${props => props.state === 'stop' && css`
+    background-color: #EFEFEF;
+  `}
+
+  ${props => props.state === 'quit' && css`
+    margin: 15px 0;
+    padding: 0;
+    border-bottom: 1px dashed #000;
+    background-color: transparent;
+  `}
+`;
+
+const IntervalName = styled.div``;
+
+const During = styled.div`
+  font-family: monospace;
+  text-align: right;
+`;
 
 const HistoryItemView = ({timestamp, during, intervalName, playState, reverse}) => (
-  <div className={cn({[playState]: true, reverse})}>
-    <div className={cn('header')}>
+  <Container reverse={reverse}>
+    <Header>
       {playState !== 'quit' &&
-        <div className={cn('start-time')}>
+        <StartTime>
           {moment(timestamp).format('MM-DD HH:mm:ss')}
-        </div>
+        </StartTime>
       }
-    </div>
-    <div className={cn('body')}>
+    </Header>
+    <Body state={playState}>
       {playState === 'playing' &&
         <Fragment>
-          <div className={cn('interval')}>{intervalName}</div>
-          <div className={cn('during')}>{during}</div>
+          <IntervalName>{intervalName}</IntervalName>
+          <During>{during}</During>
         </Fragment>
       }
       {playState === 'pause' &&
         <Fragment>
-          <div className={cn('interval')}>Paused</div>
-          <div className={cn('during')}>{during}</div>
+          <IntervalName>Paused</IntervalName>
+          <During>{during}</During>
         </Fragment>
       }
       {playState === 'stop' &&
-        <div>Stopped</div>
+        <IntervalName>Stopped</IntervalName>
       }
-      {playState === 'quit' &&
-        <div></div>
-      }
-    </div>
-  </div>
+    </Body>
+  </Container>
 );
 
 const getTitle = (type) => (

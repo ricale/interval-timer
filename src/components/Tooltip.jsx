@@ -1,11 +1,78 @@
 import React, {Component} from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
-import './Tooltip.less';
+import {withProps} from 'lib';
 
-const cn = factoryBemClass('it-tooltip');
+const Container = styled.div`
+  position: relative;
+`;
 
-class Tooltip extends Component {
+const Body = styled.div`
+  position: absolute;
+  flex-direction: column;
+
+  display: none;
+
+  ${Container}:hover & {
+    display: flex;
+  }
+  ${p => p.left !== null && css`
+    left: ${p.left}px;
+  `}
+  ${p => p.right !== null && css`
+    right: ${p.right}px;
+  `}
+
+  ${p => p.position[0] === 'top' && css`
+    bottom: 100%;
+  `}
+  ${p => p.position[0] === 'bottom' && css`
+    top: 100%;
+  `}
+  ${p => !p.position[1] && css`
+    align-items: center;
+  `}
+  ${p => p.position[1] === 'left' && css`
+    align-items: flex-start;
+  `}
+  ${p => p.position[1] === 'right' && css`
+    align-items: flex-end;
+  `}
+`;
+
+const BACKGROUND_COLOR = 'rgba(0,0,0,0.5)';
+
+const Content = styled.div`
+  order: 1;
+  max-width: 150px;
+  padding: 10px;
+
+  text-align: center;
+  background-color: ${BACKGROUND_COLOR};
+  font-size: 0.85em;
+  color: #FFF;
+`;
+
+const Arrow = styled.div`
+  display: inline-block;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  ${p => p.margin && css`
+    margin: 0 ${p.margin}px;
+  `}
+
+  ${p => p.position[0] === 'top' && css`
+    order: 2;
+    border-top: 5px solid ${BACKGROUND_COLOR};
+  `}
+  ${p => p.position[0] === 'bottom' && css`
+    order: 0;
+    border-bottom: 5px solid ${BACKGROUND_COLOR};
+  `}
+`;
+
+class TooltipView extends Component {
   static defaultProps = {
     position: 'top',
   }
@@ -14,11 +81,11 @@ class Tooltip extends Component {
 
   handleMouseOver = () => {
     const p = this.props.position.split('-');
-    const containerOffset = this._container.offsetWidth / 2;
+    const containerOffset = Math.round(this._container.offsetWidth / 2);
 
     if(!p[1]) {
       this.setStyle({
-        left: containerOffset - (this._body.offsetWidth / 2),
+        left: containerOffset - Math.round(this._body.offsetWidth / 2),
         arrowMargin: 0,
       });
     }
@@ -54,28 +121,38 @@ class Tooltip extends Component {
   }
 
   render () {
-    const {children, className, text, position, ...props} = this.props;
+    const {children, text, position, ...props} = this.props;
     const {left, right, arrowMargin} = this.state;
 
     return (
-      <div
+      <Container
           {...props}
-          className={`${cn({[position]: true})} ${className || ''}`}
           ref={r => this._container = r}
           onMouseOver={this.handleMouseOver}>
 
         {children}
 
-        <div className={cn('body')} style={{left, right}} ref={r => this._body = r}>
-          <div className={cn('content')}>
+        <Body
+            left={left}
+            right={right}
+            position={position.split('-')}
+            ref={r => this._body = r}>
+          <Content>
             {text}
-          </div>
-          <div className={cn('arrow')} style={{marginLeft: arrowMargin, marginRight: arrowMargin}}>
-          </div>
-        </div>
-      </div>
+          </Content>
+          <Arrow
+              position={position.split('-')}
+              margin={arrowMargin}>
+          </Arrow>
+        </Body>
+      </Container>
     );
   }
 }
+
+const Tooltip = withProps(({tooltip, text, position}) => ({
+  text:     (tooltip && tooltip.text) || text,
+  position: (tooltip && tooltip.position) || position,
+}))(TooltipView);
 
 export default Tooltip;

@@ -1,14 +1,56 @@
 import React from 'react';
-import {factoryBemClass} from 'factory-bem-class';
+import styled, {css} from 'styled-components';
 
 import {Button, Icon} from 'components';
 import {fillWithZero} from 'lib';
 
 import IntervalForm from './form';
 
-import './_item.less';
+const Container = styled.div`
+  position: relative;
+  width: 200px;
+  padding: 15px 20px;
+  margin-bottom: 5px;
 
-const cn = factoryBemClass('it-interval');
+  background-color: #DDD;
+
+  ${props => props.editing && css`
+    border: 1px solid #DDD;
+    padding: 0;
+    background-color: #FFF;
+  `}
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: monospace;
+`;
+
+const Menu = styled.div`
+  opacity: 0.5;
+`;
+
+const Name = styled.span``;
+
+const Digits = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: monospace;
+  font-size: 2em;
+  line-height: 100%;
+`;
+
+const Number = styled.span``;
+const Divider = styled.span`
+  ::before {
+    content: ":";
+  }
+`;
 
 const IntervalItem = ({
   id,
@@ -25,35 +67,29 @@ const IntervalItem = ({
   onUpdate,
   onDelete,
 }) => (
-  <div className={cn({editing: isEditing})}>
+  <Container editing={isEditing}>
     {!isEditing &&
-      <div className={cn('header')}>
-        <span className={cn('name')}>{name}</span>
-        <div className={cn('menu')}>
+      <Header>
+        <Name>{name}</Name>
+        <Menu>
           <Button onClick={() => onEdit(id)} small={true} bordered={true} disabled={!canEdit}>
             <Icon name='edit' />
           </Button>
           <Button onClick={() => onDelete(id)} small={true} bordered={true} disabled={!canEdit}>
             <Icon name='trash-alt' />
           </Button>
-        </div>
-      </div>
+        </Menu>
+      </Header>
     }
 
     {!isEditing &&
-      <div className={cn('digits')}>
-        <span className={cn('hours')}>
-          {fillWithZero(hours)}
-        </span>
-        <span className={cn('divider')}>:</span>
-        <span className={cn('minutes')}>
-          {fillWithZero(minutes)}
-        </span>
-        <span className={cn('divider')}>:</span>
-        <span className={cn('seconds')}>
-          {fillWithZero(seconds)}
-        </span>
-      </div>
+      <Digits>
+        <Number>{fillWithZero(hours)}</Number>
+        <Divider />
+        <Number>{fillWithZero(minutes)}</Number>
+        <Divider />
+        <Number>{fillWithZero(seconds)}</Number>
+      </Digits>
     }
 
     {isEditing &&
@@ -63,7 +99,7 @@ const IntervalItem = ({
           onCancel={onCancelEdit}
           />
     }
-  </div>
+  </Container>
 );
 
 export default IntervalItem;
