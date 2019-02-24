@@ -32,6 +32,7 @@ module.exports = {
       constants:  path.resolve(__dirname, './src/constants'),
       lib:        path.resolve(__dirname, './src/lib'),
       reducers:   path.resolve(__dirname, './src/reducers'),
+      themes:     path.resolve(__dirname, './src/themes'),
 
       public: path.resolve(__dirname, './public'),
     },
