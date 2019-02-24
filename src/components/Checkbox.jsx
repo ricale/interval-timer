@@ -1,6 +1,8 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 
-const Checkbox = styled.input.attrs({type: 'checkbox'})`
+import {withProps} from 'lib';
+
+const CheckboxView = styled.input.attrs({type: 'checkbox'})`
   position: relative;
   width: 20px;
   height: 20px;
@@ -19,21 +21,18 @@ const Checkbox = styled.input.attrs({type: 'checkbox'})`
     width: 16px;
     height: 16px;
     border-radius: 2px;
-    background-color: #6C757D;
-
-    ${p => p.primary && css`
-      background-color: #017CFF;
-    `};
-    ${p => p.warning && css`
-      background-color: #FFC208;
-    `};
-    ${p => p.success && css`
-      background-color: #28a745;
-    `};
-    ${p => p.light && css`
-      background-color: #f8f9fa;
-    `};
+    background-color: ${p => p.theme.checkbox[p.themeName]};
   }
 `;
+
+const Checkbox = withProps(({primary, warning, success, info}) => ({
+  themeName: (
+    primary ? 'primary' :
+    warning ? 'warning' :
+    success ? 'success' :
+    info    ? 'info' :
+              'default'
+  ),
+}))(CheckboxView);
 
 export default Checkbox;

@@ -1,33 +1,8 @@
 import styled, {css} from 'styled-components';
 
-const COLORS = {
-  primary: '#017CFF',
-  warning: '#FFC208',
-  success: '#28a745',
-  info:    '#f8f9fa',
-};
+import {withProps} from 'lib';
 
-const getStyledByTheme = theme => p => p[theme] && css`
-  color: ${COLORS[theme]};
-
-  ${p.bordered && css`
-    border: 1px solid ${COLORS[theme]};
-  `}
-
-  ${!p.disabled && css`
-    :active {
-      color: ${COLORS[theme]};
-      border-color: ${COLORS[theme]};
-    }
-    :hover {
-      color: #FFF;
-      background-color: ${COLORS[theme]};
-      border-color: ${COLORS[theme]};
-    }
-  `}
-`;
-
-const Button = styled.div`
+const ButtonView = styled.div`
   display: inline-block;
   margin: 2px;
   padding: 6px 12px;
@@ -37,7 +12,6 @@ const Button = styled.div`
   border-radius: 3px;
   background-color: transparent;
   background-image: none;
-  color: #6C757D;
 
   font-size: 1.1em;
 
@@ -50,10 +24,6 @@ const Button = styled.div`
 
   ${p => p.compact && css`
     padding: 1px;
-  `}
-
-  ${p => p.bordered && css`
-    border: 1px solid #6C757D;
   `}
 
   ${p => p.disabled && css`
@@ -78,24 +48,45 @@ const Button = styled.div`
 
   ${p => !p.disabled && css`
     :active {
-      color: #6C757D;
-      background-color: transparent;
+      /*background-color: transparent;*/
       background-image: none;
-      border-color: #6C757D;
       box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
     }
 
     :hover {
       color: #fff;
-      background-color: #6C757D;
-      border-color: #6C757D;
     }
   `}
 
-  ${getStyledByTheme('primary')}
-  ${getStyledByTheme('warning')}
-  ${getStyledByTheme('success')}
-  ${getStyledByTheme('info')}
+  ${p => css`
+    color: ${p.theme.button[p.themeName]};
+
+    ${p.bordered && css`
+      border: 1px solid ${p.theme.button[p.themeName]};
+    `}
+
+    ${!p.disabled && css`
+      :active {
+        color: ${p.theme.button[p.themeName]};
+        border-color: ${p.theme.button[p.themeName]};
+      }
+      :hover {
+        color: #FFF;
+        background-color: ${p.theme.button[p.themeName]};
+        border-color: ${p.theme.button[p.themeName]};
+      }
+    `}
+  `}
 `;
+
+const Button = withProps(({primary, warning, success, info}) => ({
+  themeName: (
+    primary ? 'primary' :
+    warning ? 'warning' :
+    success ? 'success' :
+    info    ? 'info' :
+              'default'
+  ),
+}))(ButtonView);
 
 export default Button;
