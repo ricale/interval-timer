@@ -94,7 +94,6 @@ class Main extends Component {
 
       toggleRingable,
       toggleAnimatable,
-      toggleFilled,
       editInterval,
       updateInterval,
       cancelEditInterval,
@@ -166,7 +165,6 @@ class Main extends Component {
               title={<Icon name='cog' />}
               toggleRingable={toggleRingable}
               toggleAnimatable={toggleAnimatable}
-              toggleFilled={toggleFilled}
               />
         </Sider>
       </Container>

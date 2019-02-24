@@ -45,10 +45,8 @@ class SiderConfig extends Component {
     const {
       ringable,
       animatable,
-      filled,
       toggleRingable,
       toggleAnimatable,
-      toggleFilled,
     } = this.props;
 
     return (
@@ -62,11 +60,6 @@ class SiderConfig extends Component {
             label='Alarm shaking animation'
             checked={animatable}
             onChange={toggleAnimatable}
-            />
-        <ConfigCheckField
-            label='Fill background'
-            checked={filled}
-            onChange={toggleFilled}
             />
 
         <Row>
