@@ -23,16 +23,6 @@ const Container = styled(FullScreenContainer)`
 
   padding: 0;
   margin: 0;
-
-  ${props => (props.filled || props.full) && css`
-    width: 100%;
-    height: 100%;
-    background-color: ${
-      props.active   ? '#AFDFF3' :
-      props.negative ? '#EAA6A6' :
-                       '#DDD'
-    }
-  `}
 `;
 
 const ControlPanel = styled.div`
@@ -93,8 +83,7 @@ const TimerView = ({
       onChange={onChangeFull}
       full={full}
       active={isPlaying}
-      negative={isNegative}
-      filled={config.filled}>
+      negative={isNegative}>
     <TimerDisplay
         name={data.name}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
