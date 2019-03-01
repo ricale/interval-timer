@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import {
   Accordion,
 } from 'components';
+import {
+  getMapDispatchToProps,
+} from 'lib';
+import intervalActions from 'actions/intervals';
 
 import IntervalForm from './form';
 import IntervalList from './list';
@@ -80,4 +85,4 @@ class Intervals extends Component {
   }
 }
 
-export default Intervals;
+export default connect(null, getMapDispatchToProps({...intervalActions}))(Intervals);
