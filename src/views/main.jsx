@@ -7,12 +7,7 @@ import {
   Icon,
   Tooltip,
 } from 'components';
-import {getMapDispatchToProps} from 'lib';
 import {PLAY_STATE} from 'constants';
-
-import configActions from 'actions/config';
-import intervalActions from 'actions/intervals';
-import timerActions from 'actions/timer';
 
 import Timer from './timer';
 import HistoryList from './history/list';
@@ -83,37 +78,12 @@ class Main extends Component {
       timer: {current, ...timer},
       config,
       history,
-
-      start,
-      stop,
-      pause,
-      resume,
-      goToNext,
-      ringAlarm,
-      stopAlarm,
-
-      toggleRingable,
-      toggleAnimatable,
-      editInterval,
-      updateInterval,
-      cancelEditInterval,
-      deleteInterval,
-      deleteAllInterval,
-      createInterval,
     } = this.props;
 
     return (
       <Container>
         <Content>
           <Timer
-              onStart={start}
-              onStop={stop}
-              onPause={pause}
-              onResume={resume}
-              onDone={goToNext}
-              ringAlarm={ringAlarm}
-              stopAlarm={stopAlarm}
-
               data={list[current % list.length]}
               index={current}
               disabled={list.length === 0}
@@ -149,12 +119,6 @@ class Main extends Component {
               defaultName={`interval #${lastId}`} // FIXME: duplicated with createInterval on reducers/intervals
               editing={editing}
               canEdit={timer.playState === PLAY_STATE.IDLE}
-              editInterval={editInterval}
-              cancelEditInterval={cancelEditInterval}
-              updateInterval={updateInterval}
-              deleteInterval={deleteInterval}
-              deleteAllInterval={deleteAllInterval}
-              createInterval={createInterval}
               />
           <HistoryList
               title={<Icon name='history' />}
@@ -163,8 +127,6 @@ class Main extends Component {
           <Config
               {...config}
               title={<Icon name='cog' />}
-              toggleRingable={toggleRingable}
-              toggleAnimatable={toggleAnimatable}
               />
         </Sider>
       </Container>
@@ -181,10 +143,4 @@ const mapStateToProps = (state, ownProps) => ({
   history: state.history.list,
 });
 
-const mapDispatchToProps = getMapDispatchToProps({
-  ...configActions,
-  ...intervalActions,
-  ...timerActions,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps)(Main);

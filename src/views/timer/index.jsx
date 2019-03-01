@@ -1,15 +1,23 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import NoSleep from 'nosleep.js';
 import styled, {css} from 'styled-components';
 
-import {compose, withStateHandlers, withProps, lifecycle} from 'lib';
+import {
+  compose,
+  withStateHandlers,
+  withProps,
+  lifecycle,
+  getMapDispatchToProps,
+} from 'lib';
 import {
   Button,
   FullScreenContainer,
   Icon,
 } from 'components';
 import {PLAY_STATE} from 'constants';
+import timerActions from 'actions/timer';
 
 import TimerDisplay from './_display';
 
@@ -71,11 +79,11 @@ const TimerView = ({
   full,
   onChangeFull,
   fullScreenContainerRef,
-  onStart,
-  onStop,
-  onPause,
-  onResume,
-  onDone,
+
+  start,
+  stop,
+  pause,
+  goToNext,
   stopAlarm,
 }) => (
   <Container
@@ -93,16 +101,16 @@ const TimerView = ({
         full={full}
         />
     <ControlPanel>
-      <PanelButton full={full} onClick={onStart} disabled={disabled || isPlaying}>
+      <PanelButton full={full} onClick={start} disabled={disabled || isPlaying}>
         <Icon name='play' />
       </PanelButton>
-      <PanelButton full={full} onClick={onPause} disabled={disabled || !isPlaying}>
+      <PanelButton full={full} onClick={pause} disabled={disabled || !isPlaying}>
         <Icon name='pause' />
       </PanelButton>
-      <PanelButton full={full} onClick={onStop} disabled={disabled || !isRunning}>
+      <PanelButton full={full} onClick={stop} disabled={disabled || !isRunning}>
         <Icon name='stop' />
       </PanelButton>
-      <PanelButton full={full} onClick={onDone} disabled={disabled}>
+      <PanelButton full={full} onClick={goToNext} disabled={disabled}>
         <Icon name='forward' />
       </PanelButton>
       <PanelButton full={full} onClick={stopAlarm} disabled={disabled || !isRinging}>
@@ -229,4 +237,4 @@ const Timer = compose(
   })
 )(TimerView);
 
-export default Timer;
+export default connect(null, getMapDispatchToProps({...timerActions}))(Timer);

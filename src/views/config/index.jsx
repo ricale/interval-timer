@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import styled from 'styled-components';
 
 import {Checkbox, Icon} from 'components';
 import {GITHUB_REPOSITORY_URL, MY_EMAIL_ADDRESS} from 'constants';
+import {getMapDispatchToProps} from 'lib';
+import configActions from 'actions/config';
 
 const Container = styled.div`
   width: 100%;
@@ -79,4 +82,4 @@ class SiderConfig extends Component {
   }
 }
 
-export default SiderConfig;
+export default connect(null, getMapDispatchToProps({...configActions}))(SiderConfig);

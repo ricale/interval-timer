@@ -5,7 +5,6 @@ const actions = createActions({
     START:      [() => ({}), () => ({recording: true})],
     STOP:       [() => ({}), () => ({recording: true})],
     PAUSE:      [() => ({}), () => ({recording: true})],
-    RESUME:     [() => ({}), () => ({recording: true})],
     GO_TO_NEXT: [() => ({}), () => ({recording: true})],
 
     RING_ALARM: () => ({}),
