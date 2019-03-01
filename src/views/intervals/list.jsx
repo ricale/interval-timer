@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components' ;
 
-import {Button, Icon, Tooltip} from 'components';
+import {Button, Icon} from 'components';
 
 import IntervalItem from './_item';
 
@@ -42,8 +42,7 @@ const IntervalList = ({
           onClick={onDeleteAll}
           warning={true}
           bordered={true}
-          as={Tooltip}
-          tooltip={{text: 'Remove all intervals'}}>
+          disabled={!canEdit}>
         <Icon name='trash-alt'/>
       </Button>
     }
