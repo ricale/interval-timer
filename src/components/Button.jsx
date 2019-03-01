@@ -2,7 +2,7 @@ import styled, {css} from 'styled-components';
 
 import {withProps} from 'lib';
 
-const ButtonView = styled.div`
+const ButtonView = styled.button`
   display: inline-block;
   margin: 2px;
   padding: 6px 12px;
