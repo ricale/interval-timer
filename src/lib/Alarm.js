@@ -1,7 +1,11 @@
 import alarmSound from 'public/sounds/alarm.mp3';
 
+const NOTI_INTERVAL_DURATION = 10000;
+const NOTI_SENTENCE = 'Ring Ring Ring Ring';
+
 const m = {
   audio: new Audio(alarmSound),
+  notiInterval: null,
   store: undefined,
   prevState: {},
 };
@@ -9,9 +13,19 @@ const m = {
 function subscribeStore () {
   const state = getState();
 
-  if(state.ringable) {
-    if(state.alarming !== m.prevState.alarming) {
-      state.alarming ? play() : stop();
+  if(state.alarming !== m.prevState.alarming) {
+    if(state.ringable) {
+      state.alarming ? playSound() : stopSound();
+    }
+
+    if(state.enableNotification) {
+      if(state.alarming) {
+        showNoti();
+        m.notiInterval = setInterval(showNoti, NOTI_INTERVAL_DURATION);
+
+      } else {
+        m.notiInterval && clearInterval(m.notiInterval);
+      }
     }
   }
 
@@ -21,18 +35,39 @@ function subscribeStore () {
 function init (store) {
   m.store = store;
   m.store.subscribe(subscribeStore);
+
+  if (Notification.permission !== 'denied') {
+    Notification.requestPermission();
+  }
 }
 
 function getState () {
-  const {config: {ringable}, timer: {alarming}} = m.store.getState();
-  return {ringable, alarming};
+  const {
+    config: {
+      ringable,
+      enableNotification,
+    },
+    timer: {
+      alarming,
+    },
+  } = m.store.getState();
+
+  return {
+    ringable,
+    alarming,
+    enableNotification,
+  };
 }
 
-function play () {
+function showNoti () {
+  new Notification(NOTI_SENTENCE);
+}
+
+function playSound () {
   m.audio.play();
 }
 
-function stop () {
+function stopSound () {
   m.audio.pause();
   if(m.audio.fastSeek) {
     m.audio.fastSeek();
@@ -41,11 +76,4 @@ function stop () {
   }
 }
 
-const methods = {
-  init,
-  getState,
-  play,
-  stop,
-};
-
-export default methods;
+export default {init};

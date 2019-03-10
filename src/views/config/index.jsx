@@ -48,8 +48,11 @@ class SiderConfig extends Component {
     const {
       ringable,
       animatable,
+      enableNotification,
+
       toggleRingable,
       toggleAnimatable,
+      toggleNotification,
     } = this.props;
 
     return (
@@ -60,9 +63,14 @@ class SiderConfig extends Component {
             onChange={toggleRingable}
             />
         <ConfigCheckField
-            label='Alarm shaking animation'
+            label='Alarm animation'
             checked={animatable}
             onChange={toggleAnimatable}
+            />
+        <ConfigCheckField
+            label='Browser notification'
+            checked={enableNotification}
+            onChange={toggleNotification}
             />
 
         <Row>

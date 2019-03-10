@@ -151,9 +151,7 @@ const Timer = compose(
       if(nextProps.playState === PLAY_STATE.PLAYING) {
         if(nextProps.currentTimestamp !== this.props.currentTimestamp) {
           if(nextProps.currentTimestamp < 0 && this.props.currentTimestamp >= 0) {
-            if(nextProps.config.ringable) {
-              this.props.ringAlarm();
-            }
+            this.props.ringAlarm();
           }
         }
       }

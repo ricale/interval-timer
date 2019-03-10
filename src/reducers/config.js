@@ -1,31 +1,33 @@
 const initialState = {
   ringable: true,
   animatable: true,
+  enableNotification: true,
 };
 
-const isChanged = (type) => (
-  [
-    'CONFIG/TOGGLE_RINGABLE',
-    'CONFIG/TOGGLE_ANIMATABLE',
-  ].indexOf(type) !== -1
-);
+const toggleRingable = (state, action) => {
+  return {...state, ringable: !state.ringable};
+};
 
-const getNewState = (state, action) => {
-  switch(action.type) {
-    case 'CONFIG/TOGGLE_RINGABLE':
-      return {...state, ringable: !state.ringable};
-    case 'CONFIG/TOGGLE_ANIMATABLE':
-      return {...state, animatable: !state.animatable};
-  }
-  return state;
+const toggleAnimatable = (state, action) => {
+  return {...state, animatable: !state.animatable};
+};
+
+const toggleNotification = (state, action) => {
+  return {...state, enableNotification: !state.enableNotification};
+};
+
+const handlers = {
+  'CONFIG/TOGGLE_RINGABLE': toggleRingable,
+  'CONFIG/TOGGLE_ANIMATABLE': toggleAnimatable,
+  'CONFIG/TOGGLE_NOTIFICATION': toggleNotification,
 };
 
 export default function config (state = initialState, action) {
-  if(!isChanged(action.type)) {
+  if(Object.keys(handlers).indexOf(action.type) === -1) {
     return state;
   }
 
-  const newState = getNewState(state, action);
+  const newState = handlers[action.type](state, action);
   localStorage.setItem('config', JSON.stringify(newState));
   return newState;
 }
