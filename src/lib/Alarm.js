@@ -18,12 +18,14 @@ function subscribeStore () {
       state.alarming ? playSound() : stopSound();
     }
 
-    if(state.alarming) {
-      showNoti();
-      m.notiInterval = setInterval(showNoti, NOTI_INTERVAL_DURATION);
+    if(state.enableNotification) {
+      if(state.alarming) {
+        showNoti();
+        m.notiInterval = setInterval(showNoti, NOTI_INTERVAL_DURATION);
 
-    } else {
-      m.notiInterval && clearInterval(m.notiInterval);
+      } else {
+        m.notiInterval && clearInterval(m.notiInterval);
+      }
     }
   }
 
@@ -40,8 +42,21 @@ function init (store) {
 }
 
 function getState () {
-  const {config: {ringable}, timer: {alarming}} = m.store.getState();
-  return {ringable, alarming};
+  const {
+    config: {
+      ringable,
+      enableNotification,
+    },
+    timer: {
+      alarming,
+    },
+  } = m.store.getState();
+
+  return {
+    ringable,
+    alarming,
+    enableNotification,
+  };
 }
 
 function showNoti () {
