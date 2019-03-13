@@ -18,25 +18,32 @@ const shakeAnimation = keyframes`
 `;
 
 const Container = styled.div`
-  display: inline-block;
-  padding: 20px 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /*padding: 20px 30px;*/
+  width: 302px;
+  height: 302px;
   margin: 0;
 
   font-family: monospace;
   color: #333;
-  background-color: #DDD
+  border: 1px solid ${p => p.theme.inactiveColor};
 
-  ${props => props.active && css`
-    background-color: #AFDFF3;
+  ${p => p.active && css`
+    border-color: ${p => p.theme.activeColor};
   `}
 
-  ${props => props.negative && css `
-    background-color: #EAA6A6;
+  ${p => p.negative && css `
+    border-color: ${p => p.theme.negativeColor};
   `}
 `;
 
 const Name = styled.div`
-  font-size: ${props => props.big ? 2.4 : 1.2}em;
+  position: relative;
+  font-size: ${p => p.big ? 2.4 : 1.2}em;
 
   @media (max-width: 768px) {
     font-size: 1.2em;
@@ -44,10 +51,11 @@ const Name = styled.div`
 `;
 
 const Digits = styled.div`
-  font-size: ${props => props.big ? 10 : 3.5}em;
+  position: relative;
+  font-size: ${p => p.big ? 10 : 3.5}em;
   line-height: 100%;
 
-  ${props => props.shake && css`
+  ${p => p.shake && css`
     animation-name: ${shakeAnimation};
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -65,20 +73,52 @@ const Divider = styled.span`
   }
 `;
 
+const Sand = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  transition: height 0.5s linear;
+
+  ${p => p.active && css`
+    background-color: #AFDFF3;
+  `}
+
+  ${p => p.negative && css `
+    /*background-color: #AFDFF3;*/
+    background-color: #EAA6A6;
+  `}
+`;
+
 const TimerDisplayView = ({
   name,
   hours,
   minutes,
   seconds,
   milliseconds,
+  totalSeconds,
+  halfseconds,
+  timestamp,
   full,
   showHours = true,
   showMilliseconds,
   isNegative,
   isPlaying,
   shake,
+  rate,
+  set,
 }) => (
-  <Container active={isPlaying} negative={isNegative} shake={shake}>
+  <Container
+      active={isPlaying}
+      negative={isNegative}
+      shake={shake}>
+    <Sand
+        active={isPlaying}
+        negative={isNegative}
+        style={{height: (Math.floor(rate * 300))}}
+        />
+        {halfseconds}
     <Name big={full}>{name}</Name>
     <Digits big={full} shake={shake}>
       {showHours &&
@@ -101,20 +141,25 @@ const TimerDisplayView = ({
 );
 
 const TimerDisplay = compose(
-  withProps(({timestamp, showMilliseconds}) => {
+  withProps(({timestamp, showMilliseconds, set, isPlaying}) => {
     const totalSeconds = (
       showMilliseconds ?
-        parseInt(timestamp / 1000, 10) :
+        Math.floor(timestamp / 1000) :
         Math.ceil(timestamp / 1000)
     );
 
     const absSeconds = Math.abs(totalSeconds);
 
+    const rate = (set - timestamp) / (set - 500);
+
     return {
-      hours:        parseInt(absSeconds / 3600, 10)      || 0,
-      minutes:      parseInt(absSeconds % 3600 / 60, 10) || 0,
-      seconds:      parseInt(absSeconds % 60, 10)        || 0,
+      hours:        Math.floor(absSeconds / 3600)      || 0,
+      minutes:      Math.floor(absSeconds % 3600 / 60) || 0,
+      seconds:      Math.floor(absSeconds % 60)        || 0,
       milliseconds: Math.abs(timestamp) % 1000 || 0,
+      // halfseconds:  Math.abs(timestamp) % 1000 || 0,
+      totalSeconds,
+      rate:         rate > 1 ? 1 : rate,
     };
   }),
   lifecycle({
@@ -124,6 +169,7 @@ const TimerDisplay = compose(
         'hours',
         'minutes',
         'seconds',
+        'halfseconds',
         'full',
         'isNegative',
         'isPlaying',

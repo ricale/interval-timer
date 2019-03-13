@@ -88,12 +88,10 @@ const TimerView = ({
 }) => (
   <Container
       ref={fullScreenContainerRef}
-      onChange={onChangeFull}
-      full={full}
-      active={isPlaying}
-      negative={isNegative}>
+      onChange={onChangeFull}>
     <TimerDisplay
         name={data.name}
+        set={data.timestamp}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
         isPlaying={isPlaying}
         isNegative={isNegative}
