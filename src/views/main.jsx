@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 import {
   Button,
+  FullScreenContainer,
   Icon,
   Tooltip,
 } from 'components';
@@ -16,7 +17,7 @@ import Intervals from './intervals';
 
 import Sider from './_sider';
 
-const Container = styled.div`
+const Container = styled(FullScreenContainer)`
   display: flex;
   flex-direction: row;
 
@@ -45,6 +46,10 @@ const Controller = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
+
+  ${p => p.hide && css`
+    display: none;
+  `}
 `;
 
 class Main extends Component {
@@ -80,23 +85,25 @@ class Main extends Component {
       history,
     } = this.props;
 
+    const {
+      full,
+    } = this.state;
+
     return (
-      <Container>
+      <Container
+          ref={r => this._fullScreenContainer = r}
+          onChange={this.handleChangeFull}>
         <Content>
           <Timer
               data={list[current % list.length]}
               index={current}
               disabled={list.length === 0}
               config={config}
-
-              fullScreenContainerRef={r => this._fullScreenContainer = r}
-              full={this.state.full}
-              onChangeFull={this.handleChangeFull}
-
+              full={full}
               {...timer}
               />
 
-          <Controller>
+          <Controller hide={full}>
             <Button 
                 onClick={this.handleToggleFullScreen}
                 as={Tooltip}

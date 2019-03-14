@@ -22,4 +22,8 @@ export default {
   },
 
   accordionActive: '#cce4ff',
+
+  activeColor: '#AFDFF3',
+  negativeColor: '#EAA6A6',
+  inactiveColor: '#DDD',
 };
