@@ -13,7 +13,6 @@ import {
 } from 'lib';
 import {
   Button,
-  FullScreenContainer,
   Icon,
 } from 'components';
 import {PLAY_STATE} from 'constants';
@@ -23,7 +22,8 @@ import TimerDisplay from './_display';
 
 const noSleep = new NoSleep();
 
-const Container = styled(FullScreenContainer)`
+const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,10 +31,44 @@ const Container = styled(FullScreenContainer)`
 
   padding: 0;
   margin: 0;
+
+  ${p => p.full && css`
+    width: 100%;
+    height: 100%;
+  `}
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const Display = styled(TimerDisplay)`
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  ${p => p.full && css`
+    width: 100%;
+    height: 100%;
+    border: 0;
+  `}
 `;
 
 const ControlPanel = styled.div`
   margin-top: 10px;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    bottom: 5px;
+  }
+
+  ${p => p.full && css`
+    position: absolute;
+    bottom: 5px;
+  `}
 `;
 
 const PanelButton = styled(Button)`
@@ -77,8 +111,6 @@ const TimerView = ({
   disabled,
   config,
   full,
-  onChangeFull,
-  fullScreenContainerRef,
 
   start,
   stop,
@@ -86,10 +118,8 @@ const TimerView = ({
   goToNext,
   stopAlarm,
 }) => (
-  <Container
-      ref={fullScreenContainerRef}
-      onChange={onChangeFull}>
-    <TimerDisplay
+  <Container full={full}>
+    <Display
         name={data.name}
         set={data.timestamp}
         timestamp={isRunning ? currentTimestamp : data.timestamp}
@@ -98,7 +128,7 @@ const TimerView = ({
         shake={config.animatable && isNegative}
         full={full}
         />
-    <ControlPanel>
+    <ControlPanel full={full}>
       <PanelButton full={full} onClick={start} disabled={disabled || isPlaying}>
         <Icon name='play' />
       </PanelButton>

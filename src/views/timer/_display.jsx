@@ -4,6 +4,8 @@ import styled, {css, keyframes} from 'styled-components';
 import {fillWithZero} from 'lib';
 import {compose, withProps, lifecycle} from 'lib';
 
+import Sand from './_sand';
+
 const shakeAnimation = keyframes`
    0% {transform: translate( 1px, 0);}
   10% {transform: translate(-1px, 0);}
@@ -73,33 +75,12 @@ const Divider = styled.span`
   }
 `;
 
-const Sand = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-
-  transition: height 0.5s linear;
-
-  ${p => p.active && css`
-    background-color: #AFDFF3;
-  `}
-
-  ${p => p.negative && css `
-    /*background-color: #AFDFF3;*/
-    background-color: #EAA6A6;
-  `}
-`;
-
 const TimerDisplayView = ({
   name,
   hours,
   minutes,
   seconds,
   milliseconds,
-  totalSeconds,
-  halfseconds,
-  timestamp,
   full,
   showHours = true,
   showMilliseconds,
@@ -108,17 +89,18 @@ const TimerDisplayView = ({
   shake,
   rate,
   set,
+  ...props
 }) => (
   <Container
       active={isPlaying}
       negative={isNegative}
-      shake={shake}>
+      {...props}>
     <Sand
         active={isPlaying}
         negative={isNegative}
-        style={{height: (Math.floor(rate * 300))}}
+        init={rate}
+        // duration={restSeconds}
         />
-        {halfseconds}
     <Name big={full}>{name}</Name>
     <Digits big={full} shake={shake}>
       {showHours &&
@@ -150,16 +132,14 @@ const TimerDisplay = compose(
 
     const absSeconds = Math.abs(totalSeconds);
 
-    const rate = (set - timestamp) / (set - 500);
+    const rate = Math.floor((set - timestamp) / set * 10000) / 100;
 
     return {
       hours:        Math.floor(absSeconds / 3600)      || 0,
       minutes:      Math.floor(absSeconds % 3600 / 60) || 0,
       seconds:      Math.floor(absSeconds % 60)        || 0,
       milliseconds: Math.abs(timestamp) % 1000 || 0,
-      // halfseconds:  Math.abs(timestamp) % 1000 || 0,
-      totalSeconds,
-      rate:         rate > 1 ? 1 : rate,
+      rate,
     };
   }),
   lifecycle({
