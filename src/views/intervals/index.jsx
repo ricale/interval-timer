@@ -8,9 +8,10 @@ import {
   getMapDispatchToProps,
 } from 'lib';
 import intervalActions from 'actions/intervals';
+import {PLAY_STATE} from 'constants';
 
-import IntervalForm from './form';
-import IntervalList from './list';
+import IntervalForm from './_form';
+import IntervalList from './_list';
 
 class Intervals extends Component {
   componentDidMount () {
@@ -85,4 +86,15 @@ class Intervals extends Component {
   }
 }
 
-export default connect(null, getMapDispatchToProps({...intervalActions}))(Intervals);
+const mapStateToProps = (state, ownProps) => ({
+  list: state.intervals.list,
+  defaultName: `interval #${state.intervals.lastId}`,
+  editing: state.intervals.editing,
+  canEdit: state.timer.playState === PLAY_STATE.IDLE,
+});
+
+const mapDispatchToProps = getMapDispatchToProps({
+  ...intervalActions,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Intervals);

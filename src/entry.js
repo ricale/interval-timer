@@ -7,8 +7,7 @@ import {getStore, Alarm} from 'lib';
 import {normal} from 'themes';
 
 import GlobalStyle from './globalStyle';
-
-import MainView from './views/main';
+import Router from './views/router';
 
 const store = getStore(reducers);
 Alarm.init(store);
@@ -20,7 +19,7 @@ class Entry extends Component {
         <ThemeProvider theme={normal}>
           <>
             <GlobalStyle />
-            <MainView />
+            <Router />
           </>
         </ThemeProvider>
       </Provider>

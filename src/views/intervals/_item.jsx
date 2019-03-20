@@ -4,7 +4,7 @@ import styled, {css} from 'styled-components';
 import {Button, Icon} from 'components';
 import {fillWithZero} from 'lib';
 
-import IntervalForm from './form';
+import IntervalForm from './_form';
 
 const Container = styled.div`
   position: relative;

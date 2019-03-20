@@ -90,4 +90,12 @@ class SiderConfig extends Component {
   }
 }
 
-export default connect(null, getMapDispatchToProps({...configActions}))(SiderConfig);
+const mapStateToProps = (state, ownProps) => ({
+  ...state.config,
+});
+
+const mapDispatchToProps = dispatch => getMapDispatchToProps({
+  ...configActions,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SiderConfig);

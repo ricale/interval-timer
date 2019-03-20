@@ -6,10 +6,10 @@ import styled, {css} from 'styled-components';
 
 import {
   compose,
+  getMapDispatchToProps,
   withStateHandlers,
   withProps,
   lifecycle,
-  getMapDispatchToProps,
 } from 'lib';
 import {
   Button,
@@ -156,6 +156,12 @@ const TimerView = ({
 const initialState = {startTime: null, pauseTime: null};
 
 const Timer = compose(
+  withProps(({list, timer}) => ({
+    data: list[timer.current % list.length],
+    index: timer.current,
+    disabled: list.length === 0,
+    ...timer,
+  })),
   withStateHandlers(
     (props) => ({
       ...initialState,
@@ -263,4 +269,14 @@ const Timer = compose(
   })
 )(TimerView);
 
-export default connect(null, getMapDispatchToProps({...timerActions}))(Timer);
+const mapStateToProps = (state, ownProps) => ({
+  list: state.intervals.list,
+  timer: state.timer,
+  config: state.config,
+});
+
+const mapDispatchToProps = getMapDispatchToProps({
+  ...timerActions,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);
