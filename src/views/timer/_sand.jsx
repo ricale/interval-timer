@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 
-import {compose, lifecycle} from 'lib';
+import {compose, lifecycle, withProps} from 'lib';
 
 const Container = styled.div`
   position: absolute;
@@ -34,6 +34,9 @@ const SandView = ({active, negative, init}) => (
 );
 
 const Sand = compose(
+  withProps(({init}) => ({
+    init: init > 100 ? 100 : init,
+  })),
   lifecycle({
     shouldComponentUpdate (nextProps) {
       return (
