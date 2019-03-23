@@ -26,21 +26,16 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   /*padding: 20px 30px;*/
-  width: 302px;
-  height: 302px;
+
   margin: 0;
 
   font-family: monospace;
   color: #333;
-  border: 1px solid ${p => p.theme.inactiveColor};
 
-  ${p => p.active && css`
-    border-color: ${p => p.theme.activeColor};
-  `}
-
-  ${p => p.negative && css `
-    border-color: ${p => p.theme.negativeColor};
-  `}
+  @media (min-width: 768px) {
+    width: 302px;
+    height: 302px;
+  }
 `;
 
 const Name = styled.div`
@@ -132,7 +127,7 @@ const TimerDisplay = compose(
 
     const absSeconds = Math.abs(totalSeconds);
 
-    const rate = Math.floor((set - timestamp) / set * 10000) / 100;
+    const rate = Math.floor((set - (totalSeconds * 1000)) / set * 10000) / 100;
 
     return {
       hours:        Math.floor(absSeconds / 3600)      || 0,

@@ -31,25 +31,18 @@ const Container = styled.div`
 
   padding: 0;
   margin: 0;
+  height: 100%;
 
   ${p => p.full && css`
     width: 100%;
-    height: 100%;
   `}
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 100%;
   }
 `;
 
 const Display = styled(TimerDisplay)`
-  @media (max-width: 768px) {
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
   ${p => p.full && css`
     width: 100%;
     height: 100%;
@@ -58,13 +51,6 @@ const Display = styled(TimerDisplay)`
 `;
 
 const ControlPanel = styled.div`
-  margin-top: 10px;
-
-  @media (max-width: 768px) {
-    position: absolute;
-    bottom: 5px;
-  }
-
   ${p => p.full && css`
     position: absolute;
     bottom: 5px;
@@ -129,21 +115,27 @@ const TimerView = ({
         full={full}
         />
     <ControlPanel full={full}>
-      <PanelButton full={full} onClick={start} disabled={disabled || isPlaying}>
-        <Icon name='play' />
-      </PanelButton>
-      <PanelButton full={full} onClick={pause} disabled={disabled || !isPlaying}>
-        <Icon name='pause' />
-      </PanelButton>
+      {!isPlaying &&
+        <PanelButton full={full} onClick={start} disabled={disabled || isPlaying}>
+          <Icon name='play' />
+        </PanelButton>
+      }
+      {isPlaying &&
+        <PanelButton full={full} onClick={pause} disabled={disabled || !isPlaying}>
+          <Icon name='pause' />
+        </PanelButton>
+      }
       <PanelButton full={full} onClick={stop} disabled={disabled || !isRunning}>
         <Icon name='stop' />
       </PanelButton>
       <PanelButton full={full} onClick={goToNext} disabled={disabled}>
         <Icon name='forward' />
       </PanelButton>
-      <PanelButton full={full} onClick={stopAlarm} disabled={disabled || !isRinging}>
-        <Icon name='bell-slash' />
-      </PanelButton>
+      {isRinging &&
+        <PanelButton full={full} onClick={stopAlarm} disabled={disabled || !isRinging}>
+          <Icon name='bell-slash' />
+        </PanelButton>
+      }
     </ControlPanel>
     {disabled &&
       <MessageOverlay>
@@ -173,11 +165,11 @@ const Timer = compose(
       onChange:                 (state, props) => d => ({...state, ...d}),
     }
   ),
-  withProps(({data, currentTimestamp, playState, alarming, showMilliseconds}) => ({
+  withProps(({data, currentTimestamp, playState, alarming, showMilliseconds, config}) => ({
     data: data || {},
     isRunning: playState !== PLAY_STATE.IDLE,
     isPlaying: playState !== PLAY_STATE.IDLE && playState !== PLAY_STATE.PAUSE,
-    isRinging: alarming,
+    isRinging: config.ringable && alarming,
     isNegative: showMilliseconds ? currentTimestamp < 0 : Math.ceil(currentTimestamp / 1000) <= 0,
   })),
   lifecycle({
