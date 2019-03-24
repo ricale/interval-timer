@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 
-import {
-  Accordion,
-} from 'components';
 import {
   getMapDispatchToProps,
 } from 'lib';
@@ -12,6 +10,16 @@ import {PLAY_STATE} from 'constants';
 
 import IntervalForm from './_form';
 import IntervalList from './_list';
+
+const Container = styled.div`
+  padding: 0 15px;
+`;
+
+const FormWrapper = styled.div`
+  width: 200px;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+`;
 
 class Intervals extends Component {
   componentDidMount () {
@@ -60,16 +68,14 @@ class Intervals extends Component {
   render () {
     const {list, editing, canEdit, defaultName} = this.props;
     return (
-      <div>
-        <Accordion 
-            title='Add Interval'
-            ref={r => this._accordion = r}>
+      <Container>
+        <FormWrapper>
           <IntervalForm
               defaultName={defaultName} // FIXME: duplicated with createInterval on reducers/intervals
               isValid={this.handleValid}
               onSubmit={this.handleSubmit}
               />
-        </Accordion>
+        </FormWrapper>
 
         <IntervalList
             data={list}
@@ -81,7 +87,7 @@ class Intervals extends Component {
             onDelete={this.handleDelete}
             onDeleteAll={this.handleDeleteAll}
             />
-      </div>
+      </Container>
     );
   }
 }

@@ -1,13 +1,15 @@
 import {combineReducers} from 'redux';
 
 import config from './config';
-import history from './history';
 import intervals from './intervals';
+import router from './router';
 import timer from './timer';
+import timerHistory from './timerHistory';
 
-export default combineReducers({
+export default history => combineReducers({
   config,
-  history,
+  timerHistory,
   intervals,
+  router: router(history),
   timer,
 });

@@ -13,6 +13,7 @@ const Container = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
+  z-index: 5;
 
   ${props => props.hide && css`
     width: 0;
@@ -38,13 +39,13 @@ const Body = styled.div`
     top: 0;
     right: 0;
 
-    width: 240px;
+    width: 160px;
     height: 100%;
 
     transition: right 0.2s ease-out;
 
     ${props => props.hide && css`
-      right: -240px;
+      right: -160px;
     `}
   }
   @media (min-width: 568px) {
@@ -71,11 +72,33 @@ const Content = styled.div`
   }
 `;
 
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 20px;
+  padding: 0;
+`;
+
+const Item = styled.li`
+  display: block;
+  margin: 0 0 2px;
+  padding: 10px;
+
+  background-color: #DDD;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  ${p => p.current && css`
+    font-weight: bold;
+  `}
+`;
+
 class Sider extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      show: props.show,
+      show: !props.show,
       activeTab: 0,
     };
   }
@@ -101,23 +124,30 @@ class Sider extends Component {
   }
 
   render () {
+    const {menu, activeMenu} = this.props;
+    const {show} = this.state;
     return (
-      <Container hide={!this.state.show}>
+      <Container hide={!show}>
         <Empty onClick={this.handleClickClose}></Empty>
-        <Body hide={!this.state.show}>
+        <Body hide={!show}>
           <Menu>
             <Button onClick={this.handleClickClose}>
               <Icon name='times'/>
             </Button>
           </Menu>
           <Content>
-            <ul>
-              {this.props.menu.map(m =>
-                <li key={m.path}>
-                  <Link to={m.path} onClick={this.handleClickClose}>{m.title}</Link>
-                </li>
+            <List>
+              {menu.map(m =>
+                <Item
+                    key={m.path}
+                    as={m.path === activeMenu ? 'div' : Link}
+                    to={m.path}
+                    current={m.path === activeMenu}
+                    onClick={this.handleClickClose}>
+                  {m.title}
+                </Item>
               )}
-            </ul>
+            </List>
           </Content>
         </Body>
       </Container>

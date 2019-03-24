@@ -9,6 +9,7 @@ import configActions from 'actions/config';
 
 const Container = styled.div`
   width: 100%;
+  padding: 0 15px;
 `;
 
 const CheckItem = styled.div`

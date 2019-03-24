@@ -4,6 +4,8 @@ const initialState = {
   list: [],
 };
 
+const MAX_COUNT = 100;
+
 const getAddedHistory = (state, action) => {
   const {prevState, action: prevAction, result} = action.payload;
 
@@ -14,7 +16,7 @@ const getAddedHistory = (state, action) => {
       return {
         ...state,
         list: [
-          ...state.list,
+          ...state.list.slice(state.list.length - MAX_COUNT + 1),
           {
             type: prevAction.type,
             timestamp: moment().diff(0),
@@ -55,12 +57,12 @@ const handlers = {
 
 const isUpdated = (type) => Object.keys(handlers).indexOf(type) !== -1;
 
-export default function history (state = initialState, action) {
+export default function timerHistory (state = initialState, action) {
   if(!isUpdated(action.type)) {
     return state;
   }
 
   const newState = handlers[action.type](state, action);
-  localStorage.setItem('history', JSON.stringify(newState));
+  localStorage.setItem('timerHistory', JSON.stringify(newState));
   return newState;
 }
