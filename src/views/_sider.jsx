@@ -6,7 +6,7 @@ import {Button, Icon} from 'components';
 
 const Container = styled.div`
   /*background-color: rgba(0,0,0,0.3);*/
-  /*overflow: hidden;*/
+  overflow: hidden;
 
   position: absolute;
   top: 0;
@@ -15,7 +15,7 @@ const Container = styled.div`
   height: 100%;
   z-index: 5;
 
-  ${props => props.hide && css`
+  ${p => p.hide && css`
     width: 0;
     right: 0;
   `}
@@ -31,55 +31,47 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 5px;
   background-color: #EFEFEF;
 
-  @media (max-width: 568px) {
-    position: absolute;
-    top: 0;
-    right: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 
-    width: 160px;
-    height: 100%;
+  width: 160px;
+  height: 100%;
 
-    transition: right 0.2s ease-out;
+  transition: right 0.2s ease-out;
 
-    ${props => props.hide && css`
-      right: -160px;
-    `}
-  }
-  @media (min-width: 568px) {
-    height: 100%;
-  }
+  ${p => p.hide && css`
+    right: -160px;
+  `}
 `;
 
 const Menu = styled.div`
-  /*position: absolute;
-  top: 5px;
-  right: 5px;*/
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
+
+  height: 47px;
+  padding-right: 5px;
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-
-  @media (min-width: 568px) {
-    width: 230px;
-  }
 `;
 
-const List = styled.div`
+const LinkList = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 0 20px;
-  padding: 0;
+  padding: 0 5px;
 `;
 
-const Item = styled.li`
+const LinkItem = ({active, ...props}) => <Link {...props} />;
+const Item = styled(LinkItem)`
   display: block;
   margin: 0 0 2px;
   padding: 10px;
@@ -89,7 +81,7 @@ const Item = styled.li`
   cursor: pointer;
   text-decoration: none;
 
-  ${p => p.current && css`
+  ${p => p.active && css`
     font-weight: bold;
   `}
 `;
@@ -98,7 +90,7 @@ class Sider extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      show: !props.show,
+      show: props.show,
       activeTab: 0,
     };
   }
@@ -136,18 +128,17 @@ class Sider extends Component {
             </Button>
           </Menu>
           <Content>
-            <List>
+            <LinkList>
               {menu.map(m =>
                 <Item
                     key={m.path}
-                    as={m.path === activeMenu ? 'div' : Link}
                     to={m.path}
-                    current={m.path === activeMenu}
+                    active={m.path === activeMenu}
                     onClick={this.handleClickClose}>
                   {m.title}
                 </Item>
               )}
-            </List>
+            </LinkList>
           </Content>
         </Body>
       </Container>
