@@ -10,7 +10,6 @@ import styled, {css} from 'styled-components';
 import {
   Button,
   Icon,
-  Tooltip,
 } from 'components';
 
 import Timer from './timer';
@@ -32,7 +31,10 @@ const Menu = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 
+    padding-left: 15px;
+    padding-right: 5px;
     margin-bottom: 15px;
     background-color: #666;
     box-shadow: 0 0px 5px rgba(0, 0, 0, 0.3);
@@ -43,10 +45,15 @@ const MenuTitle = styled.h2`
   font-size: 1.4rem;
   font-weight: bold;
   margin-top: 10px;
-  margin-left: 15px;
   margin-bottom: 10px;
   flex: 1;
   color: #FFF;
+`;
+
+const StyledButton = styled(Button)`
+  ${p => p.white && css`
+    color: #FFF;
+  `}
 `;
 
 const PAGES = [
@@ -65,12 +72,9 @@ class RouterView extends Component {
           {pathname !== '/' &&
             <MenuTitle>{PAGES.filter(p => p.path === pathname)[0].title}</MenuTitle>
           }
-          <Button 
-              onClick={() => this._sider.toggle()}
-              as={Tooltip}
-              tooltip={{text: 'Menu', position: 'bottom-right'}} >
-            <Icon name='wrench' />
-          </Button>
+          <StyledButton white={pathname !== '/'} onClick={() => this._sider.toggle()}>
+            <Icon name='bars' />
+          </StyledButton>
         </Menu>
         <Switch>
           {PAGES.map(p =>

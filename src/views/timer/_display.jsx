@@ -40,6 +40,8 @@ const Container = styled.div`
 
 const Name = styled.div`
   position: relative;
+  padding: 0 5px;
+  text-align: center;
   font-size: ${p => p.big ? 2.4 : 1.2}em;
 
   @media (max-width: 768px) {

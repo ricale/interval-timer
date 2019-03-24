@@ -8,7 +8,7 @@ import {getMapDispatchToProps} from 'lib';
 import configActions from 'actions/config';
 
 const Container = styled.div`
-  width: 100%;
+  max-width: 500px;
   padding: 0 15px;
 `;
 

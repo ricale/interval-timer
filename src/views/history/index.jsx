@@ -6,6 +6,7 @@ import HistoryList from './_list';
 
 const Conatainer = styled.div`
   padding: 0 15px;
+  max-width: 500px;
 `;
 
 const History = ({list}) => (

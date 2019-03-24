@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import moment from 'moment';
 import styled, {css} from 'styled-components';
 
@@ -6,24 +6,23 @@ import {withProps, getDuringTime} from 'lib';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 
-  ${props => props.reverse && css`
-    flex-direction: column-reverse;
-  `}
+  border-bottom: 1px solid #DDD;
 `;
 
 const Header = styled.div``;
 
 const StartTime = styled.div`
-  font-size: 0.8em;
+  font-family: monospace;
 `;
 
 const Body = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
 
   width: 100%;
   padding: 5px;
@@ -32,26 +31,31 @@ const Body = styled.div`
   background-color: #FFF;
 
   ${props => props.state === 'pause' && css`
-    background-color: #EFEFEF;
+    
   `}
 
   ${props => props.state === 'stop' && css`
-    background-color: #EFEFEF;
+    
   `}
 
   ${props => props.state === 'quit' && css`
-    margin: 15px 0;
+    margin: 5px 0;
     padding: 0;
-    border-bottom: 1px dashed #000;
+    /*border-bottom: 1px dashed #000;*/
     background-color: transparent;
   `}
 `;
 
-const IntervalName = styled.div``;
+const IntervalName = styled.div`
+  flex: 1;
+  margin-left: 10px;
+`;
 
 const During = styled.div`
-  font-family: monospace;
+  width: 70px;
   text-align: right;
+  font-family: monospace;
+  /*text-align: right;*/
 `;
 
 const HistoryItemView = ({timestamp, during, intervalName, playState, reverse}) => (
@@ -59,25 +63,28 @@ const HistoryItemView = ({timestamp, during, intervalName, playState, reverse}) 
     <Header>
       {playState !== 'quit' &&
         <StartTime>
-          {moment(timestamp).format('MM-DD HH:mm:ss')}
+          {moment(timestamp).format('MM/DD HH:mm:ss')}
         </StartTime>
       }
     </Header>
     <Body state={playState}>
       {playState === 'playing' &&
-        <Fragment>
+        <>
           <IntervalName>{intervalName}</IntervalName>
           <During>{during}</During>
-        </Fragment>
+        </>
       }
       {playState === 'pause' &&
-        <Fragment>
+        <>
           <IntervalName>Paused</IntervalName>
           <During>{during}</During>
-        </Fragment>
+        </>
       }
       {playState === 'stop' &&
-        <IntervalName>Stopped</IntervalName>
+        <>
+          <IntervalName>Stopped</IntervalName>
+          <During></During>
+        </>
       }
     </Body>
   </Container>
