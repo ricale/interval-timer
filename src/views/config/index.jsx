@@ -9,6 +9,7 @@ import configActions from 'actions/config';
 
 const Container = styled.div`
   width: 100%;
+  padding: 0 15px;
 `;
 
 const CheckItem = styled.div`
@@ -90,4 +91,12 @@ class SiderConfig extends Component {
   }
 }
 
-export default connect(null, getMapDispatchToProps({...configActions}))(SiderConfig);
+const mapStateToProps = (state, ownProps) => ({
+  ...state.config,
+});
+
+const mapDispatchToProps = dispatch => getMapDispatchToProps({
+  ...configActions,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SiderConfig);

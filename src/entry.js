@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
+import {ConnectedRouter} from 'connected-react-router';
+import {createHashHistory} from 'history';
 import {ThemeProvider} from 'styled-components';
 
 import reducers from 'reducers';
@@ -7,10 +9,10 @@ import {getStore, Alarm} from 'lib';
 import {normal} from 'themes';
 
 import GlobalStyle from './globalStyle';
+import Router from './views/router';
 
-import MainView from './views/main';
-
-const store = getStore(reducers);
+const history = createHashHistory();
+const store = getStore(reducers, history);
 Alarm.init(store);
 
 class Entry extends Component {
@@ -18,10 +20,12 @@ class Entry extends Component {
     return (
       <Provider store={store}>
         <ThemeProvider theme={normal}>
-          <>
-            <GlobalStyle />
-            <MainView />
-          </>
+          <ConnectedRouter history={history}>
+            <>
+              <GlobalStyle />
+              <Router />
+            </>
+          </ConnectedRouter>
         </ThemeProvider>
       </Provider>
     );

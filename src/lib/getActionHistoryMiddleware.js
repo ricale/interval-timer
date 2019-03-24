@@ -1,4 +1,4 @@
-export default function getActionHistoryMiddleware (historyReducer = 'history', historyAddActionType = 'HISTORY/ADD') {
+export default function getActionHistoryMiddleware (historyReducer = 'timerHistory', historyAddActionType = 'HISTORY/ADD') {
 
   const addHistory = (prevState, action, result) => {
     const {[historyReducer]: _,  ..._prevState} = prevState;

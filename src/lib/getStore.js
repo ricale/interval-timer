@@ -1,10 +1,12 @@
 import {createStore, applyMiddleware, compose} from 'redux';
+import {routerMiddleware} from 'connected-react-router';
+
 import getActionHistoryMiddleware from './getActionHistoryMiddleware';
 
-export default function getStore (reducers) {
+export default function getStore (reducers, history) {
   const preloadedState = {};
 
-  const keys = ['intervals', 'config', 'history'];
+  const keys = ['intervals', 'config', 'timerHistory'];
   keys.forEach(key => {
     const data = localStorage.getItem(key);
     if(data) {
@@ -18,11 +20,12 @@ export default function getStore (reducers) {
       compose;
 
   return createStore(
-    reducers,
+    reducers(history),
     preloadedState,
     composeEnhancers(
       applyMiddleware(
-        getActionHistoryMiddleware()
+        routerMiddleware(history),
+        getActionHistoryMiddleware(),
       )
     )
   );
