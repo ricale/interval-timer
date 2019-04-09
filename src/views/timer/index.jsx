@@ -145,7 +145,15 @@ const TimerView = ({
   </Container>
 );
 
-const initialState = {startTime: null, pauseTime: null};
+function changeCurrentTimestamp ({
+  onChangeCurrnetTimestamp,
+  data,
+  startTime,
+}) {
+  onChangeCurrnetTimestamp(
+    data.timestamp - moment().diff(startTime)
+  );
+}
 
 const Timer = compose(
   withProps(({list, timer}) => ({
@@ -156,13 +164,10 @@ const Timer = compose(
   })),
   withStateHandlers(
     (props) => ({
-      ...initialState,
       currentTimestamp: (props.data || {}).timestamp,
     }),
     {
-      onChangePauseTime:        (state, props) => v => ({pauseTime: v}),
       onChangeCurrnetTimestamp: (state, props) => v => ({currentTimestamp: v}),
-      onChange:                 (state, props) => d => ({...state, ...d}),
     }
   ),
   withProps(({data, currentTimestamp, playState, alarming, showMilliseconds, config}) => ({
@@ -173,23 +178,19 @@ const Timer = compose(
     isNegative: showMilliseconds ? currentTimestamp < 0 : Math.ceil(currentTimestamp / 1000) <= 0,
   })),
   lifecycle({
-    ringAlarmIfNeeded (nextProps) {
-      if(nextProps.playState === PLAY_STATE.PLAYING) {
-        if(nextProps.currentTimestamp !== this.props.currentTimestamp) {
-          if(nextProps.currentTimestamp < 0 && this.props.currentTimestamp >= 0) {
-            this.props.ringAlarm();
-          }
-        }
+    componentDidMount () {
+      if(this.props.playState === PLAY_STATE.PLAYING) {
+        changeCurrentTimestamp(this.props);
+        this._timer = setInterval(() => {
+          changeCurrentTimestamp(this.props);
+        }, 100);
       }
     },
     shouldComponentUpdate (nextProps, nextState) {
       const {
-        onChangePauseTime,
         onChangeCurrnetTimestamp,
-        onChange,
 
         playState,
-        startTime,
         pauseTime,
         index,
         data,
@@ -198,57 +199,39 @@ const Timer = compose(
       if(nextProps.playState !== playState) {
         switch(nextProps.playState) {
           case PLAY_STATE.PLAYING:
-            if(pauseTime) {
-              onChange({
-                startTime: startTime.add(moment().diff(pauseTime)),
-                pauseTime: null,
-              });
-
-            } else {
-              onChange({
-                startTime: moment(),
-                currentTimestamp: data.timestamp,
-              });
+            if(!pauseTime) {
+              onChangeCurrnetTimestamp(data.timestamp);
             }
-
-            this._timer =
-              setInterval(() => {
-                onChangeCurrnetTimestamp(
-                  this.props.data.timestamp - moment().diff(this.props.startTime)
-                );
-              }, 100);
+            this._timer = setInterval(() => {
+              changeCurrentTimestamp(this.props);
+            }, 100);
 
             noSleep.enable();
             break;
 
           case PLAY_STATE.PAUSE:
-            onChangePauseTime(moment());
             clearInterval(this._timer);
-
             noSleep.disable();
             break;
 
           case PLAY_STATE.IDLE:
-            onChange({
-              startTime: null,
-              pauseTime: null,
-              currentTimestamp: data.timestamp,
-            });
+            onChangeCurrnetTimestamp(data.timestamp);
             clearInterval(this._timer);
-
             noSleep.disable();
             break;
         }
       }
 
-      this.ringAlarmIfNeeded(nextProps);
+      if(nextProps.playState === PLAY_STATE.PLAYING) {
+        if(nextProps.currentTimestamp !== this.props.currentTimestamp) {
+          if(nextProps.currentTimestamp < 0 && this.props.currentTimestamp >= 0) {
+            this.props.ringAlarm();
+          }
+        }
+      }
 
       if(nextProps.index !== index) {
-        onChange({
-          startTime: moment(),
-          pauseTime: null,
-          currentTimestamp: nextProps.data.timestamp,
-        });
+        onChangeCurrnetTimestamp(nextProps.data.timestamp);
       }
 
       return true;
