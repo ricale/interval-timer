@@ -22,19 +22,6 @@ const FormWrapper = styled.div`
 `;
 
 class Intervals extends Component {
-  componentDidMount () {
-    if(this.props.list.length === 0) {
-      this._accordion.open();
-    }
-  }
-
-  shouldComponentUpdate (nextProps) {
-    if(this.props.list.length > 0 && nextProps.list.length === 0) {
-      this._accordion.open();
-    }
-    return true;
-  }
-
   handleEdit = (id) => {
     this.props.editInterval(id);
   }
