@@ -43,12 +43,13 @@ function HomePage() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          alignItems: 'center',
           height: '100%',
         }}>
         <Clock
           ms={ms - (timestamp ?? 0)}
           index={index}
-          sx={{ height: '50%'}}
+          sx={{ height: '50%', width: '100%' }}
           />
         <Controller>
           <ToggleButton
