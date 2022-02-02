@@ -1,5 +1,4 @@
 import { selector } from "recoil";
-import { getHMS } from "utils";
 
 import { Interval, intervalsState } from "./intervals/atom";
 import { timerState } from "./timer/atom";

@@ -1,19 +1,23 @@
 import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
-import { Paper, Typography } from 'components';
+import { Box, Paper, Typography } from 'components';
 import { fillWithZero, getHMS } from 'utils';
 
 type ClockProps = {
+  percent: number
   ms: number
+  living: boolean
   index?: number
   sx?: SxProps<Theme>
 }
 function Clock({
+  percent,
   ms,
+  living,
   index,
   sx,
 }: ClockProps) {
-  const { hours, minutes, seconds } = getHMS(ms);
+  const { negative, hours, minutes, seconds } = getHMS(ms);
   return (
     <Paper
       // elevation={3}
@@ -24,9 +28,31 @@ function Clock({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
+        overflow: 'hidden',
+        border: living ? 4 : undefined,
+        borderColor: 'primary.dark',
         ...sx
       }}>
-      <Typography variant='h3' component='p'>
+      <Box
+        sx={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          height: '100%',
+          borderRadius: 0,
+          backgroundColor: 'primary.dark',
+        }}
+        style={{
+          top: `${Math.max(percent, 0).toFixed(1)}%`,
+        }}
+        />
+      <Typography
+        variant='h3'
+        component='p'
+        sx={{
+          position: 'relative',
+          color: negative ? 'warning.main' : undefined,
+        }}>
         {`${fillWithZero(hours)}:${fillWithZero(minutes)}:${fillWithZero(seconds)}`}
       </Typography>
       {index !== undefined &&
@@ -34,9 +60,10 @@ function Clock({
           variant='body1'
           sx={{
             position: 'absolute',
-            bottom: '100%',
+            top: 0,
             right: 0,
             margin: 0.5,
+            color: 'neutral.dark'
           }}>
           {`#${index + 1}`}
         </Typography>

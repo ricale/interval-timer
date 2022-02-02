@@ -29,7 +29,12 @@ function IntervalItem({
         subheader={`#${item.index + 1}`}
         sx={{ padding: 1.5, paddingBottom: 0, }}
         />
-      <CardContent sx={{ padding: 1.5, paddingTop: 1 }}>
+      <CardContent
+        sx={{
+          padding: 1.5,
+          paddingTop: 1,
+          '&:last-child': { paddingBottom: 1.5 }
+        }}>
         <Row gap={1} alignItems='center'>
           {FIELDS.map((field, i) =>
             <Fragment key={field}>

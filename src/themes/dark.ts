@@ -29,7 +29,8 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     neutral: {
-      main: grey[900]
+      main: grey[900],
+      dark: grey['A700'],
     }
   },
 });

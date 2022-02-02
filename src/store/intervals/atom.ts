@@ -1,6 +1,8 @@
-import { atom } from "recoil";
-import { getMilliseconds } from "utils";
+import { atom, AtomEffect } from "recoil";
 import { v4 as uuidv4} from 'uuid';
+
+import { getMilliseconds } from "utils";
+
 
 export type Interval = {
   id: string
@@ -11,6 +13,20 @@ export type Interval = {
   ms: number
 }
 type IntervalsState = Interval[]
+
+const localStorageEffect: (key: string) => AtomEffect<IntervalsState> = (key: string) =>
+({setSelf, onSet}) => {
+  const savedValue = localStorage.getItem(key);
+  if(savedValue) {
+    setSelf(JSON.parse(savedValue));
+  }
+
+  onSet((newValue, _, isReset) => {
+    isReset
+      ? localStorage.removeItem(key)
+      : localStorage.setItem(key, JSON.stringify(newValue))
+  });
+}
 
 export const intervalsState = atom<IntervalsState>({
   key: 'intervals',
@@ -29,5 +45,8 @@ export const intervalsState = atom<IntervalsState>({
       seconds: 0,
       ms: getMilliseconds(0, 5),
     }
+  ],
+  effects: [
+    localStorageEffect('currentUser')
   ]
 });
