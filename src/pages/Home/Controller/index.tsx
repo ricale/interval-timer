@@ -20,11 +20,12 @@ function Controller({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         marginTop: 0.5,
         marginBottom: 0.5,
         paddingTop: 0.5,
         paddingBottom: 0.5,
-        gap: 0.5
+        gap: 0.5,
       }}>
       <ControllerButton
         iconName='PlayArrow'

@@ -1,51 +1,83 @@
+import { useEffect, useState } from 'react';
 import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
+import { useRecoilValue } from 'recoil';
+
 import { Box, Paper, Typography } from 'components';
+import { PLAY_STATE, timerAndIntervalsState, useSetTimerState } from 'store';
 import { fillWithZero, getHMS } from 'utils';
 
 type ClockProps = {
-  percent: number
-  ms: number
-  living: boolean
-  index?: number
   sx?: SxProps<Theme>
 }
 function Clock({
-  percent,
-  ms,
-  living,
-  index,
   sx,
 }: ClockProps) {
-  const { negative, hours, minutes, seconds } = getHMS(ms);
+  const {
+    timer,
+    currentInterval,
+    index,
+  } = useRecoilValue(timerAndIntervalsState)
+  const [timestamp, setTimestamp] = useState(currentInterval.ms);
+
+  const actions = useSetTimerState();
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if(timer.playState === PLAY_STATE.PLAYING) {
+      let prevTimestamp = timestamp;
+      intervalId = setInterval(() => {
+        const newTimestamp = currentInterval.ms - (new Date().getTime() - (timer.startTime ?? 0));
+        if((prevTimestamp ?? 0) > 0 && newTimestamp < 0) {
+          actions.ringAlarm();
+        }
+        setTimestamp(newTimestamp);
+        prevTimestamp = newTimestamp;
+      }, 100);
+
+    } else if(timer.playState === PLAY_STATE.IDLE) {
+      setTimestamp(currentInterval.ms);
+    }
+    return () => {
+      if(intervalId) {
+        clearInterval(intervalId);
+      }
+    }
+  }, [timer.playState, currentInterval]);
+
+  const { negative, hours, minutes, seconds } = getHMS(timestamp);
+  const percent = (timestamp / currentInterval.ms) * 100;
+  const living = timer.playState !== PLAY_STATE.IDLE;
   return (
     <Paper
-      // elevation={3}
       sx={{
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
         height: '100%',
         overflow: 'hidden',
-        border: living ? 4 : undefined,
+        border: living ? 2 : undefined,
         borderColor: 'primary.dark',
         ...sx
       }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          height: '100%',
-          borderRadius: 0,
-          backgroundColor: 'primary.dark',
-        }}
-        style={{
-          top: `${Math.max(percent, 0).toFixed(1)}%`,
-        }}
-        />
+      {living && 
+        <Box
+          sx={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            height: '100%',
+            borderRadius: 0,
+            backgroundColor: 'primary.dark',
+          }}
+          style={{
+            top: `${Math.max(percent, 0).toFixed(1)}%`,
+          }}
+          />
+      }
       <Typography
         variant='h3'
         component='p'
