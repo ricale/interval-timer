@@ -23,6 +23,7 @@
     "paths": {
       "components": ["src/components"],
       "store": ["src/store"],
+      "themes": ["src/themes"],
       "utils": ["src/utils"],
     }
   },

@@ -15,7 +15,7 @@ function ControllerButton({
       variant='text'
       size='small'
       disabled={disabled}
-      sx={{ minWidth: 48, height: '100%' }}
+      sx={{ minWidth: 48, padding: 1.375 }}
       {...props}>
       <Icon name={iconName} />
     </Button>

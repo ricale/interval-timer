@@ -15,19 +15,21 @@ const FIELDS: ['hours', 'minutes', 'seconds'] = ['hours', 'minutes', 'seconds'];
 
 type IntervalItemProps = {
   item: IntervalDetail
+  active?: boolean
   editable?: boolean
   onChange: (item: IntervalDetail) => void
 }
 function IntervalItem({
   item,
+  active,
   editable,
   onChange,
 }: IntervalItemProps) {
   return (
-    <Card sx={{ width: 150 }}>
+    <Card sx={{ width: 150, border: active ? 1 : 0, borderColor: 'primary.dark' }}>
       <CardHeader
         subheader={`#${item.index + 1}`}
-        sx={{ padding: 1.5, paddingBottom: 0, }}
+        sx={{ padding: 1.5, paddingBottom: 0 }}
         />
       <CardContent
         sx={{
